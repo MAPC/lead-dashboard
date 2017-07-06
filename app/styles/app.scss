@@ -19,6 +19,7 @@ html, body {
 
 #introduction {
   background-color: teal;
+  color: white;
 }
 
 #about {
@@ -53,7 +54,7 @@ h1 {
 }
 
 .menu {
-  position: absolute;
+  position: fixed;
   background-color: white;
   display: flex;
   width: 100%;

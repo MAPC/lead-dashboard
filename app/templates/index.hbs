@@ -3,10 +3,11 @@
     <h1>How much energy does your town consume?</h1>
   </div>
   <div class="item">
-    Select your City:
+    <h1>Select your City:
     {{#power-select options=(map-by 'municipal' model) onchange=(transition-to 'city' 'test') as |name|}}
       {{name}}
     {{/power-select}}
+    </h1>
   </div>
 </section>
 
