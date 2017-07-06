@@ -26,11 +26,38 @@ html, body {
 }
 
 #sectors {
+  padding-top: 100px;
   background-color: lightblue;
 }
 
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+h1 {
+  animation: bounceIn 1s;
+}
+
+@keyframes slideIn {
+  0% {
+    margin-top: -100px;
+  }
+  100% {
+    margin-top: 0;
+  }
+}
+
 .menu {
+  position: absolute;
+  background-color: white;
   display: flex;
+  width: 100%;
+  animation: slideIn 0.2s;
   .item {
     display: flex;
     flex-grow: 1;

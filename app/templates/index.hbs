@@ -1,10 +1,10 @@
 <section class="grid" id="introduction">
   <div class="item">
-    How much energy does your town consume?
+    <h1>How much energy does your town consume?</h1>
   </div>
   <div class="item">
     Select your City:
-    {{#power-select options=model onchange=(transition-to 'city' 'worcester') as |name|}}
+    {{#power-select options=(map-by 'municipal' model) onchange=(transition-to 'city' 'test') as |name|}}
       {{name}}
     {{/power-select}}
   </div>

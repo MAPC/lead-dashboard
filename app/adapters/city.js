@@ -1,16 +1,13 @@
 import DS from 'ember-data';
 
-export default DS.JSONAPIAdapter.extend({
-  findAll: function(store, type) {
-    // old query
-    // queryTpl = 'SELECT heatwaveapp_towns.name, heatwaveapp_towns.cartodb_id, ST_Simplify(heatwaveapp_towns.the_geom,0.001), heatwaveapp_places.the_geom AS the_geom FROM {{table}}, heatwaveapp_places WHERE ST_Intersects(heatwaveapp_towns.the_geom, heatwaveapp_places.the_geom)',
-    var queryTpl = "SELECT heatwaveapp_towns.name, heatwaveapp_towns.municipal, heatwaveapp_towns.cartodb_id, ST_Simplify(heatwaveapp_towns.the_geom,0.1) AS the_geom FROM {{table}}, heatwaveapp_places WHERE heatwaveapp_towns.municipal IN ('" + config.MMC_towns.join("','") + "')",
-        url = this.buildURL(type, queryTpl),
-        response = {};
+const data_url = "https://mapc-admin.carto.com/api/v2/sql?q=%20select%20*%20from%20b04006_reported_ancestry_acs_m%20%20WHERE%20acs_year%20IN%20(%272005-09%27,%272006-10%27,%272007-11%27,%272008-12%27,%272009-13%27,%272010-14%27,%272011-15%27) LIMIT 5&format=json&filename=b04006_reported_ancestry_acs_m";
 
-    return this.ajax(url + '&format=geojson', 'GET').then(function(featureColl) {
-      response[type.typeKey.pluralize()] = featureColl.features.map(function(feature) {
-        feature.id = feature.properties.cartodb_id;
+export default DS.RESTAdapter.extend({
+  findAll: function(store, type) {
+    let response = {};
+    return this.ajax(data_url).then(function(featureColl) {
+      response['cities'] = featureColl.rows.map(function(feature) {
+        feature.id = feature.cartodb_id;
         return feature;
       });
       return response;
