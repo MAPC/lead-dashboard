@@ -1,45 +1,78 @@
-body {
-  background-color: #fafafa;
-  font-family: 'Montserrat', sans-serif;
+html, body {
+  display: inline;
+  margin: 0;
 }
 
-h1.ui.header {
-  color: #0E5EFF;
-  font-size: 6rem;
-  font-family: 'Montserrat', sans-serif;
+.grid {
+  display: flex;
+  flex-direction: row;
+  height: calc(90vh);
+  padding: 1em;
+
+  .item {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
-h3.ui.header.menu-title {
-  font-size: 1rem;
-  color: white;
-  font-family: 'Montserrat', sans-serif;
+#introduction {
+  background-color: teal;
 }
 
-p {
-  font-size: 1.5rem;
-  font-family: 'Roboto Mono', monospace;
+#about {
+  background-color: orange;
 }
 
-.ui.basic.segment.inverted-blue-segment {
-  background-color: #0E5EFF;
-  color: white;
-  h1.ui.header {
+#sectors {
+  background-color: lightblue;
+}
+
+.menu {
+  display: flex;
+  .item {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    margin: 1em;
+    cursor: pointer;
+  }
+
+  .item.back {
+    flex-grow: 0.5;
+    margin:0;
+    padding:0;
+    background-color: pink;
     color: white;
-    font-size: 6rem;
-    font-family: 'Montserrat', sans-serif;
+    align-items: center;
   }
-  p {
-    font-size: 1.5rem;
-    font-family: 'Roboto Mono', monospace;
+
+  button.item {
+    background-color: cyan;
+    color: white;
+    border-radius: 0px;
+    border-width: 0px;
+    padding: 1em;
+    margin: 1em;
+    transition: transform 0.1s
+  }
+
+  button.item.active {
+    background-color: blue;
+  }
+
+  button.item:active {
+    transform: scale(0.95);
+    border: none;
+  }
+
+  button.item:focus {
+    outline: none;
   }
 }
 
-.ui.menu {
-  border-radius: 0;
-  min-height: 8rem;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.ui.inverted.menu {
-  background-color: #222;
+@import "ember-power-select";
+.ember-power-select-trigger {
+  width: 100%;
 }
