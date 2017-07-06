@@ -12,6 +12,7 @@ html, body {
   .item {
     display: flex;
     flex-grow: 1;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
   }
@@ -27,7 +28,7 @@ html, body {
 }
 
 #sectors {
-  padding-top: 100px;
+  padding-top: 7em;
   background-color: lightblue;
 }
 
