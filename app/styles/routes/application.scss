@@ -1,0 +1,20 @@
+.route.application {
+
+  #introduction {
+    background-color: teal;
+    color: white;
+  }
+
+  #about {
+    background-color: orange;
+  }
+
+  h1 {
+    animation: bounceIn 1s;
+  }
+
+  .ember-power-select-trigger {
+    width: 100%;
+  }
+
+}

@@ -1,18 +1,27 @@
-<section class="grid" id="introduction">
-  <div class="item">
-    <h1>How much energy does your town consume?</h1>
-  </div>
-  <div class="item">
-    <h1>Select your City:
-    {{#power-select options=(map-by 'municipal' model) onchange=(transition-to 'city' 'test') as |name|}}
-      {{name}}
-    {{/power-select}}
-    </h1>
-  </div>
-</section>
+<div class="route application">
 
-<section class="grid" id="about">
-  <div class="item">Map</div>
-  <div class="item">Explore Worcester's Energy Consumption</div>
-</section>
-{{outlet}}
+  <section class="grid" id="introduction">
+
+    <div class="item">
+      <h1>How much energy does your town consume?</h1>
+    </div>
+
+    <div class="item">
+      <h1>Select your City:
+      {{#power-select options=(map-by 'municipal' model) onchange=(transition-to 'city' 'test') as |name|}}
+        {{name}}
+      {{/power-select}}
+      </h1>
+    </div>
+
+  </section><!--/ #introduction -->
+
+
+  <section class="grid" id="about">
+    <div class="item">Map</div>
+    <div class="item">Explore Worcester's Energy Consumption</div>
+  </section><!--/ #about -->
+
+  {{outlet}}
+
+</div>

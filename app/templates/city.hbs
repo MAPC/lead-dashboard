@@ -1,20 +1,30 @@
-<div class="menu">
-  {{link-to '<' 'index' class="back item"}}
-  <div class="item"><h2>Worcester</h2></div>
-  {{#link-to 'city.index' tagName='button' class='item'}}
-    <h2>All Sectors</h2>
-  {{/link-to}}
-  {{#link-to 'city.industrial' tagName='button' class='item'}}
-    <h2>Industrial</h2>
-  {{/link-to}}
-  {{#link-to 'city.commercial' tagName='button' class='item'}}
-    <h2>Commercial</h2>
-  {{/link-to}}
-  {{#link-to 'city.residential' tagName='button' class='item'}}
-    <h2>Residential</h2>
-  {{/link-to}}
-</div>
+<div class="route city">
 
-<section class="grid" id="sectors">
-  {{outlet}}
-</section>
+  <div class="menu">
+
+    {{link-to '<' 'index' class="back item"}}
+    <div class="item"><h2>Worcester</h2></div>
+
+    {{#link-to 'city.index' tagName='button' class='item'}}
+      <h2>All Sectors</h2>
+    {{/link-to}}
+
+    {{#link-to 'city.industrial' tagName='button' class='item'}}
+      <h2>Industrial</h2>
+    {{/link-to}}
+
+    {{#link-to 'city.commercial' tagName='button' class='item'}}
+      <h2>Commercial</h2>
+    {{/link-to}}
+
+    {{#link-to 'city.residential' tagName='button' class='item'}}
+      <h2>Residential</h2>
+    {{/link-to}}
+
+  </div><!--/ .menu -->
+
+  <section class="grid" id="sectors">
+    {{outlet}}
+  </section>
+
+</div>

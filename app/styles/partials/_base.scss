@@ -1,0 +1,31 @@
+body {
+  display: inline;
+
+  margin: 0;
+
+  color: $color_font-dark;
+  font-family: $font_family-primary;
+
+  background: $color_bg-light;
+}
+
+p {
+  font-family: $font_family-secondary;
+}
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  height: calc(90vh);
+  padding: 1em;
+
+  .item {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
