@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('city', { path: 'cities/:id' }, function() {
+  this.route('city', { path: 'cities/:municipality' }, function() {
     this.route('industrial');
     this.route('residential');
     this.route('commercial');

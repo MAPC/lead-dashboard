@@ -6,8 +6,8 @@
       Compare {{municipality}} to:
       <select onchange={{action 'addToComparisonList' value="target.value"}}> 
         <option disabled selected>-- Municipality --</option>
-        {{#each municipalities as |municipal|}}
-          <option value={{municipal}}>{{municipal}}</option>
+        {{#each municipalities as |municipality|}}
+          <option value={{municipality}}>{{municipality}}</option>
         {{/each}}
       </select>
     </div>

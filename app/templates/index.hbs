@@ -7,11 +7,12 @@
     </div>
 
     <div class="item">
-      <h1>Select your City:
-      {{#power-select options=(map-by 'municipal' model) onchange=(transition-to 'city' 'test') as |name|}}
-        {{name}}
-      {{/power-select}}
-      </h1>
+      <h2>Select your City:</h2>
+      <select onchange={{action 'toMunicipality' value="target.value"}}>
+        {{#each municipalities as |municipality|}}
+          <option value={{normalize-slug municipality}}>{{municipality}}</option>
+        {{/each}}
+      </select>
     </div>
 
   </section><!--/ #introduction -->

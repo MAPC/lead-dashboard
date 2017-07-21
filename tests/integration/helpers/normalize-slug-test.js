@@ -2,7 +2,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('format-slug', 'helper:format-slug', {
+moduleForComponent('normalize-slug', 'helper:normalize-slug', {
   integration: true
 });
 
@@ -10,7 +10,7 @@ moduleForComponent('format-slug', 'helper:format-slug', {
 test('it renders', function(assert) {
   this.set('inputValue', '1234');
 
-  this.render(hbs`{{format-slug inputValue}}`);
+  this.render(hbs`{{normalize-slug inputValue}}`);
 
   assert.equal(this.$().text().trim(), '1234');
 });

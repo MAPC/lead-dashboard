@@ -20,9 +20,8 @@ export default Ember.Service.extend({
    */
   query(queryString) {
     const cartoURL = 'https://mapc-admin.carto.com/api/v2/sql?format=json&q=';
-    let cleanQueryString = queryString.toLowerCase()
-                                      .replace(" ", "%20")
-                                      .replace("‘", "%27");
+    let cleanQueryString = queryString.split(" ").join("%20")
+                                      .split("‘").join("%27");
 
     return this.get('ajax').request(`${cartoURL}${cleanQueryString}`);
   }
