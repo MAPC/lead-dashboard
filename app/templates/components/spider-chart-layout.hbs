@@ -1,0 +1,32 @@
+<section class="component spider-chart-layout">
+
+  <div class="comparison-selector">
+
+    <div class="selection-box">
+      Compare {{municipality}} to:
+      <select onchange={{action 'addToComparisonList' value="target.value"}}> 
+        <option disabled selected>-- Municipality --</option>
+        {{#each municipalities as |municipal|}}
+          <option value={{municipal}}>{{municipal}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <ul class="comparison-list">
+      {{#each comparisonList as |compareTo|}}
+        <li>
+          {{compareTo}} <span {{action 'removeFromComparisonList' compareTo}}>x</span>
+        </li>
+      {{/each}}
+    </ul>
+
+  </div><!--/ .comparison-selector -->
+
+
+  <div class="spider-charts">
+    {{spider-chart title='Energy Consumption' data=consumptionData}}
+    {{spider-chart title='C02 Emissions' data=emissionsData}}
+    {{spider-chart title='Energy Cost' data=costData}}
+  </div>
+
+</section>

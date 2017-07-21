@@ -1,0 +1,27 @@
+.component.spider-chart-layout {
+
+  width: 100%;
+  padding: 25px;
+
+  .comparison-selector {
+    margin-bottom: 40px;
+
+    & > * { display: inline-block; }
+
+    li {
+      display: inline-block;
+
+      margin: 0 3px;
+      padding: 6px 8px;
+
+      background: #cecece; 
+    }
+  }
+    
+  .spider-charts {
+    display: flex;
+
+    width: 100%;
+  }
+
+}
