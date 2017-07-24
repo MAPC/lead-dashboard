@@ -3,9 +3,29 @@ import slug from '../utils/slug';
 
 export default Ember.Route.extend({
 
-  carto: Ember.inject.service(),
-  municipality: 'Worcester',
+  /**
+   * Services
+   */
 
+  carto: Ember.inject.service(),
+
+
+  /**
+   * Members
+   */
+
+  municipality: null,
+
+
+  /**
+   * Methods
+   */
+
+  /**
+   * @param Object<Mixed> params
+   *
+   * @return Object<AjaxResponseObjects>
+   */
   model(params) {
     const sectors = ['commercial', 'residential', 'industrial'];
     const data = {};
@@ -20,9 +40,14 @@ export default Ember.Route.extend({
     return data;
   },
 
+
+  /**
+   * @param EmberController controller
+   * @param EmberModel model
+   */
   setupController(controller, model) {
     controller.set('municipality', this.get('municipality'));
-    this._super(...arguments);
+    this._super(controller, model);
   }
 
 });

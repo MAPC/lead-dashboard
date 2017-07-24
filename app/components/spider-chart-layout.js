@@ -32,8 +32,12 @@ export default Ember.Component.extend({
     this._super();
 
     this.get('municipalityList').listFor(this.get('sector')).then(response => {
-      const municipalities = response.rows.map(row => row.municipal).filter(municipality => municipality !== this.get('municipality'));
-      this.set('municipalities', municipalities.sort());
+
+      const municipalities = response.rows.map(row => row.municipal)
+                                          .filter(municipality => municipality !== this.get('municipality'))
+                                          .sort();
+
+      this.set('municipalities', municipalities);
     });
   },
 
