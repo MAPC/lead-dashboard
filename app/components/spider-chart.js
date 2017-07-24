@@ -1,8 +1,22 @@
 import Ember from 'ember';
+import d3 from 'npm:d3';
 
 export default Ember.Component.extend({
 
-  tagName: ''
+  /**
+   * Members
+   */
+
+  tagName: '',
+
+
+  /**
+   * Methods
+   */
+
+  didRender() {
+    console.log(this.get('data'));
+  },
 
 });
 
