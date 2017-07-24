@@ -7,11 +7,18 @@ export default Ember.Component.extend({
    */
 
   criteria: [],
+  criteriaColumn: null,
 
+  chartData: [],
 
+  
   /**
    * Methods
    */
+
+  didRender() {
+    this._super(...arguments);
+  },
 
   actions: {
 

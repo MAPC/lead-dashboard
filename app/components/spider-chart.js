@@ -27,8 +27,6 @@ export default Ember.Component.extend({
    */
 
   didRender() {
-    console.log(d3);
-
     const chartOptions = this.get('chartOptions');
 
     const nestedData = d3.nest()
