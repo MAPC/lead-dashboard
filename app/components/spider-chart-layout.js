@@ -58,7 +58,7 @@ export default Ember.Component.extend({
       let column = datasets[datasetTitle];
 
       let dataset = data.rows.map(row => {
-        let datum = {criterion: row[criteria]};
+        let datum = {municipal: this.get('municipality'), criterion: row[criteria]};
         fuelTypes.forEach(type => datum[type] = row[`${type}_${column}`]);
 
         return datum;

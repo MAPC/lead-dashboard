@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import d3 from 'npm:d3';
+import slug from '../utils/slug';
 
 export default Ember.Component.extend({
 
@@ -9,13 +10,48 @@ export default Ember.Component.extend({
 
   tagName: '',
 
+  selectedFuel: 'elec',
+  chartInnerPadding: .1,
+
+  chartOptions: {
+    w: 400,
+    height: 400,
+    levels: 5,
+    roundStrokes: true,
+    color: d3.scaleOrdinal().range(["#EDC951","#CC333F","#00A0B0"]),
+  },
+
 
   /**
    * Methods
    */
 
   didRender() {
-    console.log(this.get('data'));
+    console.log(d3);
+
+    const chartOptions = this.get('chartOptions');
+
+    const nestedData = d3.nest()
+                         .key(d => d.municipal)
+                         .entries(this.get('data'));
+
+    const fuelType = this.get('selectedFuel');
+
+    const mungedNested = nestedData.map(obj => {
+      return obj.values.map(obj => {
+        return {'axis': obj.criterion, 'value': obj[fuelType]};
+      });
+    });
+
+    let values = mungedNested.map(town => town.map(data => parseInt(data.value)))
+                             .reduce((town, towns) => towns.concat(town));
+
+    const maxValue = Math.max.apply(Math, values);
+    chartOptions.maxValue = maxValue + (maxValue * this.get('chartInnerPadding'));
+
+    const chartTitle = slug(this.get('title')).normalize();
+  
+    this.radarChart(`#${chartTitle}`, mungedNested, chartOptions);
   },
 
 
@@ -40,7 +76,7 @@ export default Ember.Component.extend({
       opacityCircles: 0.1,     //The opacity of the circles of each blob
       strokeWidth: 2,         //The width of the stroke around each blob
       roundStrokes: false,    //If true the area and stroke will follow a round path (cardinal-closed)
-      color: d3.scale.category10()    //Color function
+      color: d3.schemeCategory10    //Color functio
     };
       
       //Put all of the options into a variable called cfg
@@ -60,7 +96,7 @@ export default Ember.Component.extend({
           angleSlice = Math.PI * 2 / total;        //The width in radians of each "slice"
       
       //Scale for the radius
-      var rScale = d3.scale.linear()
+      var rScale = d3.scaleLinear()
           .range([0, radius])
           .domain([0, maxValue]);
           
@@ -158,13 +194,12 @@ export default Ember.Component.extend({
       /////////////////////////////////////////////////////////
       
       //The radial line function
-      var radarLine = d3.svg.line.radial()
-          .interpolate("linear-closed")
+      var radarLine = d3.lineRadial()
           .radius(function(d) { return rScale(d.value); })
           .angle(function(d,i) {    return i*angleSlice; });
           
       if(cfg.roundStrokes) {
-          radarLine.interpolate("cardinal-closed");
+          //radarLine.curve("cardinal-closed");
       }
                   
       //Create a wrapper for the blobs    
