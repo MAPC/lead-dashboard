@@ -13,12 +13,14 @@ export default Ember.Controller.extend({
    * Members
    */
 
+  criteriaColumn: 'activity',
+
   municipality: Ember.computed('city', function() {
     return this.get('city').get('municipality');
   }),
 
   criteria: Ember.computed('model', function() {
-    return this.get('model').rows.map(row => row.activity);
+    return this.get('model').rows.map(row => row[this.get('criteriaColumn')]);
   })
 
 });

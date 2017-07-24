@@ -13,6 +13,8 @@ export default Ember.Component.extend({
    * Members
    */
 
+  criteriaColumn: null,
+
   municipality: null,
   municipalities: [],
 
@@ -29,8 +31,9 @@ export default Ember.Component.extend({
    */
 
   init() {
-    this._super();
+    this._super(...arguments);
 
+    // Fetch municipalities
     this.get('municipalityList').listFor(this.get('sector')).then(response => {
 
       const municipalities = response.rows.map(row => row.municipal)
@@ -39,6 +42,30 @@ export default Ember.Component.extend({
 
       this.set('municipalities', municipalities);
     });
+
+    // Munge data into separate datasets
+    const data = this.get('data');
+    const criteria = this.get('criteriaColumn');
+    const fuelTypes = ['elec', 'ng', 'foil'];
+    
+    const datasets = {
+      'consumptionData': 'con_mmbtu',
+      'emissionsData': 'emissions',
+      'costData': 'exp_dol_mmbtu',
+    };
+
+    for (let datasetTitle in datasets) {
+      let column = datasets[datasetTitle];
+
+      let dataset = data.rows.map(row => {
+        let datum = {criterion: row[criteria]};
+        fuelTypes.forEach(type => datum[type] = row[`${type}_${column}`]);
+
+        return datum;
+      });
+
+      this.set(datasetTitle, dataset);
+    }
   },
 
 
