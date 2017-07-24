@@ -13,6 +13,7 @@ export default Ember.Component.extend({
    * Members
    */
 
+  municipality: null,
   municipalities: [],
 
   comparisonLimit: 4,
@@ -31,7 +32,7 @@ export default Ember.Component.extend({
     this._super();
 
     this.get('municipalityList').listFor(this.get('sector')).then(response => {
-      const municipalities = response.rows.map(row => row.municipal);
+      const municipalities = response.rows.map(row => row.municipal).filter(municipality => municipality !== this.get('municipality'));
       this.set('municipalities', municipalities.sort());
     });
   },
