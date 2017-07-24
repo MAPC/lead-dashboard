@@ -3,7 +3,7 @@
   <div class="menu">
 
     {{link-to '<' 'index' class="back item"}}
-    <div class="item"><h2>Worcester</h2></div>
+    <div class="item"><h2>{{municipality}}</h2></div>
 
     {{#link-to 'city.index' tagName='button' class='item'}}
       <h2>All Sectors</h2>
@@ -23,7 +23,7 @@
 
   </div><!--/ .menu -->
 
-  <section class="grid" id="sectors">
+  <section id="sectors">
     {{outlet}}
   </section>
 

@@ -1,6 +1,25 @@
 <section class="component pie-chart-layout">
 
   <div class="chart-modifiers">
+    <h4>
+      {{municipality}}'s Energy
+      <select onchange={{action 'changeChartMetric' value='target.value'}}> 
+        <option value="consumption" selected>Consumption</option>
+        <option value="emissions">Emissions</option>
+        <option value="cost">Cost</option>
+      </select>
+    </h4>
+    <h5>by Fuel Source</h5>
+
+    <div class="criteria-selector">
+      <h4>Type of {{criteriaName}}</h4>
+      <select onchange={{action 'changeChartCriteria' value='target.value'}}>
+        <option value='all' selected>All</option>
+        {{#each criteria as |criterion|}}
+          <option value={{criterion}}>{{criterion}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 
   <div class="chart-wrapper">

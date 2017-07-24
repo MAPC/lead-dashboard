@@ -1,0 +1,17 @@
+.component.pie-chart-layout {
+
+  display: flex;
+
+  width: 70%;
+  margin: 100px auto;
+
+  .chart-modifiers {
+    width: 60%;
+  }
+
+  .chart-wrapper {
+    width: 40%;
+    padding-top: 50px;
+  }
+
+}

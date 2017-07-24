@@ -2,9 +2,34 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  init() {
-    this._super();
-    console.log(this.get('data'));
+  /**
+   * Members
+   */
+
+  criteria: [],
+
+
+  /**
+   * Methods
+   */
+
+  actions: {
+
+    /**
+     * @param String metric
+     */
+    changeChartMetric(metric) {
+      console.log(metric);
+    },
+
+
+    /**
+     * @param String criterion
+     */
+    changeChartCriteria(criterion) {
+      console.log(criterion);
+    }
+     
   }
 
 });

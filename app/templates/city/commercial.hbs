@@ -1,3 +1,12 @@
-<h1>Worcester: Commercial</h1>
-{{pie-chart-layout data=model municipality='Worcester'}}
-{{spider-chart-layout data=model municipality='Worcester' sector='commercial'}}
+<section class="route city city-commercial">
+  <div class="city-information">
+    <h1>{{municipality}}: Commercial</h1>
+    <p>
+      Sit perferendis sapiente facere impedit quo sed assumenda! Illo nulla illum doloremque molestias facere possimus architecto laboriosam aperiam aut nisi nihil perferendis dolorum in qui. Omnis aut hic officiis neque.
+      Ipsum quod itaque dignissimos quam optio eaque minima quibusdam! Illum sapiente minus ullam vitae provident et assumenda? Dignissimos quod reprehenderit quaerat distinctio ad, tempora. Vitae perspiciatis ipsum provident voluptates molestiae.
+    </p>
+  </div>
+
+  {{pie-chart-layout data=model criteria=criteria criteriaName='Business' municipality=municipality }}
+  {{spider-chart-layout data=model municipality=municipality sector='commercial'}}
+</section>

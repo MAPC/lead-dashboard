@@ -1,11 +1,9 @@
 .route.city {
 
   #sectors {
-    display: flex;
-    flex-direction: column;
-
     min-height: 100vh;
     height: 100%;
+    padding: 100px;
     padding-top: 9em;
 
     background-color: lightblue;
@@ -68,5 +66,13 @@
     }
 
   } // .menu
+
+  .city-information {
+    width: 50%;
+  }
+
+  .spider-chart-layout {
+    border-top: 1px solid #555;
+  }
 
 }

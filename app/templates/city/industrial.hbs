@@ -1,3 +1,12 @@
-<h1>Worcester: Industrial</h1>
-{{pie-chart-layout data=model municipality='Worcester'}}
-{{spider-chart-layout data=model municipality='Worcester' sector='industrial'}}
+<section class="route city-industrial">
+  <div class="city-information">
+    <h1>{{municipality}}: Industrial</h1>
+    <p>
+      Sit perferendis sapiente facere impedit quo sed assumenda! Illo nulla illum doloremque molestias facere possimus architecto laboriosam aperiam aut nisi nihil perferendis dolorum in qui. Omnis aut hic officiis neque.
+      Ipsum quod itaque dignissimos quam optio eaque minima quibusdam! Illum sapiente minus ullam vitae provident et assumenda? Dignissimos quod reprehenderit quaerat distinctio ad, tempora. Vitae perspiciatis ipsum provident voluptates molestiae.
+    </p>
+  </div>
+
+  {{pie-chart-layout data=model criteria=criteria criteriaName='Industry' municipality=municipality }}
+  {{spider-chart-layout data=model municipality=municipality sector='industrial'}}
+</section>
