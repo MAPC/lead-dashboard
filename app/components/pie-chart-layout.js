@@ -45,6 +45,7 @@ export default Ember.Component.extend({
         chartData = this.get('data').rows;
       }
 
+
       this.set('chartData', chartData);
     }
      
