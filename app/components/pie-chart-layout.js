@@ -16,9 +16,11 @@ export default Ember.Component.extend({
    * Methods
    */
 
-  didRender() {
+  init() {
     this._super(...arguments);
+    this.set('chartData', this.get('data').rows);
   },
+
 
   actions: {
 
@@ -34,7 +36,16 @@ export default Ember.Component.extend({
      * @param String criterion
      */
     changeChartCriteria(criterion) {
-      console.log(criterion);
+      let chartData;
+
+      if (criterion !== 'all') {
+        chartData = this.get('data').rows.filter(row => row[this.get('criteriaColumn')] === criterion)
+      }
+      else {
+        chartData = this.get('data').rows;
+      }
+
+      this.set('chartData', chartData);
     }
      
   }
