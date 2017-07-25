@@ -6,6 +6,7 @@ export default Ember.Component.extend({
    * Services
    */
 
+  carto: Ember.inject.service(),
   municipalityList: Ember.inject.service(),
 
 
@@ -43,9 +44,16 @@ export default Ember.Component.extend({
       this.set('municipalities', municipalities);
     });
 
+    this.updateCharts();
+  },
+
+
+  updateCharts() {
+ 
     // Munge data into separate datasets
     const data = this.get('data');
     const criteria = this.get('criteriaColumn');
+    const displayedMunis = [this.get('municipality')].concat(this.get('comparisonList'));
     const fuelTypes = ['elec', 'ng', 'foil'];
     
     const datasets = {
@@ -58,12 +66,12 @@ export default Ember.Component.extend({
       let column = datasets[datasetTitle];
 
       let dataset = data.rows.map(row => {
-        let datum = {municipal: this.get('municipality'), criterion: row[criteria]};
+        let datum = {municipal: row.municipal, criterion: row[criteria]};
         fuelTypes.forEach(type => datum[type] = row[`${type}_${column}`]);
 
         return datum;
       });
-
+     
       this.set(datasetTitle, dataset);
     }
   },
@@ -82,6 +90,18 @@ export default Ember.Component.extend({
 
         this.$('.selection-box select')[0].selectedIndex = 0;
         this.get('municipalities').removeObject(municipality);
+
+        this.get('carto')
+            .query(`SELECT * FROM leap_dashboard_commercial WHERE municipal = '${municipality}'`)
+            .then(response => {
+        
+              response.rows.forEach(row => {
+                this.get('data').rows.pushObject(row);
+              });
+
+              this.updateCharts();
+        });
+
       }
     },
 
@@ -95,6 +115,12 @@ export default Ember.Component.extend({
       let municipalities = this.get('municipalities');
       municipalities.push(municipality);
       this.set('municipalities', Ember.copy(municipalities.sort(), true));
+
+      let data = this.get('data');
+      data.rows = data.rows.filter(row => row.municipal !== municipality);
+      this.set('data', data);
+
+      this.updateCharts();
     }
   
   }

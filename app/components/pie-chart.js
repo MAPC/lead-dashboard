@@ -35,8 +35,10 @@ export default Ember.Component.extend({
     const color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     const arc = d3.arc()
-                  .outerRadius(minDim/2)
-                  .innerRadius(minDim/8);
+                  .innerRadius(0)
+                  .outerRadius(minDim/2);
+
+                  //.innerRadius(minDim/8);
 
     const pie = d3.pie()
                   .sort(null)
@@ -100,6 +102,7 @@ export default Ember.Component.extend({
       .text(d => d.data.fuel_type);
     */
 
+    /*
     const sdat = [];
     [...Array(chartOptions.numTicks).keys()].forEach(i => sdat[i] = 20 + ((radius/chartOptions.numTicks) * i));
 
@@ -116,7 +119,6 @@ export default Ember.Component.extend({
               .style('opacity', 0.5)
               .style('fill', 'none');
 
-    /*
     circleAxes.append('svg:text')
               .attr('text-anchor', 'center')
               .attr('dy', d => d - 5)

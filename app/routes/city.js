@@ -48,6 +48,7 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('municipality', this.get('municipality'));
     this._super(controller, model);
-  }
+  },
+
 
 });

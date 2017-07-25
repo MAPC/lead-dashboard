@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
+  queryParams: ['compareTo'],
+
   /**
    * Controllers
    */
@@ -21,6 +23,6 @@ export default Ember.Controller.extend({
 
   criteria: Ember.computed('model', function() {
     return this.get('model').rows.map(row => row[this.get('criteriaColumn')]);
-  })
+  }),
 
 });
