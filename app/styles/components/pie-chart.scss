@@ -1,12 +1,12 @@
 .component.pie-chart {
 
   .chart {
-    width: 300px;
-    height: 300px;
+    //width: 300px;
+    //height: 300px;
 
-    background: #999;
+    //background: #999;
 
-    border-radius: 50%;
+    //border-radius: 50%;
   }
 
   .legend {
@@ -20,4 +20,22 @@
     background: #555;
   }
 
+  .arc path {
+    stroke: #fff;
+    stroke-width: 1px;
+  }
+
+  .arc grid {
+    stroke: #fff;
+    stroke-width: 1;
+    stroke-dasharray: 5,5;
+  }
+
+  .arc text {
+    fill: #000;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .arc line { stroke: #fff; }
 }

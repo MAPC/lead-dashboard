@@ -12,9 +12,9 @@ export default Ember.Component.extend({
   chartInnerPadding: 10,
 
   chartOptions: {
-    w: 500,
-    h: 500,
-    innerRadius: 10,
+    w: 400,
+    h: 400,
+    numTicks: 3,
   },
 
 
@@ -26,7 +26,8 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     const chartOptions = this.get('chartOptions');
-    const radius = (Math.min(chartOptions.w, chartOptions.h) / 2) - this.get('chartInnerPadding');
+    const minDim = Math.min(chartOptions.w, chartOptions.h);
+    const radius = (minDim / 2) - this.get('chartInnerPadding');
     const fuel_types = ['elec', 'ng', 'foil']
 
 
@@ -34,14 +35,12 @@ export default Ember.Component.extend({
     const color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     const arc = d3.arc()
-                  .outerRadius(d => 50 + (radius - 50) * d.percent)
-                  .innerRadius(chartOptions.innerRadius);
+                  .outerRadius(minDim/2)
+                  .innerRadius(minDim/8);
 
     const pie = d3.pie()
                   .sort(null)
-                  .value(d => d.percent);
-
-    const grid = d3.areaRadial().radius(150);
+                  .value(d => d.mmbtu);
 
     const title = slug(this.get('title')).normalize();
 
@@ -99,6 +98,30 @@ export default Ember.Component.extend({
       .attr('dy', '.35em')
       .style('text-anchor', 'middle')
       .text(d => d.data.fuel_type);
+    */
+
+    const sdat = [];
+    [...Array(chartOptions.numTicks).keys()].forEach(i => sdat[i] = 20 + ((radius/chartOptions.numTicks) * i));
+
+    const circleAxes = svg.selectAll('.circle-ticks')
+                          .data(sdat)
+                          .enter()
+                          .append('svg:g')
+                          .attr('class', 'circle-ticks');
+
+    circleAxes.append('svg:circle')
+              .attr('r', String)
+              .attr('class', 'circle')
+              .style('stroke', '#CCC')
+              .style('opacity', 0.5)
+              .style('fill', 'none');
+
+    /*
+    circleAxes.append('svg:text')
+              .attr('text-anchor', 'center')
+              .attr('dy', d => d - 5)
+              .style('fill', '#FFF')
+              .text((d, i) => i * (100/chartOptions.numTicks));
     */
   }
 
