@@ -4,9 +4,9 @@
     <h4>
       {{municipality}}'s Energy
       <select onchange={{action 'changeChartMetric' value='target.value'}}> 
-        <option value="consumption" selected>Consumption</option>
+        <option value="con_mmbtu" selected>Consumption</option>
         <option value="emissions">Emissions</option>
-        <option value="cost">Cost</option>
+        <option value="exp_dol_mmbtu">Cost</option>
       </select>
     </h4>
     <h5>by Fuel Source</h5>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="chart-wrapper">
-    {{pie-chart data=chartData title="Fuel Chart"}}
+    {{pie-chart data=chartData metric=metric title="Fuel Chart"}}
   </div>
 
 </section>

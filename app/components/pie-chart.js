@@ -10,6 +10,7 @@ export default Ember.Component.extend({
 
   tagName: '',
   normalizedTitle: null,
+  metric: null,
 
   chartOptions: {
     width: 400,
@@ -46,6 +47,7 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     const { width, height, transitionDuration } = this.get('chartOptions');
+    const metric = this.get('metric');
     const minDim = Math.min(width, height);
     const fuel_types = ['elec', 'ng', 'foil']
 
@@ -69,12 +71,12 @@ export default Ember.Component.extend({
     let totals = {};
     if (data.length > 1) {
       totals = data.reduce((aggregate, current) => {
-        fuel_types.forEach(type => aggregate[`${type}_tot`] += parseFloat(current[`${type}_con_mmbtu`]));
+        fuel_types.forEach(type => aggregate[`${type}_tot`] += parseFloat(current[`${type}_${metric}`]));
         return aggregate;
       });
     }
     else {
-      fuel_types.forEach(type => totals[`${type}_tot`] = parseFloat(data[0][`${type}_con_mmbtu`]));
+      fuel_types.forEach(type => totals[`${type}_tot`] = parseFloat(data[0][`${type}_${metric}`]));
     }
 
     // Get total for all fuel consumption

@@ -9,6 +9,8 @@ export default Ember.Component.extend({
   criteria: [],
   criteriaColumn: null,
 
+  metric: 'con_mmbtu',
+
   chartData: [],
 
   
@@ -28,7 +30,7 @@ export default Ember.Component.extend({
      * @param String metric
      */
     changeChartMetric(metric) {
-      console.log(metric);
+      this.set('metric', metric)
     },
 
 
