@@ -37,6 +37,12 @@ export default Ember.Component.extend({
     // Fetch municipalities
     this.get('municipalityList').listFor(this.get('sector')).then(response => {
 
+      /**
+       * This list is used by the spider chart layout to populate
+       * a list of possible municipalities to compare our current
+       * municipality to. Therefore, we don't want to have our 
+       * current municipality in that list. 
+       */
       const municipalities = response.rows.map(row => row.municipal)
                                           .filter(municipality => municipality !== this.get('municipality'))
                                           .sort();
@@ -53,9 +59,13 @@ export default Ember.Component.extend({
     // Munge data into separate datasets
     const data = this.get('data');
     const criteria = this.get('criteriaColumn');
-    const displayedMunis = [this.get('municipality')].concat(this.get('comparisonList'));
     const fuelTypes = ['elec', 'ng', 'foil'];
     
+    /**
+     * This map has the dataset type associated with the
+     * column to lookup for composing that particular
+     * dataset.
+     */
     const datasets = {
       'consumptionData': 'con_mmbtu',
       'emissionsData': 'emissions',
@@ -88,13 +98,17 @@ export default Ember.Component.extend({
       if (list.length < this.get('comparisonLimit')) {
         list.pushObject(municipality);
 
+        // Reselect our default value and remove municipality from dataset
         this.$('.selection-box select')[0].selectedIndex = 0;
         this.get('municipalities').removeObject(municipality);
 
+        // Fetch the data for the selected municipality then add
         this.get('carto')
             .query(`SELECT * FROM leap_dashboard_commercial WHERE municipal = '${municipality}'`)
             .then(response => {
         
+              // In order to have Ember components rerender properly, we must
+              // add the rows one at a time
               response.rows.forEach(row => {
                 this.get('data').rows.pushObject(row);
               });
@@ -112,10 +126,12 @@ export default Ember.Component.extend({
     removeFromComparisonList(municipality) {
       this.get('comparisonList').removeObject(municipality);
       
+      // Put the municipality back in the dropdown
       let municipalities = this.get('municipalities');
       municipalities.push(municipality);
       this.set('municipalities', Ember.copy(municipalities.sort(), true));
 
+      // Remove the municipality from our dataset
       let data = this.get('data');
       data.rows = data.rows.filter(row => row.municipal !== municipality);
       this.set('data', data);
