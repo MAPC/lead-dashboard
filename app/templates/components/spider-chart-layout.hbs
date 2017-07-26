@@ -13,9 +13,9 @@
     </div>
 
     <ul class="comparison-list">
-      {{#each comparisonList as |compareTo|}}
+      {{#each comparisonList as |municipality|}}
         <li>
-          {{compareTo}} <span {{action 'removeFromComparisonList' compareTo}}>x</span>
+          {{municipality}} <span {{action 'removeFromComparisonList' municipality}}>x</span>
         </li>
       {{/each}}
     </ul>
@@ -24,9 +24,7 @@
 
 
   <div class="spider-charts">
-    {{spider-chart title='Energy Consumption' data=consumptionData}}
-    {{spider-chart title='C02 Emissions' data=emissionsData}}
-    {{spider-chart title='Energy Cost' data=costData}}
+    {{spider-chart municipality=municipality data=chartData}}
   </div>
 
 </section>

@@ -14,7 +14,9 @@ export default Ember.Component.extend({
    * Members
    */
 
-  criteriaColumn: null,
+  criteria: null,
+  colorPool: ['#F7A4AC', '#AA6067', '#6FA7C4', '#6994AA', '#F8F6BE'],
+  assignedColors: {},
 
   municipality: null,
   municipalities: [],
@@ -22,9 +24,7 @@ export default Ember.Component.extend({
   comparisonLimit: 4,
   comparisonList: [],
 
-  consumptionData: {},
-  emissionsData: {},
-  costData: {},
+  comparisonData: [],
 
 
   /**
@@ -56,34 +56,42 @@ export default Ember.Component.extend({
 
   updateCharts() {
  
-    // Munge data into separate datasets
     const data = this.get('data');
-    const criteria = this.get('criteriaColumn');
     const fuelTypes = ['elec', 'ng', 'foil'];
-    
-    /**
-     * This map has the dataset type associated with the
-     * column to lookup for composing that particular
-     * dataset.
-     */
-    const datasets = {
-      'consumptionData': 'con_mmbtu',
-      'emissionsData': 'emissions',
-      'costData': 'exp_dol_mmbtu',
-    };
 
-    for (let datasetTitle in datasets) {
-      let column = datasets[datasetTitle];
+    let munged = data.rows.map(row => {
+      row.criterion = row[this.get('criteria')];
+      row.color = this.assignColor(row.municipal);
 
-      let dataset = data.rows.map(row => {
-        let datum = {municipal: row.municipal, criterion: row[criteria]};
-        fuelTypes.forEach(type => datum[type] = row[`${type}_${column}`]);
+      row.totalConsumption = 0;
+      fuelTypes.forEach(type => row.totalConsumption += row[`${type}_con_mmbtu`]);
 
-        return datum;
-      });
-     
-      this.set(datasetTitle, dataset);
+      return row;
+    });
+
+    this.set('chartData', munged);
+  },
+
+
+  assignColor(municipality) {
+    const colors = this.get('assignedColors');
+    const colorPool = this.get('colorPool');
+
+    const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
+
+    if (beingViewed.indexOf(municipality) === -1 && colors[municipality]) {
+      if (colorPool.indexOf(colors[municipality]) === -1) {
+        delete colors[municipality];
+      }
     }
+    
+    if (!colors[municipality]) {
+      let color = colorPool[Math.floor(Math.random() * colorPool.length)];
+      colorPool.removeObject(color);
+      colors[municipality] = color;
+    }
+
+    return colors[municipality];
   },
 
 
@@ -126,13 +134,18 @@ export default Ember.Component.extend({
     removeFromComparisonList(municipality) {
       this.get('comparisonList').removeObject(municipality);
       
-      // Put the municipality back in the dropdown
       let municipalities = this.get('municipalities');
+      let assignedColors = this.get('assignedColors');
+      let data = this.get('data');
+
+      // Put the municipality back in the dropdown
       municipalities.push(municipality);
       this.set('municipalities', Ember.copy(municipalities.sort(), true));
 
+      // Put the assinged color back in the color pool
+      this.get('colorPool').pushObject(assignedColors[municipality]);
+
       // Remove the municipality from our dataset
-      let data = this.get('data');
       data.rows = data.rows.filter(row => row.municipal !== municipality);
       this.set('data', data);
 

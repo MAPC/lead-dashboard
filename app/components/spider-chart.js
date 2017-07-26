@@ -9,16 +9,15 @@ export default Ember.Component.extend({
    */
 
   tagName: '',
+  municipality: null,
 
-  selectedFuel: 'elec',
-  chartInnerPadding: .1,
+  chartPaddingPercentage: .1,
 
   chartOptions: {
     w: 400,
     height: 400,
     levels: 5,
     roundStrokes: true,
-    color: d3.scaleOrdinal().range(["#EDC951","#CC333F","#00A0B0"]),
   },
 
 
@@ -33,11 +32,13 @@ export default Ember.Component.extend({
                          .key(d => d.municipal)
                          .entries(this.get('data'));
 
-    const fuelType = this.get('selectedFuel');
-
     const mungedNested = nestedData.map(obj => {
       return obj.values.map(obj => {
-        return {'axis': obj.criterion, 'value': obj[fuelType]};
+        return {
+          axis: obj.criterion, 
+          value: obj.totalConsumption,
+          color: obj.color,
+        };
       });
     });
 
@@ -45,9 +46,9 @@ export default Ember.Component.extend({
                              .reduce((town, towns) => towns.concat(town));
 
     const maxValue = Math.max.apply(Math, values);
-    chartOptions.maxValue = maxValue + (maxValue * this.get('chartInnerPadding'));
+    chartOptions.maxValue = maxValue + (maxValue * this.get('chartPaddingPercentage'));
 
-    const chartTitle = slug(this.get('title')).normalize();
+    const chartTitle = slug(this.get('municipality')).normalize();
   
     this.radarChart(`#${chartTitle}`, mungedNested, chartOptions);
   },
@@ -74,7 +75,6 @@ export default Ember.Component.extend({
       opacityCircles: 0.1,     //The opacity of the circles of each blob
       strokeWidth: 2,         //The width of the stroke around each blob
       roundStrokes: false,    //If true the area and stroke will follow a round path (cardinal-closed)
-      color: d3.schemeCategory10    //Color functio
     };
       
       //Put all of the options into a variable called cfg
@@ -211,7 +211,7 @@ export default Ember.Component.extend({
           .append("path")
           .attr("class", "radarArea")
           .attr("d", function(d) { return radarLine(d); })
-          .style("fill", function(d,i) { return cfg.color(i); })
+          .style("fill", function(d,i) { return d[0].color; })
           .style("fill-opacity", cfg.opacityArea)
           .on('mouseover', function (){
               //Dim all blobs
@@ -235,7 +235,7 @@ export default Ember.Component.extend({
           .attr("class", "radarStroke")
           .attr("d", function(d) { return radarLine(d); })
           .style("stroke-width", cfg.strokeWidth + "px")
-          .style("stroke", function(d,i) { return cfg.color(i); })
+          .style("stroke", function(d,i) { return d[0].color; })
           .style("fill", "none")
           .style("filter" , "url(#glow)");        
       
@@ -247,7 +247,7 @@ export default Ember.Component.extend({
           .attr("r", cfg.dotRadius)
           .attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
           .attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
-          .style("fill", function(d,i,j) { return cfg.color(j); })
+          .style("fill", function(d,i,j) { return d.color; })
           .style("fill-opacity", 0.8);
 
       /////////////////////////////////////////////////////////
