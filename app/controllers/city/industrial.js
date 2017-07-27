@@ -15,6 +15,7 @@ export default Ember.Controller.extend({
 
   sector: 'industrial',
   criteriaColumn: 'naicstitle',
+  criteria: [],
 
   municipalities: [],
 
@@ -24,10 +25,6 @@ export default Ember.Controller.extend({
 
   sectorData: Ember.computed('model', function() {
     return this.get('model').sectorData;
-  }),
-
-  criteria: Ember.computed('sectorData', function() {
-    return this.get('sectorData').rows.map(row => row[this.get('criteriaColumn')]);
   }),
 
 

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import fuelTypes from '../utils/fuel-types';
 
 export default Ember.Component.extend({
 
@@ -53,7 +54,6 @@ export default Ember.Component.extend({
 
   updateCharts() {
     const data = this.get('data');
-    const fuelTypes = ['elec', 'ng', 'foil'];
 
     const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
 

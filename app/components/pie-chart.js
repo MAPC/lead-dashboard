@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import d3 from 'npm:d3';
 import slug from '../utils/slug';
+import fuelTypes from '../utils/fuel-types';
 
 export default Ember.Component.extend({
 
@@ -49,7 +50,6 @@ export default Ember.Component.extend({
     const { width, height, transitionDuration } = this.get('chartOptions');
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
-    const fuel_types = ['elec', 'ng', 'foil']
 
     const color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
@@ -65,24 +65,24 @@ export default Ember.Component.extend({
 
     const data = Ember.copy(this.get('data'), true);
 
-    fuel_types.forEach(type => data[0][`${type}_tot`] = 0);
+    fuelTypes.forEach(type => data[0][`${type}_tot`] = 0);
 
     // Aggregate totals for each fuel type
     let totals = {};
     if (data.length > 1) {
       totals = data.reduce((aggregate, current) => {
-        fuel_types.forEach(type => aggregate[`${type}_tot`] += parseFloat(current[`${type}_${metric}`]));
+        fuelTypes.forEach(type => aggregate[`${type}_tot`] += parseFloat(current[`${type}_${metric}`]));
         return aggregate;
       });
     }
     else {
-      fuel_types.forEach(type => totals[`${type}_tot`] = parseFloat(data[0][`${type}_${metric}`]));
+      fuelTypes.forEach(type => totals[`${type}_tot`] = parseFloat(data[0][`${type}_${metric}`]));
     }
 
     // Get total for all fuel consumption
-    data.cent = fuel_types.map(type => totals[`${type}_tot`]).reduce((x, y) => x + y);
+    data.cent = fuelTypes.map(type => totals[`${type}_tot`]).reduce((x, y) => x + y);
 
-    const results = fuel_types.map(type => {
+    const results = fuelTypes.map(type => {
       return {
         fuel_type: type,
         percent: totals[`${type}_tot`] / data.cent,

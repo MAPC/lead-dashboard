@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import fuelTypes from  '../utils/fuel-types';
 
 export default Ember.Controller.extend({
 
@@ -27,6 +28,8 @@ export default Ember.Controller.extend({
   }),
 
   criteria: Ember.computed('sectorData', function() {
+    const sectorData = this.get('sectorData');
+
     const hu_type_map = {
       'u1': 'Single-family Homes',
       'u2_4': 'Apartments in 2-4 Unit Buildings',
@@ -34,7 +37,9 @@ export default Ember.Controller.extend({
       'u_oth': 'Mobile Homes',
     };
 
-    const filteredRows = this.get('sectorData').rows.filter(row => row.hu_type !== 'total');
+    const filteredRows = sectorData.rows.filter(row => {
+      return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0);
+    });
     return filteredRows.map(row => hu_type_map[row.hu_type]);
   }),
 

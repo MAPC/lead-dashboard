@@ -27,13 +27,14 @@ export default Ember.Service.extend({
    */
   listFor(sector='commercial') {
     const cachedLists = this.get('cachedLists');
+    const carto = this.get('carto');
 
     let list = null;
     if (cachedLists[sector] !== undefined) {
       list = cachedLists[sector];
     }
     else {
-      list = this.get('carto').query(`SELECT DISTINCT municipal FROM leap_dashboard_${sector}`);
+      list = carto.query(`SELECT DISTINCT municipal FROM leap_dashboard_${sector}`);
       cachedLists[sector] = list;
     }
 
