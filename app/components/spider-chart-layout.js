@@ -7,7 +7,7 @@ export default Ember.Component.extend({
    */
 
   carto: Ember.inject.service(),
-  municipalityList: Ember.inject.service(),
+  colorManager: Ember.inject.service(),
 
 
   /**
@@ -15,16 +15,16 @@ export default Ember.Component.extend({
    */
 
   criteria: null,
-  colorPool: ['#F7A4AC', '#AA6067', '#6FA7C4', '#6994AA', '#F8F6BE'],
-  assignedColors: {},
 
   municipality: null,
   municipalities: [],
+  municipalityList: [],
 
   comparisonLimit: 4,
   comparisonList: [],
 
-  comparisonData: [],
+  chartData: [],
+
 
 
   /**
@@ -34,34 +34,32 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    // Fetch municipalities
-    this.get('municipalityList').listFor(this.get('sector')).then(response => {
-
-      /**
-       * This list is used by the spider chart layout to populate
-       * a list of possible municipalities to compare our current
-       * municipality to. Therefore, we don't want to have our 
-       * current municipality in that list. 
-       */
-      const municipalities = response.rows.map(row => row.municipal)
-                                          .filter(municipality => municipality !== this.get('municipality'))
-                                          .sort();
-
-      this.set('municipalities', municipalities);
-    });
-
+    this.set('comparisonList', []);
     this.updateCharts();
+
+    /**
+     * This list is used by the spider chart layout to populate
+     * a list of possible municipalities to compare our current
+     * municipality to. Therefore, we don't want to have our 
+     * current municipality in that list. 
+     */
+    const municipalities = this.get('municipalities')
+                               .filter(municipality => municipality !== this.get('municipality'))
+                               .sort();
+
+    this.set('municipalityList', Ember.copy(municipalities, true));
   },
 
 
   updateCharts() {
- 
     const data = this.get('data');
     const fuelTypes = ['elec', 'ng', 'foil'];
 
+    const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
+
     let munged = data.rows.map(row => {
       row.criterion = row[this.get('criteria')];
-      row.color = this.assignColor(row.municipal);
+      row.color = this.get('colorManager').colorFor(row.municipal, beingViewed);
 
       row.totalConsumption = 0;
       fuelTypes.forEach(type => row.totalConsumption += row[`${type}_con_mmbtu`]);
@@ -70,28 +68,6 @@ export default Ember.Component.extend({
     });
 
     this.set('chartData', munged);
-  },
-
-
-  assignColor(municipality) {
-    const colors = this.get('assignedColors');
-    const colorPool = this.get('colorPool');
-
-    const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
-
-    if (beingViewed.indexOf(municipality) === -1 && colors[municipality]) {
-      if (colorPool.indexOf(colors[municipality]) === -1) {
-        delete colors[municipality];
-      }
-    }
-    
-    if (!colors[municipality]) {
-      let color = colorPool[Math.floor(Math.random() * colorPool.length)];
-      colorPool.removeObject(color);
-      colors[municipality] = color;
-    }
-
-    return colors[municipality];
   },
 
 
@@ -135,7 +111,6 @@ export default Ember.Component.extend({
       this.get('comparisonList').removeObject(municipality);
       
       let municipalities = this.get('municipalities');
-      let assignedColors = this.get('assignedColors');
       let data = this.get('data');
 
       // Put the municipality back in the dropdown
@@ -143,7 +118,7 @@ export default Ember.Component.extend({
       this.set('municipalities', Ember.copy(municipalities.sort(), true));
 
       // Put the assinged color back in the color pool
-      this.get('colorPool').pushObject(assignedColors[municipality]);
+      this.get('colorManager').resetColorFor(municipality);
 
       // Remove the municipality from our dataset
       data.rows = data.rows.filter(row => row.municipal !== municipality);

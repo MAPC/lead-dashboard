@@ -3,7 +3,12 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 
   model() {
-    return this.modelFor('city')['commercial'];
+    const cityModel = this.modelFor('city');
+
+    return Ember.RSVP.hash({
+      sectorData: cityModel.sectorData['commercial'],
+      municipality: cityModel.municipality,
+    });
   }
 
 });

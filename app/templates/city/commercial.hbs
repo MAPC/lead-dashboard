@@ -7,6 +7,21 @@
     </p>
   </div>
 
-  {{pie-chart-layout data=model criteria=criteria criteriaColumn=criteriaColumn criteriaName='Business' municipality=municipality }}
-  {{spider-chart-layout action='fetchDataFor' data=model criteria=criteriaColumn municipality=municipality sector='commercial'}}
+  {{pie-chart-layout 
+    data=sectorData
+    criteria=criteria 
+    criteriaColumn=criteriaColumn 
+    criteriaName='Business' 
+    municipality=municipality 
+  }}
+
+  {{spider-chart-layout 
+    action='fetchDataFor' 
+    data=sectorData
+    criteria=criteriaColumn 
+    municipalities=municipalities 
+    municipality=municipality 
+    sector=sector
+  }}
+
 </section>

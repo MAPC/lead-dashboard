@@ -7,6 +7,21 @@
     </p>
   </div>
 
-  {{pie-chart-layout data=model criteria=criteria criteriaName='Residence' municipality=municipality}}
-  {{spider-chart-layout data=model municipality=municipality sector='residential'}}
+  {{pie-chart-layout 
+    data=sectorData
+    criteria=criteria 
+    criteriaColumn=criteriaColumn
+    criteriaName='Residence' 
+    municipality=municipality
+  }}
+
+  {{spider-chart-layout 
+    action='fetchDataFor'
+    data=sectorData
+    criteria=criteriaColumn
+    municipalities=municipalities
+    municipality=municipality 
+    sector=sector
+  }}
+
 </section>

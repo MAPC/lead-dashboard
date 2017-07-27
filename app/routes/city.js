@@ -31,13 +31,12 @@ export default Ember.Route.extend({
     const data = {};
 
     const municipality = slug(params.municipality).denormalize();
-    this.set('municipality', municipality);
 
     sectors.forEach(sector => {
       data[sector] = this.get('carto').query(`SELECT * FROM leap_dashboard_${sector} WHERE municipal = '${municipality}'`);
     });
 
-    return data;
+    return {sectorData: data, municipality: municipality};
   },
 
 
@@ -46,8 +45,8 @@ export default Ember.Route.extend({
    * @param EmberModel model
    */
   setupController(controller, model) {
-    controller.set('municipality', this.get('municipality'));
     this._super(controller, model);
+    controller.set('municipality', this.get('municipality'));
   },
 
 

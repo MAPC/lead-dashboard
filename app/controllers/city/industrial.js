@@ -3,22 +3,45 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 
   /**
-   * Controllers
+   * Services
    */
 
-  city: Ember.inject.controller(),
+  municipalityList: Ember.inject.service(),
 
 
   /**
    * Members
    */
 
-  municipality: Ember.computed('city', function() {
-    return this.get('city').get('municipality');
+  sector: 'industrial',
+  criteriaColumn: 'naicstitle',
+
+  municipalities: [],
+
+  municipality: Ember.computed('model', function() {
+    return (this.get('model')) ? this.get('model').municipality : '';
   }),
 
-  criteria: Ember.computed('model', function() {
-    return this.get('model').rows.map(row => row.naicstitle);
-  })
+  sectorData: Ember.computed('model', function() {
+    return this.get('model').sectorData;
+  }),
+
+  criteria: Ember.computed('sectorData', function() {
+    return this.get('sectorData').rows.map(row => row[this.get('criteriaColumn')]);
+  }),
+
+
+  /**
+   * Methods
+   */
+
+  init() {
+    this._super(...arguments);
+  
+    this.get('municipalityList').listFor(this.get('sector')).then(response => {
+      this.set('municipalities', response.rows.map(row => row.municipal));
+    });
+  }
+
 
 });
