@@ -84,7 +84,7 @@ export default Ember.Component.extend({
 
         // Reselect our default value and remove municipality from dataset
         this.$('.selection-box select')[0].selectedIndex = 0;
-        this.get('municipalities').removeObject(municipality);
+        this.get('municipalityList').removeObject(municipality);
 
         // Fetch the data for the selected municipality then add
         this.get('carto')
@@ -110,15 +110,16 @@ export default Ember.Component.extend({
     removeFromComparisonList(municipality) {
       this.get('comparisonList').removeObject(municipality);
       
-      let municipalities = this.get('municipalities');
+      const colorManager = this.get('colorManager');
+      let municipalities = this.get('municipalitiesList');
       let data = this.get('data');
 
       // Put the municipality back in the dropdown
       municipalities.push(municipality);
-      this.set('municipalities', Ember.copy(municipalities.sort(), true));
+      this.set('municipalitiesList', Ember.copy(municipalities.sort(), true));
 
       // Put the assinged color back in the color pool
-      this.get('colorManager').resetColorFor(municipality);
+      colorManager.resetColorFor(municipality);
 
       // Remove the municipality from our dataset
       data.rows = data.rows.filter(row => row.municipal !== municipality);
