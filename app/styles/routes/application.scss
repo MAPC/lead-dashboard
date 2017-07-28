@@ -1,20 +1,52 @@
 .route.application {
 
-  #introduction {
-    background-color: teal;
-    color: white;
-  }
+  min-height: 100vh;
+  height: 100%;
 
-  #about {
-    background-color: orange;
-  }
-
-  h1 {
-    animation: bounceIn 1s;
-  }
-
-  .ember-power-select-trigger {
+  header {
     width: 100%;
+    padding: 20px 10%;
+
+    h1 {
+      $box_size: 20px;
+
+      padding-left: $box_size * 2;
+
+      &:before {
+        @extend ._vertical-center;
+        content: '';
+        top: 50%;
+
+
+        width: $box_size;
+        height: $box_size;
+
+        background: $color_brand-primary;
+      }
+    }
+  }
+
+  footer {
+    @extend ._clear;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    padding: 30px;
+
+    color: $color_font-light;
+
+    background: $color_brand-primary;
+
+    .created-at {
+      float: left;
+    }
+
+    .copyright {
+      float: right; 
+    }
   }
 
 }

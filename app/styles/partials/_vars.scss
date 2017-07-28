@@ -1,13 +1,15 @@
-$color_font-light: #efefef;
+$color_font-light: #f2f2f2;
 $color_font-medium: #888;
-$color_font-dark: #333333;
+$color_font-dark: #444;
 
-$color_bg-light: #fdfdfe;
+$color_bg-light: #fefeff;
 $color_bg-medium: #f1f2f2;
 
 $color_brand-primary: #0a60fb;
 $color_brand-secondary: #13e3bc;
 $color_brand-tertiary: #9176e3;
+
+$color_brand-primary--dark: darken($color_brand-primary, 25);
 
 $color_accent: #ffec40;
 

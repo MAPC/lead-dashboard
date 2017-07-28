@@ -1,28 +1,31 @@
 <div class="route application">
 
-  <section class="grid" id="introduction">
+  <header>
+    <h1>Local Energy Dashboard</h1>
 
-    <div class="item">
-      <h1>How much energy does your town consume?</h1>
+    <nav>
+      <ul>
+        <li>Learn More</li>
+        <li>Methodology</li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="selection-wrapper">
+    <select onchange={{action 'toMunicipality' value="target.value"}}>
+      <option selected>Discover how much energy your town is using</option>
+      {{#each municipalities as |municipality|}}
+        <option value={{normalize-slug municipality}}>{{municipality}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <footer>
+    <div class="created-at">
     </div>
-
-    <div class="item">
-      <h2>Select your City:</h2>
-      <select onchange={{action 'toMunicipality' value="target.value"}}>
-        {{#each municipalities as |municipality|}}
-          <option value={{normalize-slug municipality}}>{{municipality}}</option>
-        {{/each}}
-      </select>
+    <div class="copyright">
+      &copy; {{year}}
     </div>
-
-  </section><!--/ #introduction -->
-
-
-  <section class="grid" id="about">
-    <div class="item">Map</div>
-    <div class="item">Explore Worcester's Energy Consumption</div>
-  </section><!--/ #about -->
-
-  {{outlet}}
+  </footer>
 
 </div>

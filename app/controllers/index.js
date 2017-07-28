@@ -15,6 +15,8 @@ export default Ember.Controller.extend({
 
   municipalities: [],
 
+  year: (new Date()).getFullYear(),
+
 
   /**
    * Methods

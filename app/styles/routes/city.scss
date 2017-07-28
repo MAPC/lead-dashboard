@@ -1,71 +1,100 @@
 .route.city {
 
-  #sectors {
+  $nav_height: 60px;
+
+  nav.city-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    width: 100%;
+    height: $nav_height;
+
+    background-color: $color_bg-light;
+
+    //border-bottom: 2px solid darken($color_brand-primary, 15);
+
+    animation: slideIn 0.2s;
+
+    .home-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: initial;
+      display: flex;
+
+      width: $nav_height;
+      height: $nav_height;
+
+      text-align: center;
+      background: $color_brand-primary;
+
+      border-left: 0px solid $color_brand-primary--dark;
+
+      transition: border-width .2s;
+
+      &:hover {
+        border-width: 10px;
+        transition: border-width .2s;
+      }
+  
+      img {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+      }
+    }
+
+    ul {
+      display: flex;
+
+      width: 60%;
+      height: $nav_height;
+      margin-left: 20%;
+
+      overflow: hidden;
+    }
+
+    li {
+      display: inline-block;
+
+      width: 20%; 
+      height: $nav_height + 4px;
+
+      color: $color_brand-primary;
+      font-size: $nav_height / 3;
+      text-align: center;
+
+      border-bottom: 3px solid $color_brand-primary;
+
+      transition: height .2s, color .2s;
+
+      &.link {
+        cursor: pointer; 
+
+        &:hover {
+          color: $color_font-dark;
+          height: $nav_height;           
+          transition: height .2s, color .2s;
+        }
+      }
+
+      &.active {
+        height: $nav_height;
+
+        color: $color_font-dark; 
+        font-weight: 700;
+      }
+    }
+  }
+
+  .content-window {
     min-height: 100vh;
     height: 100%;
     padding: 100px;
     padding-top: 9em;
-
-    background-color: lightblue;
   }
-
-  .menu {
-    position: fixed;
-    display: flex;
-    z-index: 1;
-
-    width: 100%;
-
-    background-color: white;
-
-    animation: slideIn 0.2s;
-
-    .item {
-      display: flex;
-      flex-grow: 1;
-      justify-content: center;
-
-      margin: 1em;
-
-      cursor: pointer;
-    }
-
-    .item.back {
-      flex-grow: 0.5;
-      align-items: center;
-
-      margin:0;
-      padding:0;
-
-      color: white;
-
-      background-color: pink;
-    }
-
-    button.item {
-      padding: 1em;
-      margin: 1em;
-
-      color: white;
-
-      background-color: cyan;
-
-      border-radius: 0px;
-      border-width: 0px;
-
-      transition: transform 0.1s;
-
-      &.active { background-color: blue; }
-
-      &:active {
-        transform: scale(0.95);
-        border: none;
-      }
-
-      &:focus { outline: none; }
-    }
-
-  } // .menu
 
   .city-information {
     width: 50%;
