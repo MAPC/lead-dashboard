@@ -9,6 +9,8 @@ $color_brand-tertiary: #9176e3;
 
 $color_brand-primary--dark: darken($color_brand-primary, 25);
 
+$color_brand-primary--hover: mix(black, $color_brand-primary, 10);
+
 $color_font-light: #f1f2f2;
 $color_font-medium: #ccc;
 $color_font-dark: #555;

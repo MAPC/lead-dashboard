@@ -42,11 +42,6 @@ export default Ember.Controller.extend({
     toMunicipality(municipality) {
       this.transitionToRoute('city.index', municipality);
     },
-
-    clickSelector() {
-      const elem = Ember.$('#municipal-selector');
-      elem.focus().mousedown();
-    }
   
   }
 
