@@ -12,12 +12,14 @@
   </header>
 
   <div class="selection-wrapper">
-    <select onchange={{action 'toMunicipality' value="target.value"}}>
-      <option selected>Discover how much energy your town is using</option>
-      {{#each municipalities as |municipality|}}
-        <option value={{normalize-slug municipality}}>{{municipality}}</option>
-      {{/each}}
-    </select>
+    <div class="selection-content">
+      <select onchange={{action 'toMunicipality' value="target.value"}}>
+        <option selected>Discover how much energy your town is using</option>
+        {{#each municipalities as |municipality|}}
+          <option value={{normalize-slug municipality}}>{{municipality}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 
   <footer>

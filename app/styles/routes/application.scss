@@ -1,11 +1,15 @@
 .route.application {
-
   min-height: 100vh;
   height: 100%;
 
+  text-align: center;
+
   header {
-    width: 100%;
-    padding: 20px 10%;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 0;
+
+    text-align: left;
 
     h1 {
       $box_size: 20px;
@@ -14,9 +18,8 @@
 
       &:before {
         @extend ._vertical-center;
-        content: '';
         top: 50%;
-
+        content: '';
 
         width: $box_size;
         height: $box_size;
@@ -24,6 +27,26 @@
         background: $color_brand-primary;
       }
     }
+  }
+
+  nav {
+    @extend ._vertical-center;
+    left: initial;
+    right: 0;
+    top: 50%;
+
+    li {
+      display: inline-block;
+
+      margin: 0 20px;
+      padding-bottom: 8px;
+
+      border-bottom: 2px solid $color_brand-primary;
+    }
+  }
+
+  .selection-wrapper {
+    margin: 0 auto;
   }
 
   footer {

@@ -1,11 +1,11 @@
-$color_font-light: #f2f2f2;
+$color_font-light: #f1f2f2;
 $color_font-medium: #888;
 $color_font-dark: #444;
 
-$color_bg-light: #fefeff;
+$color_bg-light: #fdfeff;
 $color_bg-medium: #f1f2f2;
 
-$color_brand-primary: #0a60fb;
+$color_brand-primary: #1D74F2;
 $color_brand-secondary: #13e3bc;
 $color_brand-tertiary: #9176e3;
 
@@ -13,5 +13,5 @@ $color_brand-primary--dark: darken($color_brand-primary, 25);
 
 $color_accent: #ffec40;
 
-$font_family-primary: Times, serif;
-$font_family-secondary: Arial, sans-serif;
+$font_family-secondary: 'roboto', serif;
+$font_family-primary: 'clone-rounded-latin', sans-serif;
