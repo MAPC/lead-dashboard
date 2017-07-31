@@ -13,12 +13,26 @@
 
   <div class="selection-wrapper">
     <div class="selection-content">
-      <select onchange={{action 'toMunicipality' value="target.value"}}>
+
+      <!--
+      <select id="municipal-selector" onchange={{action 'toMunicipality' value="target.value"}}>
         <option selected>Discover how much energy your town is using</option>
         {{#each municipalities as |municipality|}}
           <option value={{normalize-slug municipality}}>{{municipality}}</option>
         {{/each}}
       </select>
+      -->
+
+      {{#power-select
+        options=municipalities   
+        selected=placeholder
+        onchange=(action 'toMunicipality')
+        as |municipality|
+      }}
+        {{municipality}}
+      {{/power-select}}
+
+      <!--<button {{action 'clickSelector'}}></button>-->
     </div>
   </div>
 

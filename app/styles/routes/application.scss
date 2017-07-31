@@ -1,13 +1,17 @@
 .route.application {
+  $local_width: $layout_content-width + 10%;
+
+  display: flex;
+  flex-direction: column;
+
   min-height: 100vh;
   height: 100%;
 
   text-align: center;
 
   header {
-    width: 80%;
+    width: $local_width;
     margin: 0 auto;
-    padding: 20px 0;
 
     text-align: left;
 
@@ -15,6 +19,7 @@
       $box_size: 20px;
 
       padding-left: $box_size * 2;
+      margin-top: 30px;
 
       &:before {
         @extend ._vertical-center;
@@ -33,7 +38,7 @@
     @extend ._vertical-center;
     left: initial;
     right: 0;
-    top: 50%;
+    top: 55%;
 
     li {
       display: inline-block;
@@ -46,20 +51,25 @@
   }
 
   .selection-wrapper {
+    flex: 1 0 100%;
+  
+    width: $local_width;
+    height: 100%;
     margin: 0 auto;
+  }
+
+  .selection-content {
+    @extend ._vertical-center;
+    top: 35%;
   }
 
   footer {
     @extend ._clear;
 
-    position: absolute;
-    left: 0;
-    bottom: 0;
-
     width: 100%;
     padding: 30px;
 
-    color: $color_font-light;
+    color: $color_font-medium;
 
     background: $color_brand-primary;
 

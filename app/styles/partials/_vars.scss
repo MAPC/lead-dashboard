@@ -1,6 +1,4 @@
-$color_font-light: #f1f2f2;
-$color_font-medium: #888;
-$color_font-dark: #444;
+$color_accent: #ffec40;
 
 $color_bg-light: #fdfeff;
 $color_bg-medium: #f1f2f2;
@@ -11,7 +9,13 @@ $color_brand-tertiary: #9176e3;
 
 $color_brand-primary--dark: darken($color_brand-primary, 25);
 
-$color_accent: #ffec40;
+$color_font-light: #f1f2f2;
+$color_font-medium: #ccc;
+$color_font-dark: #555;
+
 
 $font_family-secondary: 'roboto', serif;
 $font_family-primary: 'clone-rounded-latin', sans-serif;
+
+
+$layout_content-width: 75%;
