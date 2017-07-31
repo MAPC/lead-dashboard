@@ -1,5 +1,9 @@
 .ember-power-select-dropdown {
 
+  &.ember-basic-dropdown-content--below {
+    box-shadow: 2px 2px 4px 1px rgba(20,20,20,.1); 
+  }
+
   .ember-power-select-search-input { 
     box-sizing: border-box; 
     outline: none;
@@ -11,11 +15,12 @@
   $transition_time: .2s;
 
   .ember-power-select-status-icon {
-    width: 60px;
-    height: 80%;
     top: initial;
     right: 0;
     bottom: -1px;
+
+    width: 60px;
+    height: 80%;
 
     background: $color_brand-primary;
     border: 0;
@@ -39,7 +44,7 @@
   }
 
   .ember-power-select-trigger {
-    padding: 8px 2px;
+    padding: 8px 2px 6px;
 
     text-align: left;
     font-size: 30px;
