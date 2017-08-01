@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import slug from '../utils/slug';
 
 export default Ember.Controller.extend({
 
@@ -40,7 +41,7 @@ export default Ember.Controller.extend({
   actions: {
 
     toMunicipality(municipality) {
-      this.transitionToRoute('city.index', municipality);
+      this.transitionToRoute('city.index', slug(municipality).normalize());
     },
   
   }
