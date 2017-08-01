@@ -60,19 +60,23 @@
 
   .selection-content {
     @extend ._vertical-center;
-    top: 35%;
-    display: flex;
+    top: 30%;
 
-    width: 65%;
     margin: 0 auto;
 
-    img.lightbulb {
-      height: 60px; 
+    svg.lightbulb {
+      display: inline-block;
+      top: 20px;
       z-index: 10;
+
+      margin-right: 20px;
     }
 
     .power-select {
+      display: inline-block;
+      width: calc(100% - 60px);
       max-width: 750px;
+
     }
   }
 
