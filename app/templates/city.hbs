@@ -7,11 +7,19 @@
     {{/link-to}}
 
     <ul>
-      <li>{{model.municipality}}</li>
-      {{link-to 'All Sectors' 'city.index' tagName='li' class="link"}}
-      {{link-to 'Industrial' 'city.industrial' tagName='li' class="link"}}
-      {{link-to 'Commercial' 'city.commercial' tagName='li' class="link"}}
-      {{link-to 'Residential' 'city.residential' tagName='li' class="link"}}
+      <li><span>{{model.municipality}}</span></li>
+      <li>
+        {{link-to 'All Sectors' 'city.index'}}
+      </li>
+      <li>
+        {{link-to 'Industrial' 'city.industrial'}}
+      </li>
+      <li>
+        {{link-to 'Commercial' 'city.commercial'}}
+      </li>
+      <li>
+        {{link-to 'Residential' 'city.residential'}}
+      </li>
     </ul>
 
   </nav><!--/ .menu -->

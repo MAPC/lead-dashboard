@@ -1,7 +1,5 @@
 .route.city {
 
-  $nav_height: 60px;
-
   nav.city-nav {
     position: fixed;
     top: 0;
@@ -9,11 +7,11 @@
     z-index: 10;
 
     width: 100%;
-    height: $nav_height;
+    height: $layout_nav-height;
 
     background-color: $color_bg-light;
 
-    //border-bottom: 2px solid darken($color_brand-primary, 15);
+    border-bottom: 1px solid darken($color_bg-light, 5);
 
     animation: slideIn 0.2s;
 
@@ -24,8 +22,8 @@
       box-sizing: initial;
       display: flex;
 
-      width: $nav_height;
-      height: $nav_height;
+      width: $layout_nav-height;
+      height: $layout_nav-height;
 
       text-align: center;
       background: $color_brand-primary;
@@ -47,44 +45,63 @@
     }
 
     ul {
+      @extend .content-wrapper;
+
       display: flex;
 
-      width: 60%;
-      height: $nav_height;
-      margin-left: 20%;
+      height: $layout_nav-height;
 
       overflow: hidden;
     }
 
     li {
-      display: inline-block;
+      flex: 1;
 
-      width: 20%; 
-      height: $nav_height + 4px;
-
-      color: $color_brand-primary;
-      font-size: $nav_height / 3;
       text-align: center;
 
-      border-bottom: 3px solid $color_brand-primary;
+      &:first-of-type { margin-left: 0; }
+      &:last-of-type { margin-right: 0; }
 
-      transition: height .2s, color .2s;
+      a, span {
+        @extend ._vertical-center;
 
-      &.link {
-        cursor: pointer; 
-
-        &:hover {
-          color: $color_font-dark;
-          height: $nav_height;           
-          transition: height .2s, color .2s;
-        }
+        color: $color_brand-primary;
+        font-size: 18px;
       }
 
-      &.active {
-        height: $nav_height;
+      a {
+        $trans_duration: .2s;
 
-        color: $color_font-dark; 
-        font-weight: 700;
+        transition: color $trans_duration;
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          height: $layout_nav-height;
+          width: 100%;
+
+          border-bottom: 3px solid $color_brand-primary;
+
+          transition: height $trans_duration;
+        }
+
+        &.active, &:hover {
+          color: $color_font-dark;
+
+          transition: color $trans_duration;
+
+          &:after {
+            height: $layout_nav-height - 17px;
+            transition: height $trans_duration;
+          }
+        }
+
+        &.active {
+          font-weight: 700;
+        }
       }
     }
   }
@@ -92,12 +109,32 @@
   .content-window {
     min-height: 100vh;
     height: 100%;
-    padding: 100px;
-    padding-top: 9em;
+    padding-top: $layout_nav-height;
   }
 
   .city-information {
-    width: 50%;
+    $vertical_padding: 50px;
+
+    width: 100%;
+    padding: ($vertical_padding * 2) 0 $vertical_padding;
+
+    background: $color_bg-medium;
+    border-bottom: 5px solid $color_brand-primary;
+    overflow: hidden;
+
+    h1 { margin-top: 0; }
+    
+    p {
+      width: 60%;
+    }
+
+    .sector-graphic {
+      position: absolute;
+      right: 0;
+      bottom: -($vertical_padding * 1.75);
+
+      height: calc(100% + 135px);
+    }
   }
 
   .spider-chart-layout {

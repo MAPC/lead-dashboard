@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import fuelTypes from  '../utils/fuel-types';
+import fuelTypes from  '../../utils/fuel-types';
 
 export default Ember.Controller.extend({
 
