@@ -16,20 +16,48 @@
     text-align: left;
 
     h1 {
-      $box_size: 23px;
+      $box_size: 20px;
 
-      padding-left: $box_size * 1.7;
+      padding-left: $box_size * 4;
       margin-top: 30px;
 
+      span { 
+        top: -2px;
+
+        margin-left: 8px;
+
+        color: lighten($color_font-dark, 10);
+        font-size: 24px;
+        font-weight: 100; 
+      }
+
       &:before {
-        @extend ._vertical-center;
         content: '';
-        top: 56%;
+        position: absolute;
+        left: 35px;
+        top: 29%;
+        z-index: 5;
 
-        width: $box_size;
-        height: $box_size;
+        width: 0;
 
-        background: $color_brand-primary;
+        border-style: solid;
+        border-color: $color_brand-primary transparent transparent;
+        border-width: $box_size ($box_size * 1.2);
+        transform: rotate(-120deg);
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0%;
+
+        width: 0;
+
+        border-style: solid;
+        border-color: $color_brand-primary--dark transparent transparent;
+        border-width: $box_size ($box_size * 1.2);
+        transform: rotate(70deg);
       }
     }
   }
