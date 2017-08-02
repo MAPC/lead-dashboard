@@ -7,12 +7,28 @@ export default Ember.Component.extend({
    * Members
    */
 
+  chartData: [],
+
   criteria: [],
   criteriaColumn: null,
 
-  metric: 'con_mmbtu',
+  metricMap: {
+    'Consumption': 'con_mmbtu',
+    'Emissions': 'emissions',
+    'Cost': 'exp_dol_mmbtu',
+  },
 
-  chartData: [],
+  metrics: Ember.computed('metricMap', function() {
+    return Object.keys(this.get('metricMap'));
+  }),
+
+  selectedMetric: Ember.computed('metrics', function() {
+    return this.get('metrics')[0];
+  }),
+
+  metric: Ember.computed('selectedMetric', 'metricMap', function() {
+    return this.get('metricMap')[this.get('selectedMetric')];
+  }),
 
   
   /**
@@ -46,7 +62,8 @@ export default Ember.Component.extend({
      * @param String metric
      */
     changeChartMetric(metric) {
-      this.set('metric', metric)
+      this.set('selectedMetric', metric);
+      this.set('metric', this.get('metricMap')[metric])
     },
 
 

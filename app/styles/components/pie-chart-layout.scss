@@ -2,11 +2,24 @@
 
   display: flex;
 
-  width: 70%;
-  margin: 100px auto;
+  margin: 60px auto;
 
   .chart-modifiers {
     width: 60%;
+
+    h4 {
+      margin-bottom: 0;
+
+      font-size: 28px; 
+    }
+
+    h5 {
+      margin-top: 0;
+
+      color: $color_brand-secondary;
+      font-size: 20px;  
+      font-weight: 300;
+    }
   }
 
   .chart-wrapper {
