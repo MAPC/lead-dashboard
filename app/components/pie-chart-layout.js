@@ -14,8 +14,8 @@ export default Ember.Component.extend({
 
   metricMap: {
     'Consumption': 'con_mmbtu',
-    'Emissions': 'emissions',
-    'Cost': 'exp_dol_mmbtu',
+    'Emissions': 'emissions_co2',
+    'Cost': 'exp_dollar',
   },
 
   metrics: Ember.computed('metricMap', function() {

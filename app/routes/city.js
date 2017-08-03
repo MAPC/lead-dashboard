@@ -33,7 +33,7 @@ export default Ember.Route.extend({
     const municipality = slug(params.municipality).denormalize();
 
     sectors.forEach(sector => {
-      data[sector] = this.get('carto').query(`SELECT * FROM leap_dashboard_${sector} WHERE municipal = '${municipality}'`);
+      data[sector] = this.get('carto').query(`SELECT * FROM led_${sector} WHERE municipal = '${municipality}'`);
     });
 
     return {sectorData: data, municipality: municipality};
