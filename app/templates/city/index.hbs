@@ -11,4 +11,52 @@
     </div>
   </div>
 
+  <div class="city-overview-table"> 
+
+    <article>
+      <div class="row-index">
+        <h2>How does {{municipality}} spend energy?</h2>
+      </div>
+      <div class="row-values">
+        {{#each sectors as |sector|}}
+          <div class="row-value">
+            <h5>{{sector}}</h5>
+            <img src="/assets/images/{{sector}}.svg" class="sector-icon">
+          </div>
+        {{/each}}
+      </div>
+    </article>
+
+    {{#each fuelTypeData as |typeData|}}
+      <article class="type-row">
+
+        <div class="row-index">
+          <h4>{{typeData.type}}</h4>
+
+          <div class="type-icon-wrapper">
+            <img src="/assets/images/{{typeData.type}}-icon.svg">
+          </div>
+
+          <div class="metrics">
+            <h5 class="consumption">CONSUMPTION</h5>
+            <h5 class="emissions">EMISSIONS</h5>
+            <h5 class="cost">COST</h5>
+          </div>
+        </div><!--/ .row-index -->
+
+        <div class="row-values">
+          {{#each typeData.sectors as |sector|}} 
+            <div class="row-value">
+              <h5 class="consumption">{{sector.consumption}}</h5>
+              <h5 class="emissions">{{sector.emissions}}</h5>
+              <h5 class="cost">{{sector.cost}}</h5>
+            </div>
+          {{/each}}
+        </div><!--/ .row-values -->
+
+      </article>
+    {{/each}}
+
+  </div><!--/ .city-overview-table -->
+
 </section>
