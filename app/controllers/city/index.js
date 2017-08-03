@@ -12,7 +12,10 @@ export default Ember.Controller.extend({
   }),
 
   sectors: Ember.computed('model', function() {
-    return Object.keys(this.get('model')).filter(key => key !== 'municipality');
+    const data = Object.keys(this.get('model')).filter(key => key !== 'municipality');
+    data.push('total');
+
+    return data;
   }),
 
   fuelTypeData: Ember.computed('model', 'sectors', function() {
@@ -20,15 +23,33 @@ export default Ember.Controller.extend({
     const sectors = this.get('sectors');
 
     const data = fuelTypes.map(_type => {
+
+      let sectorData = sectors.filter(sector => sector !== 'total').map(sector => {
+          return {
+            consumption: 33,
+            emissions: 234,
+            cost: 5,
+          };
+      });
+
+      // Make copy of first column since it will be used by reference in the reducer
+      const original = Object.assign({}, sectorData[0]);
+
+      // Calculate the total column
+      sectorData.push(sectorData.reduce((aggregate, current) => {
+        Object.keys(aggregate).forEach(key => {
+          aggregate[key] += current[key];
+        });
+
+        return aggregate;         
+      }));
+
+      // Restore column back to its original state
+      sectorData[0] = original;
+
       return {
         type: fuelTypesMap[_type],
-        sectors: sectors.map(sector => {
-          return {
-            consumption: '33',
-            emissions: '234',
-            cost: '5',
-          };
-        }),
+        sectors: sectorData,
       };
     });
 
