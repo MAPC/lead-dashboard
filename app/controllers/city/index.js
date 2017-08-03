@@ -21,7 +21,7 @@ export default Ember.Controller.extend({
 
     const data = fuelTypes.map(_type => {
       return {
-        type: _type,
+        type: fuelTypesMap[_type],
         sectors: sectors.map(sector => {
           return {
             consumption: '33',

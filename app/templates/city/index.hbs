@@ -11,16 +11,16 @@
     </div>
   </div>
 
-  <div class="city-overview-table"> 
+  <div class="city-overview-table content-wrapper"> 
 
-    <article>
+    <article class="table-header">
       <div class="row-index">
         <h2>How does {{municipality}} spend energy?</h2>
       </div>
       <div class="row-values">
         {{#each sectors as |sector|}}
           <div class="row-value">
-            <h5>{{sector}}</h5>
+            <h5>{{uppercase sector}}</h5>
             <img src="/assets/images/{{sector}}.svg" class="sector-icon">
           </div>
         {{/each}}
@@ -31,10 +31,10 @@
       <article class="type-row">
 
         <div class="row-index">
-          <h4>{{typeData.type}}</h4>
+          <h4>{{uppercase typeData.type}}</h4>
 
           <div class="type-icon-wrapper">
-            <img src="/assets/images/{{typeData.type}}-icon.svg">
+            <img src="/assets/images/{{normalize-slug typeData.type}}.svg">
           </div>
 
           <div class="metrics">
@@ -47,9 +47,9 @@
         <div class="row-values">
           {{#each typeData.sectors as |sector|}} 
             <div class="row-value">
-              <h5 class="consumption">{{sector.consumption}}</h5>
-              <h5 class="emissions">{{sector.emissions}}</h5>
-              <h5 class="cost">{{sector.cost}}</h5>
+              <h5 class="consumption">{{sector.consumption}}%</h5>
+              <h5 class="emissions">{{sector.emissions}} ppm</h5>
+              <h5 class="cost">${{sector.cost}}mm</h5>
             </div>
           {{/each}}
         </div><!--/ .row-values -->

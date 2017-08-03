@@ -1,0 +1,113 @@
+.route.city-index {
+
+  .city-overview-table {
+
+    margin: 50px auto;
+
+    article {
+      display: flex; 
+    }
+
+    .row-index {
+      width: 37%;
+
+      margin-right: 3%
+    }
+
+    .row-values {
+      display: flex;
+
+      width: 60%; 
+    }
+    
+    .row-value {
+      width: 25%; 
+      padding: 0 10px;
+    }
+
+    .table-header {
+
+      h2 {
+        margin: 0;
+        padding: 14px 0 20px;
+
+        font-size: 26px; 
+        
+        border-style: solid;
+        border-width: 2px 0;
+        border-color: $color_bg-medium;
+      }
+
+      h5 {
+        margin: 0;
+
+        font-size: 15px;
+        text-align: center; 
+      }
+
+      img {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        max-height: 80%;
+        max-width: 50%;
+        margin: 0 auto;
+      }
+    }
+
+    .type-row {
+
+      margin: 20px 0;
+
+      h5 { 
+        font-size: 15px;
+        margin: 3px 0; 
+      } 
+
+      .row-index { display: flex; } 
+
+      h4 {
+        width: 30%; 
+
+        text-align: right;
+        font-size: 18px;
+      }
+
+      .type-icon-wrapper {
+        width: 40%; 
+
+        img {
+          @extend ._vertical-center;
+
+          max-height: 85%; 
+          margin: 0 auto;
+        }
+      }
+
+      .metrics {
+        width: 30%; 
+      }
+
+      .row-value {
+        padding: 0 8%;
+
+        h5 {
+          top: -6px;
+          font-weight: 400;
+          margin: 0;
+
+          &.consumption {
+            color: $color_brand-secondary;
+            margin: 0;
+            font-size: 26px;
+          }
+        } 
+      }
+    }
+
+  }
+
+
+}
