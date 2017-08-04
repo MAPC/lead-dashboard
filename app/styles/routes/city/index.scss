@@ -28,6 +28,7 @@
     .table-header {
 
       min-height: 110px;
+      margin-bottom: 35px;
 
       h2 {
         margin: 0;
@@ -60,8 +61,7 @@
     }
 
     .type-row {
-
-      margin: 20px 0;
+      margin: 24px 0;
 
       h5 { 
         font-size: 15px;
@@ -83,7 +83,7 @@
         img {
           @extend ._vertical-center;
 
-          max-height: 85%; 
+          max-height: 80%; 
           margin: 0 auto;
         }
       }
@@ -156,18 +156,33 @@
       &.current-muni { color: $color_font-dark; }
 
       h5 {
-        height: 50px; 
-        padding: 0;
-        margin: 0;
-        margin-top: 20px;
+        display: inline-block;
+
+        min-height: 30px;
+        padding-bottom: 5px;
+        margin: 20px 0 10px;
 
         font-size: 18px;
         font-weight: 400;
+
+        border-bottom: 3px solid transparent;
+
+        transition: border-bottom-color .15s;
+      }
+
+      &:not(.current-muni) {
+        h5 {
+          cursor: pointer;
+
+          &:hover {
+            border-bottom-color: $color_font-medium; 
+            transition: border-bottom-color .15s;
+          }
+        } 
       }
 
       & > div {
         height: 80px;
-
 
         img { 
           @extend ._vertical-center;

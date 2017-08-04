@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import slug from '../../utils/slug';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
 export default Ember.Controller.extend({
@@ -57,13 +58,18 @@ export default Ember.Controller.extend({
 
     this.get('municipalityList').listFor().then(response => {
       const municipalities = response.rows.map(row => row.municipal).sort();
-      const rand = Math.floor(Math.random() * municipalities.length);
 
       this.set('municipalities', municipalities);
-      this.send('compareTo', municipalities[rand]);
+      this.send('compareTo', this.randomMunicipality());
     });
   },
 
+  randomMunicipality() {
+    const municipalities = this.get('municipalities');
+    const rand = Math.floor(Math.random() * municipalities.length);
+
+    return municipalities[rand];
+  },
 
   munger(model) {
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
@@ -167,6 +173,11 @@ export default Ember.Controller.extend({
 
         this.set('comparingTo', comparingTo);
       });
+    },
+
+    changeMunicipality(municipality) {
+      this.transitionToRoute('city.index', slug(municipality).normalize());
+      this.send('compareTo', this.randomMunicipality());
     }
   
   }
