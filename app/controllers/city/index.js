@@ -16,6 +16,7 @@ export default Ember.Controller.extend({
    */
 
 
+  comparingTo: null,
   municipalities: [],
 
 
@@ -55,7 +56,11 @@ export default Ember.Controller.extend({
     this._super(...arguments);
 
     this.get('municipalityList').listFor().then(response => {
-      this.set('municipalities', response.rows.map(row => row.municipal).sort());
+      const municipalities = response.rows.map(row => row.municipal).sort();
+      const rand = Math.floor(Math.random() * municipalities.length);
+
+      this.set('municipalities', municipalities);
+      this.send('compareTo', municipalities[rand]);
     });
   },
 
@@ -154,13 +159,11 @@ export default Ember.Controller.extend({
 
       Ember.RSVP.hash(sectorPromises.sectorData).then(response => {
         const munged = this.munger(response);
-        console.log(munged);
 
         const comparingTo = {
           municipality: _comparingTo ,
           values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
         };
-
 
         this.set('comparingTo', comparingTo);
       });

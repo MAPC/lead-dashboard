@@ -64,12 +64,19 @@
     <h2>
       How does this compare to 
 
-      <select onchange={{action 'compareTo' value="target.value"}}> 
-        <option disabled selected>-- Municipality --</option>
-        {{#each municipalities as |municipality|}}
-          <option value={{municipality}}>{{municipality}}</option>
-        {{/each}}
-      </select>
+      <div class="power-select">
+        {{#power-select
+          options=municipalities   
+          selected=comparingTo.municipality
+          destination="power-select-destination"
+          onchange=(action 'compareTo')
+          as |municipality|
+        }}
+          {{municipality}}
+        {{/power-select}}
+
+        <div id="power-select-destination"></div>
+      </div>
     </h2>
 
     <div class="comparison-table">

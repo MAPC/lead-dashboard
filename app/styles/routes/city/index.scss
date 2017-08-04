@@ -125,8 +125,16 @@
       width: 40%; 
       margin-right: 5%;
 
-      select {
+      .power-select {
         width: 100%; 
+      }
+
+      #power-select-destination {
+        .ember-power-select-dropdown { 
+          top: 0 !important; 
+          font-size: 15px;
+          font-weight: 400;
+        } 
       }
     }
 
