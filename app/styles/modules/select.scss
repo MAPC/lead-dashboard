@@ -1,0 +1,42 @@
+.select-wrapper {
+  display: inline-block;
+
+  &:after {
+    $arrow_size: 10px;
+
+    @extend ._vertical-center;
+    top: 65%;
+    right: 10px;
+    left: initial;
+    z-index: 10;
+    content: '';
+    display: block;
+
+    width: 0;
+
+    border-style: solid;
+    border-width: $arrow_size ($arrow_size / 1.5);
+    border-color: $color_font-medium transparent transparent;
+  }
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  display: inline-block;
+
+  padding: 6px 10px;
+
+  color: $color_font-dark;
+  font-size: 16px;
+
+  background: $color_bg-light;
+
+  border: 2px solid $color_brand-primary;
+  border-radius: 5px;
+
+  outline: none;
+  cursor: pointer;
+}

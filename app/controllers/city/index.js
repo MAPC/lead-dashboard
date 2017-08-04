@@ -175,6 +175,7 @@ export default Ember.Controller.extend({
       });
     },
 
+
     changeMunicipality(municipality) {
       this.transitionToRoute('city.index', slug(municipality).normalize());
       this.send('compareTo', this.randomMunicipality());

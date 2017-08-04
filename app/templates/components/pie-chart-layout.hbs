@@ -10,27 +10,21 @@
         onchange=(action 'changeChartMetric')
         as |metric|
       }}
-      {{metric}}
+        {{metric}}
       {{/power-select}}
-
-      <!--
-      <select onchange={{action 'changeChartMetric' value='target.value'}}> 
-        <option value="con_mmbtu" selected>Consumption</option>
-        <option value="emissions">Emissions</option>
-        <option value="exp_dol_mmbtu">Cost</option>
-      </select>
-      -->
     </h4>
     <h5>by Fuel Source</h5>
 
     <div class="criteria-selector">
-      <h4>Type of {{criteriaName}}</h4>
-      <select onchange={{action 'changeChartCriteria' value='target.value'}}>
-        <option value='all' selected>All</option>
-        {{#each criteria as |criterion|}}
-          <option value={{criterion}}>{{criterion}}</option>
-        {{/each}}
-      </select>
+      <h4>Type of {{criteriaName}}: </h4>
+      <div class="select-wrapper">
+        <select onchange={{action 'changeChartCriteria' value='target.value'}}>
+          <option value='all' selected>All</option>
+          {{#each criteria as |criterion|}}
+            <option value={{criterion}}>{{capitalize criterion}}</option>
+          {{/each}}
+        </select>
+      </div>
     </div>
   </div>
 
