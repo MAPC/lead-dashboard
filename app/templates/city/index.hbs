@@ -82,13 +82,13 @@
       <div class="comparison-column current-muni">
         <h5>{{uppercase municipality}}</h5>
         {{#each fuelPercentages as |value|}}
-          <div>{{value}}</div>
+          <div><span>{{value}}%</span></div>
         {{/each}}
       </div>
       <div class="comparison-column">
         <h5>{{uppercase comparingTo.municipality}}</h5>
         {{#each comparingTo.values as |value|}}
-          <div>{{value}}</div>
+          <div><span>{{value}}%</span></div>
         {{/each}}
       </div>
     </div>

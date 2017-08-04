@@ -109,7 +109,71 @@
       }
     }
 
-  }
+  } // .city-overview-table
 
+
+  .overview-compare {
+    display: flex;
+
+    padding: 50px 0;
+
+    border-top: 3px solid $color_bg-medium;
+
+    h2 {
+      flex: 1;
+
+      width: 40%; 
+      margin-right: 5%;
+
+      select {
+        width: 100%; 
+      }
+    }
+
+    .comparison-table {
+      display: flex;
+      width: 55%; 
+
+      border: 2px solid $color_bg-medium;
+    }
+
+    .comparison-column {
+      width: 33.33%; 
+
+      color: $color_brand-primary;
+
+      &.current-muni { color: $color_font-dark; }
+
+      h5 {
+        height: 50px; 
+        padding: 0;
+        margin: 0;
+        margin-top: 20px;
+
+        font-size: 18px;
+        font-weight: 400;
+      }
+
+      & > div {
+        height: 80px;
+
+
+        img { 
+          @extend ._vertical-center;
+
+          max-height: 66%;
+          margin: 0 auto;
+        }
+
+        span {
+          @extend ._vertical-center; 
+          top: 40%;
+
+          font-size: 36px;
+        }
+      }
+    }
+
+  }
 
 }

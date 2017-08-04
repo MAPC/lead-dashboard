@@ -11,7 +11,7 @@
 
     background-color: $color_bg-light;
 
-    border-bottom: 1px solid darken($color_bg-light, 5);
+    border-bottom: 1px solid $color_bg-medium;
 
     animation: slideIn 0.2s;
 

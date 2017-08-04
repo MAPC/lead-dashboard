@@ -154,11 +154,13 @@ export default Ember.Controller.extend({
 
       Ember.RSVP.hash(sectorPromises.sectorData).then(response => {
         const munged = this.munger(response);
+        console.log(munged);
 
         const comparingTo = {
           municipality: _comparingTo ,
           values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
         };
+
 
         this.set('comparingTo', comparingTo);
       });
