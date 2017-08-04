@@ -59,4 +59,40 @@
 
   </div><!--/ .city-overview-table -->
 
+  <div class="overview-compare content-wrapper">
+
+    <h2>
+      How does this compare to 
+
+      <select onchange={{action 'compareTo' value="target.value"}}> 
+        <option disabled selected>-- Municipality --</option>
+        {{#each municipalities as |municipality|}}
+          <option value={{municipality}}>{{municipality}}</option>
+        {{/each}}
+      </select>
+    </h2>
+
+    <div class="comparison-table">
+      <div class="comparison-column">
+        <h5></h5>
+        {{#each fuelNames as |name|}}
+          <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
+        {{/each}}
+      </div>
+      <div class="comparison-column current-muni">
+        <h5>{{uppercase municipality}}</h5>
+        {{#each fuelPercentages as |value|}}
+          <div>{{value}}</div>
+        {{/each}}
+      </div>
+      <div class="comparison-column">
+        <h5>{{uppercase comparingTo.municipality}}</h5>
+        {{#each comparingTo.values as |value|}}
+          <div>{{value}}</div>
+        {{/each}}
+      </div>
+    </div>
+
+  </div><!--/ .overview-compare -->
+
 </section>

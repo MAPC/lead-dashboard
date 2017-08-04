@@ -27,16 +27,7 @@ export default Ember.Route.extend({
    * @return Object<AjaxResponseObjects>
    */
   model(params) {
-    const sectors = ['commercial', 'residential', 'industrial'];
-    const data = {};
-
-    const municipality = slug(params.municipality).denormalize();
-
-    sectors.forEach(sector => {
-      data[sector] = this.get('carto').query(`SELECT * FROM led_${sector} WHERE municipal = '${municipality}'`);
-    });
-
-    return {sectorData: data, municipality: municipality};
+    return this.get('carto').allSectorDataFor(params.municipality);
   },
 
 

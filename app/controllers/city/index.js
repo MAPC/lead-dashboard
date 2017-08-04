@@ -4,8 +4,20 @@ import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 export default Ember.Controller.extend({
 
   /**
+   * Services
+   */
+
+  carto: Ember.inject.service(),
+  municipalityList: Ember.inject.service(),
+
+
+  /**
    * Members
    */
+
+
+  municipalities: [],
+
 
   municipality: Ember.computed('model', function() {
     return this.get('model').municipality;
@@ -21,7 +33,34 @@ export default Ember.Controller.extend({
 
 
   fuelTypeData: Ember.computed('model', 'sectors', function() {
-    const model = this.get('model');
+    return this.munger(this.get('model'));
+  }),
+
+
+  fuelPercentages: Ember.computed('fuelTypeData', function() {
+    const fuelTypeData = this.get('fuelTypeData');
+
+    return fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumption);
+  }),
+
+
+  fuelNames: Object.values(fuelTypesMap),
+
+
+  /**
+   * Methods
+   */
+
+  init() {
+    this._super(...arguments);
+
+    this.get('municipalityList').listFor().then(response => {
+      this.set('municipalities', response.rows.map(row => row.municipal).sort());
+    });
+  },
+
+
+  munger(model) {
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
 
     const munged = {};
@@ -105,6 +144,26 @@ export default Ember.Controller.extend({
     });
 
     return data;
-  }),
+  },
+
+
+  actions: {
+
+    compareTo(_comparingTo) {
+      const sectorPromises = this.get('carto').allSectorDataFor(_comparingTo);
+
+      Ember.RSVP.hash(sectorPromises.sectorData).then(response => {
+        const munged = this.munger(response);
+
+        const comparingTo = {
+          municipality: _comparingTo ,
+          values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
+        };
+
+        this.set('comparingTo', comparingTo);
+      });
+    }
+  
+  }
 
 });
