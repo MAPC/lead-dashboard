@@ -66,19 +66,21 @@ export default Ember.Controller.extend({
       // Restore column back to its original state
       sectorData[0] = original;
 
-      // Calculate consumption percentages across sectors and normalize numbers
-      sectorData.forEach(datum => {
-        datum.consumption /= (sectorData[sectorData.length - 1].consumption / 100);
-
-        Object.keys(datum).forEach(key => datum[key] = Math.round(datum[key]));
-      });
-
-      sectorData[sectorData.length - 1].consumption = 100;
-
       return {
         type: fuelTypesMap[_type],
         sectors: sectorData,
       };
+    });
+
+    const totalConsumption = data.map(datum => datum.sectors[datum.sectors.length - 1].consumption)
+                                 .reduce((a, b) => a + b);
+
+    data.forEach(datum => {
+      datum.sectors.forEach(sector => {
+        sector.consumption /= (totalConsumption / 100); 
+
+        Object.keys(sector).forEach(key => sector[key] = Math.round(sector[key]));
+      });
     });
 
     return data;
