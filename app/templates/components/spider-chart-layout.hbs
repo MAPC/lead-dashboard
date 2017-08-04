@@ -4,12 +4,14 @@
 
     <div class="selection-box">
       Compare {{municipality}} to:
-      <select onchange={{action 'addToComparisonList' value="target.value"}}> 
-        <option disabled selected>-- Municipality --</option>
-        {{#each municipalityList as |municipality|}}
-          <option value={{municipality}}>{{municipality}}</option>
-        {{/each}}
-      </select>
+      <div class="select-wrapper">
+        <select onchange={{action 'addToComparisonList' value="target.value"}}> 
+          <option disabled selected>-- Municipality --</option>
+          {{#each municipalityList as |municipality|}}
+            <option value={{municipality}}>{{municipality}}</option>
+          {{/each}}
+        </select>
+      </div>
     </div>
 
     <ul class="comparison-list">
