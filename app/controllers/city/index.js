@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
     return this.get('model').municipality;
   }),
 
+
   sectors: Ember.computed('model', function() {
     const data = Object.keys(this.get('model')).filter(key => key !== 'municipality');
     data.push('total');
@@ -18,18 +19,36 @@ export default Ember.Controller.extend({
     return data;
   }),
 
+
   fuelTypeData: Ember.computed('model', 'sectors', function() {
     const model = this.get('model');
-    const sectors = this.get('sectors');
+    const sectors = this.get('sectors').filter(sector => sector !== 'total');
+
+    const munged = {};
+    sectors.forEach(sector => {
+      let subModel = model[sector].rows;
+      if (sector === 'residential') {
+        subModel = subModel.filter(row => row.hu_type !== 'total');
+      }
+
+      const aggregatedData = subModel.reduce((aggregate, current) => {
+        Object.keys(aggregate).forEach(key => {
+          aggregate[key] += parseFloat(current[key]);
+        });
+
+        return aggregate;
+      });
+
+      munged[sector] = aggregatedData;
+    });
 
     const data = fuelTypes.map(_type => {
-
       let sectorData = sectors.filter(sector => sector !== 'total').map(sector => {
-          return {
-            consumption: 33,
-            emissions: 234,
-            cost: 5,
-          };
+        return {
+          consumption: munged[sector][`${_type}_con_mmbtu`],
+          emissions: munged[sector][`${_type}_emissions_co2`],
+          cost: munged[sector][`${_type}_exp_dollar`],
+        };
       });
 
       // Make copy of first column since it will be used by reference in the reducer
@@ -46,6 +65,15 @@ export default Ember.Controller.extend({
 
       // Restore column back to its original state
       sectorData[0] = original;
+
+      // Calculate consumption percentages across sectors and normalize numbers
+      sectorData.forEach(datum => {
+        datum.consumption /= (sectorData[sectorData.length - 1].consumption / 100);
+
+        Object.keys(datum).forEach(key => datum[key] = Math.round(datum[key]));
+      });
+
+      sectorData[sectorData.length - 1].consumption = 100;
 
       return {
         type: fuelTypesMap[_type],
