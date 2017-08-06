@@ -2,8 +2,29 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
 
-  colorPool: ['#F7A4AC', '#AA6067', '#6FA7C4', '#6994AA', '#F8F6BE'],
+  /**
+   * Members
+   */
+
+  colors: {
+    lightPurple: '#9176e3',
+    deepPurple: '#2c1784',
+    orange: '#f7b045',
+    lightBlue: '#11cfff',
+    blue: '#1D74F2',
+    lightGreen: '#13e3bc',
+  },
+
+  colorPool: Ember.computed('colors', function() {
+    return Object.values(this.get('colors'));
+  }),
+
   assignedColors: {},
+
+
+  /**
+   * Methods
+   */
 
   colorFor(municipality, viewed = []) {
     const colors = this.get('assignedColors');

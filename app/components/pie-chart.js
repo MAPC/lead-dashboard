@@ -6,6 +6,13 @@ import fuelTypes from '../utils/fuel-types';
 export default Ember.Component.extend({
 
   /**
+   * Services
+   */
+
+  colorManager: Ember.inject.service(),
+
+
+  /**
    * Members
    */
 
@@ -48,17 +55,9 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     const { width, height, transitionDuration } = this.get('chartOptions');
+    const colors = this.get('colorManager').colors;
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
-
-    const colors = {
-      lightPurple: '#9176e3',
-      deepPurple: '#2c1784',
-      orange: '#f7b045',
-      lightBlue: '#11cfff',
-      blue: '#1D74F2',
-      lightGreen: '#13e3bc',
-    };
 
     const color = d3.scaleOrdinal([colors.lightGreen, colors.lightPurple, colors.orange]);
 

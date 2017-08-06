@@ -25,7 +25,7 @@ export default Ember.Service.extend({
    * 
    * @return AjaxResponseObject
    */
-  listFor(sector='commercial') {
+  listFor(sector = 'commercial') {
     const cachedLists = this.get('cachedLists');
     const carto = this.get('carto');
 
