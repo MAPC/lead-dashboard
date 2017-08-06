@@ -8,7 +8,26 @@
 
     & > * { display: inline-block; }
 
-    li {
+    .power-select {
+      display: inline-block; 
+      top: 5px;
+
+      width: 300px;
+
+      .ember-power-select-trigger {
+        width: 100%;
+
+        font-size: 16px;
+      }
+
+      #power-select-destination {
+        .ember-power-select-dropdown {
+          top: 0 !important;   
+        } 
+      }
+    }
+
+    .comparison-list li {
       display: inline-block;
 
       margin: 0 3px;
@@ -18,10 +37,15 @@
     }
   }
     
-  .spider-charts {
+
+  .comparison-window {
     display: flex;
 
     width: 100%;
+
+    .spider-chart {
+      width: 40%;
+    }
   }
 
 }

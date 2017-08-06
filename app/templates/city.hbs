@@ -13,7 +13,11 @@
       </li>
       {{#each sectors as |sector|}}
         <li>
-          {{link-to sector.name sector.route}}
+          {{#if sector.disabled}}
+            {{sector.name}}
+          {{else}}
+            {{link-to sector.name sector.route}}
+          {{/if}}
         </li>
       {{/each}}
     </ul>

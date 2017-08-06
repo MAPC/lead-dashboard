@@ -54,8 +54,6 @@ export default Ember.Component.extend({
 
   updateCharts() {
     const data = this.get('data');
-    console.log(data);
-
     const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
 
     let munged = data.rows.map(row => {
@@ -83,13 +81,12 @@ export default Ember.Component.extend({
       if (list.length < this.get('comparisonLimit')) {
         list.pushObject(municipality);
 
-        // Reselect our default value and remove municipality from dataset
-        this.$('.selection-box select')[0].selectedIndex = 0;
+        // Remove municipality from the list of options
         this.get('municipalityList').removeObject(municipality);
 
         // Fetch the data for the selected municipality then add
         this.get('carto')
-            .query(`SELECT * FROM leap_dashboard_commercial WHERE municipal = '${municipality}'`)
+            .query(`SELECT * FROM led_commercial WHERE municipal = '${municipality}'`)
             .then(response => {
         
               // In order to have Ember components rerender properly, we must
@@ -112,12 +109,12 @@ export default Ember.Component.extend({
       this.get('comparisonList').removeObject(municipality);
       
       const colorManager = this.get('colorManager');
-      let municipalities = this.get('municipalitiesList');
+      let municipalities = this.get('municipalityList');
       let data = this.get('data');
 
       // Put the municipality back in the dropdown
       municipalities.push(municipality);
-      this.set('municipalitiesList', Ember.copy(municipalities.sort(), true));
+      this.set('municipalityList', Ember.copy(municipalities.sort(), true));
 
       // Put the assinged color back in the color pool
       colorManager.resetColorFor(municipality);

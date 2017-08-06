@@ -6,6 +6,13 @@ import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 export default Ember.Controller.extend({
 
   /**
+   * Controllers
+   */
+
+  city: Ember.inject.controller(),
+  
+
+  /**
    * Services
    */
 
@@ -34,8 +41,26 @@ export default Ember.Controller.extend({
   }),
 
 
-  fuelTypeData: Ember.computed('model', function() {
-    return this.munger(this.get('model'));
+  fuelTypeData: Ember.computed('model', 'city', function() {
+    const cityController = this.get('city');
+    const munged = this.munger(this.get('model'));
+
+    const sectorSummary = munged.map(type => type.sectors)
+                                .reduce((a,b) => a.concat(b))
+                                .map(a => { return {[a.sector]: a.emissions }})
+                                .reduce((a,b) => {
+                                  Object.keys(b).forEach(key => a[key] =  a[key] + b[key] || 0);
+                                  return a;
+                                });
+
+    Object.keys(sectorSummary)
+          .filter(sector => sectorSummary[sector] === 0)
+          .forEach(sector => {
+            //cityController.send('disableSector', sector);
+          });
+
+
+    return munged;
   }),
 
 
@@ -115,11 +140,12 @@ export default Ember.Controller.extend({
     });
 
     const data = fuelTypes.map(_type => {
-      let sectorData = sectors.filter(sector => sector !== 'total').map(sector => {
+      let sectorData = sectors.map(_sector => {
         return {
-          consumption: munged[sector][`${_type}_con_mmbtu`],
-          emissions: munged[sector][`${_type}_emissions_co2`],
-          cost: munged[sector][`${_type}_exp_dollar`],
+          sector: String(_sector),
+          consumption: munged[_sector][`${_type}_con_mmbtu`],
+          emissions: munged[_sector][`${_type}_emissions_co2`],
+          cost: munged[_sector][`${_type}_exp_dollar`],
         };
       });
 
@@ -128,22 +154,25 @@ export default Ember.Controller.extend({
 
       // Calculate the total column
       sectorData.push(sectorData.reduce((aggregate, current) => {
-        Object.keys(aggregate).forEach(key => {
-          aggregate[key] += current[key];
-        });
+        Object.keys(aggregate)
+              .filter(key => key !== 'sector')
+              .forEach(
+          key => {
+            aggregate[key] += current[key];
+          });
 
         return aggregate;         
       }));
 
       // Restore column back to its original state
       sectorData[0] = original;
+      sectorData[sectorData.length - 1].sector = 'total';
 
       return {
         type: fuelTypesMap[_type],
         sectors: sectorData,
       };
     });
-
 
     // Sum the consumption values from the 'total' column
     const totalConsumption = data.map(datum => datum.sectors[datum.sectors.length - 1].consumption)
@@ -154,7 +183,7 @@ export default Ember.Controller.extend({
       datum.sectors.forEach(sector => {
         sector.consumption /= (totalConsumption / 100); 
 
-        Object.keys(sector).forEach(key => {
+        Object.keys(sector).filter(key => key !== 'sector').forEach(key => {
 
           // Show one decimal place if the value is less than 1
           let roundFactor = 1;
