@@ -54,6 +54,7 @@ export default Ember.Component.extend({
 
   updateCharts() {
     const data = this.get('data');
+    console.log(data);
 
     const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
 

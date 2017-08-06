@@ -27,14 +27,16 @@ export default Ember.Controller.extend({
 
 
   sectors: Ember.computed('model', function() {
-    const data = Object.keys(this.get('model')).filter(key => key !== 'municipality');
-    data.push('total');
+    if (this.get('model')) {
+      const data = Object.keys(this.get('model')).filter(key => key !== 'municipality');
+      data.push('total');
 
-    return data;
+      return data;
+    }
   }),
 
 
-  fuelTypeData: Ember.computed('model', 'sectors', function() {
+  fuelTypeData: Ember.computed('model', function() {
     return this.munger(this.get('model'));
   }),
 
@@ -71,7 +73,10 @@ export default Ember.Controller.extend({
     return municipalities[rand];
   },
 
-  munger(model) {
+  munger(_model) {
+    if (!this.get('sectors')) return;
+
+    const model = Ember.copy(_model, true);
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
 
     const munged = {};
@@ -166,12 +171,14 @@ export default Ember.Controller.extend({
       Ember.RSVP.hash(sectorPromises.sectorData).then(response => {
         const munged = this.munger(response);
 
-        const comparingTo = {
-          municipality: _comparingTo ,
-          values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
-        };
+        if (munged) {
+          const comparingTo = {
+            municipality: _comparingTo ,
+            values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
+          };
 
-        this.set('comparingTo', comparingTo);
+          this.set('comparingTo', comparingTo);
+        }
       });
     },
 
