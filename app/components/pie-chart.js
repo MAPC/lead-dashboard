@@ -51,10 +51,19 @@ export default Ember.Component.extend({
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
 
-    const color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    const colors = {
+      lightPurple: '#9176e3',
+      deepPurple: '#2c1784',
+      orange: '#f7b045',
+      lightBlue: '#11cfff',
+      blue: '#1D74F2',
+      lightGreen: '#13e3bc',
+    };
+
+    const color = d3.scaleOrdinal([colors.lightGreen, colors.lightPurple, colors.orange]);
 
     const arc = d3.arc()
-                  .innerRadius(0)
+                  .innerRadius(minDim/3.5)
                   .outerRadius(minDim/2);
 
     const pie = d3.pie()
