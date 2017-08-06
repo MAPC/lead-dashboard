@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import slug from '../../utils/slug';
+import sectors from '../../utils/sectors';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
 export default Ember.Controller.extend({
@@ -20,19 +21,16 @@ export default Ember.Controller.extend({
   comparingTo: null,
   municipalities: [],
 
+  sectors: Ember.computed(function() {
+    const _sectors = sectors;
+    _sectors.push('total');
 
-  municipality: Ember.computed('model', function() {
-    return this.get('model').municipality;
+    return _sectors;
   }),
 
 
-  sectors: Ember.computed('model', function() {
-    if (this.get('model')) {
-      const data = Object.keys(this.get('model')).filter(key => key !== 'municipality');
-      data.push('total');
-
-      return data;
-    }
+  municipality: Ember.computed('model', function() {
+    return this.get('model').municipality;
   }),
 
 

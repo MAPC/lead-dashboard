@@ -11,15 +11,11 @@
       <li>
         {{link-to 'All Sectors' 'city.index'}}
       </li>
-      <li>
-        {{link-to 'Industrial' 'city.industrial'}}
-      </li>
-      <li>
-        {{link-to 'Commercial' 'city.commercial'}}
-      </li>
-      <li>
-        {{link-to 'Residential' 'city.residential'}}
-      </li>
+      {{#each sectors as |sector|}}
+        <li>
+          {{link-to sector.name sector.route}}
+        </li>
+      {{/each}}
     </ul>
 
   </nav><!--/ .menu -->
