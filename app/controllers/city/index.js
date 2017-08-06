@@ -68,10 +68,9 @@ export default Ember.Controller.extend({
 
   randomMunicipality(replace = true) {
     const _randomMunicipality = this.get('_randomMunicipality');
-
     const municipalities = this.get('municipalities');
-    const rand = Math.floor(Math.random() * municipalities.length);
 
+    const rand = Math.floor(Math.random() * municipalities.length);
     const municipality = municipalities[rand];
 
     if (replace || _randomMunicipality === null) {
