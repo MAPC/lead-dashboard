@@ -51,10 +51,13 @@ export default Ember.Component.extend({
     this.set('municipalityList', Ember.copy(municipalities, true));
   },
 
+  beingViewed() {
+    return  [this.get('municipality')].concat(this.get('comparisonList').map(muni => muni.name));
+  },
 
   updateCharts() {
     const data = this.get('data');
-    const beingViewed = [this.get('municipality')].concat(this.get('comparisonList'));
+    const beingViewed = this.beingViewed();
 
     let munged = data.rows.map(row => {
       row.criterion = row[this.get('criteria')];
@@ -79,7 +82,14 @@ export default Ember.Component.extend({
       let list = this.get('comparisonList');
 
       if (list.length < this.get('comparisonLimit')) {
-        list.pushObject(municipality);
+        const colorManager = this.get('colorManager');
+        const beingViewed = [municipality].concat(this.get('beingViewed'));
+
+        const municipalColor = colorManager.colorFor(municipality, beingViewed);
+        list.pushObject({
+          name: municipality, 
+          color: municipalColor
+        });
 
         // Remove municipality from the list of options
         this.get('municipalityList').removeObject(municipality);
@@ -113,14 +123,14 @@ export default Ember.Component.extend({
       let data = this.get('data');
 
       // Put the municipality back in the dropdown
-      municipalities.push(municipality);
+      municipalities.push(municipality.name);
       this.set('municipalityList', Ember.copy(municipalities.sort(), true));
 
       // Put the assinged color back in the color pool
-      colorManager.resetColorFor(municipality);
+      colorManager.resetColorFor(municipality.name);
 
       // Remove the municipality from our dataset
-      data.rows = data.rows.filter(row => row.municipal !== municipality);
+      data.rows = data.rows.filter(row => row.municipal !== municipality.name);
       this.set('data', data);
 
       this.updateCharts();

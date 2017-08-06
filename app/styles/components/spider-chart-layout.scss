@@ -27,13 +27,40 @@
       }
     }
 
-    .comparison-list li {
-      display: inline-block;
+    .comparison-list {
+      margin-left: 20px;
 
-      margin: 0 3px;
-      padding: 6px 8px;
+      li {
+        display: inline-block;
+        top: -3px;
 
-      background: #cecece; 
+        margin: 0 3px;
+        padding: 4px 35px 6px 12px;
+
+        background: $color_bg-medium; 
+
+        border-bottom: 3px solid darken($color_bg-medium, 10);
+      }
+
+      span.remove {
+        @extend ._vertical-center;
+        top: 42%;
+        right: 10px;
+        left: initial;
+
+        color: lighten($color_font-dark, 40);
+        font-size: 18px;
+        font-weight: 700;
+
+        cursor: pointer;
+        transition: color .15s;
+
+        &:hover {
+          color: lighten($color_font-dark, 30);
+
+          transition: color .15s;
+        }
+      }
     }
   }
     

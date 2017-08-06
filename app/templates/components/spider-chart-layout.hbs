@@ -22,8 +22,9 @@
 
     <ul class="comparison-list">
       {{#each comparisonList as |municipality|}}
-        <li>
-          {{municipality}} <span {{action 'removeFromComparisonList' municipality}}>x</span>
+        <li style="border-color: {{municipality.color}}">
+          {{municipality.name}}
+          <span {{action 'removeFromComparisonList' municipality}} class="remove">x</span>
         </li>
       {{/each}}
     </ul>
