@@ -15,6 +15,12 @@ export default Ember.Route.extend({
     });
 
     return Ember.RSVP.hash(toPromise);
+  },
+
+  activate() {
+    const cityIndexController = this.controllerFor('city.index');
+
+    cityIndexController.send('compareTo', cityIndexController.randomMunicipality(false));
   }
 
 });

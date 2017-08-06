@@ -66,11 +66,20 @@ export default Ember.Controller.extend({
     });
   },
 
-  randomMunicipality() {
+  randomMunicipality(replace = true) {
+    const _randomMunicipality = this.get('_randomMunicipality');
+
     const municipalities = this.get('municipalities');
     const rand = Math.floor(Math.random() * municipalities.length);
 
-    return municipalities[rand];
+    const municipality = municipalities[rand];
+
+    if (replace || _randomMunicipality === null) {
+      this.set('_randomMunicipality', municipality);
+      return municipality;
+    }
+
+    return _randomMunicipality;
   },
 
   munger(_model) {
