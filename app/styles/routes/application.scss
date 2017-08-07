@@ -103,8 +103,7 @@
     .power-select {
       display: inline-block;
       width: calc(100% - 60px);
-      max-width: 750px;
-
+      max-width: 670px;
     }
   }
 
@@ -114,11 +113,11 @@
     width: 100%;
     padding: 15px $local_width / 12;
 
-    color: $color_font-medium;
+    color: $color_font-dark;
 
-    box-shadow: 0px 0px 6px 2px rgba(20, 20, 50, .3);
-    background: $color_brand-primary--hover;
-    border-top: 5px solid lighten($color_brand-primary--dark, 10);
+    //box-shadow: 0px 0px 6px 2px rgba(20, 20, 50, .3);
+    background: $color_bg-medium;
+    border-top: 4px solid $color_brand-primary; //lighten($color_brand-primary--dark, 10);
 
     .created-at {
       float: left;

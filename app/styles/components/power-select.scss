@@ -15,32 +15,22 @@
   $transition_time: .2s;
 
   .ember-power-select-status-icon {
-    top: initial;
-    right: 0;
-    bottom: -1px;
+    $arrow_size: 12px;
 
-    width: 60px;
-    height: 80%;
+    @extend ._vertical-center;
+    top: 60%;
+    left: initial;
+    right: 10px;
 
-    background: $color_brand-primary;
-    border: 0;
+    width: 0;
+    height: $arrow_size / 2;
+    margin: 0 auto;
 
-    transition: border-color $transition_time;
+    border-style: solid;
+    border-width: $arrow_size ($arrow_size / 1.2) 0;
+    border-color: $color_brand-primary transparent transparent;
 
-    &:after {
-      @extend ._vertical-center;
-      $arrow_size: 18px;
-      top: 50%;
-
-      content: '';
-
-      width: 0;
-      margin: 0 auto;
-
-      border-style: solid;
-      border-width: $arrow_size ($arrow_size / 1.2) 0;
-      border-color: $color_bg-light transparent transparent;
-    }
+    transition: top $transition_time / 2, border-top-color $transition_time;
   }
 
   .ember-power-select-trigger {
@@ -51,7 +41,7 @@
 
     background: $color_bg-light;
     border: none;
-    border-bottom: 3px solid $color_brand-primary;
+    border-bottom: 3px solid rgba($color_brand-primary, 1);
 
     overflow-x: initial;
     outline: none;
@@ -59,12 +49,27 @@
     transition: border-color $transition_time;
 
     &:hover {
-      border-color: $color_brand-primary--hover;
+      border-color: rgba($color_brand-primary--hover, 1);
       transition: border-color $transition_time;
 
       .ember-power-select-status-icon {
-        background: $color_brand-primary--hover; 
-        transition: border-color $transition_time;
+        top: 63%;
+
+        border-top-color: $color_brand-primary--hover;
+
+        transition: top $transition_time / 2, border-top-color $transition_time;
+      }
+    }
+
+    &[aria-expanded="true"] {
+      .ember-power-select-status-icon {
+        top: 55%; 
+      }
+
+      &:hover {
+        .ember-power-select-status-icon {
+          top: 52%; 
+        } 
       }
     }
   }
@@ -74,7 +79,7 @@
 
   .ember-power-select-status-icon {
     height: 75%;
-    width: 50px;
+    width: 0;
 
     &:after {
       border-width: 15px (15px / 1.2) 0;

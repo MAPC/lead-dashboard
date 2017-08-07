@@ -4,14 +4,16 @@
     <h4>
       {{municipality}}'s Energy
 
-      {{#power-select
-        options=metrics 
-        selected=selectedMetric
-        onchange=(action 'changeChartMetric')
-        as |metric|
-      }}
-        {{metric}}
-      {{/power-select}}
+      <span class='power-select'>
+        {{#power-select
+          options=metrics 
+          selected=selectedMetric
+          onchange=(action 'changeChartMetric')
+          as |metric|
+        }}
+          {{metric}}
+        {{/power-select}}
+      </span>
     </h4>
     <h5>by Fuel Source</h5>
 
