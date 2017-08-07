@@ -178,10 +178,14 @@ export default Ember.Controller.extend({
     const totalConsumption = data.map(datum => datum.sectors[datum.sectors.length - 1].consumption)
                                  .reduce((a, b) => a + b);
 
+    const totalEmissions = data.map(datum => datum.sectors[datum.sectors.length - 1].emissions)
+                                 .reduce((a, b) => a + b);
+
     // Normalize the data
     data.forEach(datum => {
       datum.sectors.forEach(sector => {
         sector.consumption /= (totalConsumption / 100); 
+        sector.emissions /= (totalEmissions / 100);
 
         Object.keys(sector).filter(key => key !== 'sector').forEach(key => {
 

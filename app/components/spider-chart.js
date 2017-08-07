@@ -11,11 +11,11 @@ export default Ember.Component.extend({
   tagName: '',
   municipality: null,
 
-  chartPaddingPercentage: .1,
+  chartPaddingPercentage: .05,
 
   chartOptions: {
     w: 400,
-    height: 400,
+    height: 300,
     levels: 5,
     roundStrokes: true,
   },
@@ -120,7 +120,7 @@ export default Ember.Component.extend({
       
       //Filter for the outside glow
       var filter = g.append('defs').append('filter').attr('id','glow');
-          filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur');
+          filter.append('feGaussianBlur').attr('stdDeviation','.1').attr('result','coloredBlur');
       var feMerge = filter.append('feMerge');
           feMerge.append('feMergeNode').attr('in','coloredBlur');
           feMerge.append('feMergeNode').attr('in','SourceGraphic');
@@ -133,6 +133,7 @@ export default Ember.Component.extend({
       var axisGrid = g.append("g").attr("class", "axisWrapper");
       
       //Draw the background circles
+    /*
       axisGrid.selectAll(".levels")
          .data(d3.range(1,(cfg.levels+1)).reverse())
          .enter()
@@ -143,7 +144,9 @@ export default Ember.Component.extend({
           .style("stroke", "#CDCDCD")
           .style("fill-opacity", cfg.opacityCircles)
           .style("filter" , "url(#glow)");
+          */
 
+    /*
       //Text indicating at what % each level is
       axisGrid.selectAll(".axisLabel")
          .data(d3.range(1,(cfg.levels+1)).reverse())
@@ -155,6 +158,7 @@ export default Ember.Component.extend({
          .style("font-size", "10px")
          .attr("fill", "#737373")
          .text(function(d) { return Format(maxValue * d/cfg.levels); });
+         */
 
       /////////////////////////////////////////////////////////
       //////////////////// Draw the axes //////////////////////
@@ -173,8 +177,8 @@ export default Ember.Component.extend({
           .attr("x2", function(d, i){ return rScale(maxValue*1.1) * Math.cos(angleSlice*i - Math.PI/2); })
           .attr("y2", function(d, i){ return rScale(maxValue*1.1) * Math.sin(angleSlice*i - Math.PI/2); })
           .attr("class", "line")
-          .style("stroke", "white")
-          .style("stroke-width", "2px");
+          .style("stroke", '#ddd')
+          .style("stroke-width", "1px");
 
       //Append the labels at each axis
       axis.append("text")

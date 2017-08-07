@@ -9,7 +9,7 @@ export default fuelTypes;
 const fuelTypesMap = {
   'elec': 'Electricity',
   'ng': 'Natural Gas',
-  'foil': 'Fuel Oil',
+  'foil': 'Heating Oil',
 };
 
 export { fuelTypesMap, fuelTypes };
