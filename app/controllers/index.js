@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
    */
 
   municipalities: [],
-  placeholder: 'Discover how much energy your town is using',
+  placeholder: 'Discover how much energy your municipality is using',
 
   year: (new Date()).getFullYear(),
 
