@@ -108,42 +108,53 @@
   }
 
   footer {
-    @extend ._clear;
-
     width: 100%;
-    padding: 15px $local_width / 12;
+    height: 70px;
 
     color: $color_font-dark;
 
     background: $color_bg-medium;
     border-top: 4px solid $color_brand-primary;
 
+    .footer-content { 
+      width: $local_width; 
+      height: 100%;
+      margin: 0 auto;
+    }
+
     .created-at {
-      float: left;
+      @extend ._vertical-center; 
+      right: initial;
+
+      height: 60%;
 
       h4 {
-        left: 5px;
+        display: inline-block;
+        bottom: 1px;
 
         margin: 0;
-        margin-bottom: 5px;
+        margin-right: 5px;
 
         text-align: left;
-        font-size: 11px;
-        font-weight: 300;
+        text-transform: uppercase;
+        font-family: $font_family-secondary;
+        font-size: 19px;
+        font-weight: 400;
       }
 
       .mapc-logo {
-        height: 45px; 
+        height: 100%; 
       }
     }
 
     .copyright {
-      float: right; 
-      top: 50px;
-      font-family: $font_family-secondary;
-      font-weight: 300;
-      font-size: 11px;
-      font-style: italic;
+      @extend ._vertical-center;
+      left: initial;
+      height: 35%;
+
+      img {
+        height: 100%;
+      }
     }
   }
 
