@@ -1,5 +1,7 @@
 .component.pie-chart {
 
+  text-align: center;
+
   .legend {
     display: none;
     position: absolute;
@@ -10,6 +12,37 @@
     height: 100px;
 
     background: #555;
+  }
+
+  .tooltip-holder {  
+    @extend ._vertical-center;
+    z-index: 20;
+
+    width: 0;
+    margin: 0 auto;
+  }
+
+  .tooltip {
+    position: absolute;
+    top: 95px;
+    left: 130px;
+    display: none;
+
+    min-width: 200px;
+    width: auto;
+    padding: 10px;
+
+    color: #333;
+    font-size: 12px;
+    text-align: left;
+
+    background: #eee;
+    border: 1px solid darken($color_bg-medium, 20);
+    box-shadow: 1px 1px 4px rgba($color_font-dark, .1);
+  }
+
+  .chart {
+    z-index: 10; 
   }
 
   .arc path {
@@ -24,4 +57,5 @@
   }
 
   .arc line { stroke: #fff; }
+
 }

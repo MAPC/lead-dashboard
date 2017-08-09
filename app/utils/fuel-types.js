@@ -4,12 +4,12 @@ const fuelTypes = [
   'foil',
 ];
 
-export default fuelTypes;
-
 const fuelTypesMap = {
   'elec': 'Electricity',
   'ng': 'Natural Gas',
   'foil': 'Heating Oil',
 };
 
+
+export default fuelTypes;
 export { fuelTypesMap, fuelTypes };

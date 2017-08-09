@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import d3 from 'npm:d3';
 import slug from '../utils/slug';
-import fuelTypes from '../utils/fuel-types';
+import { fuelTypes, fuelTypesMap } from '../utils/fuel-types';
 
 export default Ember.Component.extend({
 
@@ -24,6 +24,7 @@ export default Ember.Component.extend({
     width: 400,
     height: 400,
     numTicks: 3,
+    tooltipDisplacement: 20,
     transitionDuration: 200,
   },
 
@@ -38,6 +39,7 @@ export default Ember.Component.extend({
     this.set('normalizedTitle', slug(this.get('title')).normalize());
   },
 
+
   didInsertElement() {
     this._super(...arguments);
 
@@ -51,10 +53,11 @@ export default Ember.Component.extend({
       .attr('transform', `translate(${width/2},${height/2})`);
   },
 
+
   didRender() {
     this._super(...arguments);
 
-    const { width, height, transitionDuration } = this.get('chartOptions');
+    const { width, height, transitionDuration, tooltipDisplacement } = this.get('chartOptions');
     const colors = this.get('colorManager').colors;
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
@@ -70,6 +73,21 @@ export default Ember.Component.extend({
                   .value(d => d.percent);
 
     const svg = d3.select(`#${this.get('normalizedTitle')}`).select('svg').select('g');
+
+
+    const tooltip = d3.select('.tooltip-holder')
+                      .append('div')
+                      .attr('class', 'tooltip');
+
+    tooltip.append('div')
+           .attr('class', 'fuel-type');
+    
+    tooltip.append('div')
+           .attr('class', 'value');
+
+    tooltip.append('div')
+           .attr('class', 'percent');
+
 
     const data = Ember.copy(this.get('data'), true);
 
@@ -105,7 +123,24 @@ export default Ember.Component.extend({
         .append('path')
         .attr('d', arc)
         .style('fill', d => color(d.data.fuel_type))
-        .each(function(d) {this._current = d});
+        .each(function(d) {this._current = d})
+        .on('mouseover', d => {
+          const percent = Math.round(100 * d.data.percent);
+
+          tooltip.select('.fuel-type').html(fuelTypesMap[d.data.fuel_type]);
+          tooltip.select('.value').html(Math.round(d.data.mmbtu).toLocaleString('en-us'));
+          tooltip.select('.percent').html(String(percent) + '%');
+          tooltip.style('display', 'block');
+        })
+        .on('mouseout', () => {
+          tooltip.style('display', 'none');
+        })
+        .on('mousemove', function() {
+          const mouseCoords = d3.mouse(this);
+
+          tooltip.style('top', String(mouseCoords[1] + tooltipDisplacement) + 'px')
+                 .style('left', String(mouseCoords[0] + tooltipDisplacement) + 'px');
+        });
 
     path.transition()
         .duration(transitionDuration)
@@ -114,42 +149,6 @@ export default Ember.Component.extend({
           this._current = i(0);
           return function(t) { return arc(i(t)) };
         });
-
-    /*
-    g.append('text')
-      .attr('transform', d => {
-        console.log(d);
-        console.log(arc.centroid(d));
-        return `translate(${arc.centroid(d)})`
-      })
-      .attr('dy', '.35em')
-      .style('text-anchor', 'middle')
-      .text(d => d.data.fuel_type);
-    */
-
-    /*
-    const sdat = [];
-    [...Array(chartOptions.numTicks).keys()].forEach(i => sdat[i] = 20 + ((radius/chartOptions.numTicks) * i));
-
-    const circleAxes = svg.selectAll('.circle-ticks')
-                          .data(sdat)
-                          .enter()
-                          .append('svg:g')
-                          .attr('class', 'circle-ticks');
-
-    circleAxes.append('svg:circle')
-              .attr('r', String)
-              .attr('class', 'circle')
-              .style('stroke', '#CCC')
-              .style('opacity', 0.5)
-              .style('fill', 'none');
-
-    circleAxes.append('svg:text')
-              .attr('text-anchor', 'center')
-              .attr('dy', d => d - 5)
-              .style('fill', '#FFF')
-              .text((d, i) => i * (100/chartOptions.numTicks));
-    */
   }
 
 });
