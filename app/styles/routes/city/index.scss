@@ -90,6 +90,14 @@
 
       .metrics {
         width: 30%; 
+
+        h5 {
+          padding-left: 8px;
+          border-left: 4px solid lighten($color_font-dark, 20);
+
+          &.consumption { border-color: $color_brand-secondary; }
+          &.emissions { border-color: $color_brand-tertiary; }
+        }
       }
 
       .row-value {
@@ -102,8 +110,13 @@
 
           &.consumption {
             color: $color_brand-secondary;
-            margin: 0;
             font-size: 26px;
+          }
+
+          &.emissions {
+            color: $color_brand-tertiary; 
+            font-size: 20px;
+            margin: -4px auto -2px;
           }
         } 
       }
