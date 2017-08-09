@@ -21,8 +21,8 @@ export default Ember.Component.extend({
   metric: null,
 
   chartOptions: {
-    width: 400,
-    height: 400,
+    width: 320,
+    height: 320,
     numTicks: 3,
     tooltipDisplacement: 20,
     transitionDuration: 200,
@@ -53,6 +53,18 @@ export default Ember.Component.extend({
       .attr('transform', `translate(${width/2},${height/2})`);
   },
 
+  unitTransform(context, val) {
+    const metric = context.get('metric');
+
+    const transforms = {
+      con_mmbtu: val => `${val} mmbtu`,
+      emissions_co2: val => `${val} ppm`,
+      exp_dollar: val => `$${val}`,
+    };
+
+    return transforms[metric](val);
+  },
+
 
   didRender() {
     this._super(...arguments);
@@ -62,7 +74,7 @@ export default Ember.Component.extend({
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
 
-    const color = d3.scaleOrdinal([colors.lightGreen, colors.lightPurple, colors.orange]);
+    const color = d3.scaleOrdinal([colors.blue, colors.lightGreen, colors.orellow]);
 
     const arc = d3.arc()
                   .innerRadius(minDim/3.5)
@@ -80,13 +92,16 @@ export default Ember.Component.extend({
                       .attr('class', 'tooltip');
 
     tooltip.append('div')
+           .attr('class', 'percent');
+
+    const pathInfo = tooltip.append('div')
+                            .attr('class', 'path-info');
+
+    pathInfo.append('div')
            .attr('class', 'fuel-type');
     
-    tooltip.append('div')
+    pathInfo.append('div')
            .attr('class', 'value');
-
-    tooltip.append('div')
-           .attr('class', 'percent');
 
 
     const data = Ember.copy(this.get('data'), true);
@@ -112,7 +127,7 @@ export default Ember.Component.extend({
       return {
         fuel_type: type,
         percent: totals[`${type}_tot`] / data.cent,
-        mmbtu: totals[`${type}_tot`],
+        value: totals[`${type}_tot`],
       };
     });
 
@@ -123,13 +138,20 @@ export default Ember.Component.extend({
         .append('path')
         .attr('d', arc)
         .style('fill', d => color(d.data.fuel_type))
-        .each(function(d) {this._current = d})
+        .each(function(d) { this._current = d })
         .on('mouseover', d => {
           const percent = Math.round(100 * d.data.percent);
 
-          tooltip.select('.fuel-type').html(fuelTypesMap[d.data.fuel_type]);
-          tooltip.select('.value').html(Math.round(d.data.mmbtu).toLocaleString('en-us'));
-          tooltip.select('.percent').html(String(percent) + '%');
+          tooltip.select('.fuel-type')
+                 .html(fuelTypesMap[d.data.fuel_type]);
+
+          tooltip.select('.value')
+                 .html(this.get('unitTransform')(this, Math.round(d.data.value).toLocaleString('en-us')));
+
+          tooltip.select('.percent')
+                 .html(String(percent) + '%')
+                 .style('color', color(d.data.fuel_type));
+
           tooltip.style('display', 'block');
         })
         .on('mouseout', () => {
@@ -138,8 +160,8 @@ export default Ember.Component.extend({
         .on('mousemove', function() {
           const mouseCoords = d3.mouse(this);
 
-          tooltip.style('top', String(mouseCoords[1] + tooltipDisplacement) + 'px')
-                 .style('left', String(mouseCoords[0] + tooltipDisplacement) + 'px');
+          tooltip.style('top', String(mouseCoords[1] - (tooltipDisplacement * .75)) + 'px')
+                 .style('left', String(mouseCoords[0] + (tooltipDisplacement * 1.5)) + 'px');
         });
 
     path.transition()
@@ -149,6 +171,6 @@ export default Ember.Component.extend({
           this._current = i(0);
           return function(t) { return arc(i(t)) };
         });
-  }
+  },
 
 });

@@ -28,22 +28,43 @@
     left: 130px;
     display: none;
 
-    min-width: 200px;
+    min-width: 230px;
     width: auto;
     padding: 10px;
 
-    color: #333;
-    font-size: 12px;
+    color: $color_font-dark;
+    font-size: 14px;
     text-align: left;
 
-    background: #eee;
-    border: 1px solid darken($color_bg-medium, 20);
+    background: $color_bg-medium;
+    border: 2px solid darken($color_bg-medium, 10);
     box-shadow: 1px 1px 4px rgba($color_font-dark, .1);
+
+    .path-info {
+      padding: 5px 10px;
+
+      .fuel-type { 
+        margin-top: -2px;
+
+        font-size: 16px;
+        font-weight: 700; 
+      }
+    }
+
+    .percent {
+      float: left;
+
+      height: 100%;
+      padding: 4px 10px;
+      margin-right: 10px;
+
+      font-size: 30px; 
+
+      border-right: 2px solid darken($color_bg-medium, 8);
+    }
   }
 
-  .chart {
-    z-index: 10; 
-  }
+  .chart { z-index: 10; }
 
   .arc path {
     stroke: rgba(#fff, .5);
