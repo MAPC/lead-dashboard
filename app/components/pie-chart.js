@@ -70,11 +70,14 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     const { width, height, transitionDuration, tooltipDisplacement } = this.get('chartOptions');
+    const normalizedTitle = this.get('normalizedTitle');
     const colors = this.get('colorManager').colors;
     const metric = this.get('metric');
     const minDim = Math.min(width, height);
 
-    const color = d3.scaleOrdinal([colors.blue, colors.lightGreen, colors.orellow]);
+    const color = d3.scaleOrdinal([colors.orellow, colors.lightGreen, colors.blue]);
+
+    const data = Ember.copy(this.get('data'), true);
 
     const arc = d3.arc()
                   .innerRadius(minDim/3.5)
@@ -84,8 +87,24 @@ export default Ember.Component.extend({
                   .sort(null)
                   .value(d => d.percent);
 
-    const svg = d3.select(`#${this.get('normalizedTitle')}`).select('svg').select('g');
+    const svg = d3.select(`#${normalizedTitle}`).select('svg').select('g');
 
+    const legend = d3.select(`#${normalizedTitle}`)
+                     .append('div')
+                     .attr('class', 'legend')
+                     .append('ul')
+                     .selectAll('li')
+                     .data(fuelTypes)
+                     .enter()
+                     .append('li');
+                    
+    legend.append("span")
+          .attr('class', 'fuel-color')
+          .style('background', d => color(d));
+
+    legend.append('span')
+          .attr('class', 'fuel-name')
+          .html(d => fuelTypesMap[d]);
 
     const tooltip = d3.select('.tooltip-holder')
                       .append('div')
@@ -103,8 +122,6 @@ export default Ember.Component.extend({
     pathInfo.append('div')
            .attr('class', 'value');
 
-
-    const data = Ember.copy(this.get('data'), true);
 
     fuelTypes.forEach(type => data[0][`${type}_tot`] = 0);
 

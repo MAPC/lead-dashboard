@@ -3,15 +3,26 @@
   text-align: center;
 
   .legend {
-    display: none;
+    $square_size: 11px;
+
     position: absolute;
-    top: 0;
-    right: -5%;
+    top: -10%;
+    right: -15%;
+    text-align: left;
 
-    width: 80px;
-    height: 100px;
+    .fuel-color {
+      display: inline-block; 
+      top: $square_size / 10;
 
-    background: #555;
+      width: $square_size;
+      height: $square_size;
+      margin-right: $square_size;
+    }
+
+    .fuel-name {
+      font-size: $square_size + 2;
+      font-weight: 300;
+    }
   }
 
   .tooltip-holder {  
