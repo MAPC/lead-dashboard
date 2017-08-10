@@ -12,6 +12,8 @@ export default Ember.Component.extend({
   criteria: [],
   criteriaColumn: null,
 
+  valueMap: null,
+
   metricMap: {
     'Consumption': 'con_mmbtu',
     'Emissions': 'emissions_co2',
@@ -72,10 +74,16 @@ export default Ember.Component.extend({
      */
     changeChartCriteria(criterion) {
       const criteriaColumn = this.get('criteriaColumn');
+      const valueMap = this.get('valueMap');
       let chartData = this.get('data').rows;
 
       if (criterion !== 'all') {
-        chartData = chartData.filter(row => row[criteriaColumn] === criterion)
+        if (valueMap) {
+          chartData = chartData.filter(row => valueMap[row[criteriaColumn]] === criterion);
+        }
+        else {
+          chartData = chartData.filter(row => row[criteriaColumn] === criterion);
+        }
       }
 
       this.set('chartData', chartData);

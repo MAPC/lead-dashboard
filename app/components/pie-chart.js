@@ -44,14 +44,25 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     const { width, height } = this.get('chartOptions');
+    const normalizedTitle = this.get('normalizedTitle');
 
-    d3.select(`#${this.get('normalizedTitle')}`)
+    d3.select(`#${normalizedTitle}`)
       .append('svg')
       .attr('width', width)
       .attr('height', height)
       .append('g')
       .attr('transform', `translate(${width/2},${height/2})`);
+
+    d3.select(`#${normalizedTitle}`)
+      .append('div')
+      .attr('class', 'legend')
+      .append('ul');
+
+    d3.select('.tooltip-holder')
+      .append('div')
+      .attr('class', 'tooltip');
   },
+
 
   unitTransform(context, val) {
     const metric = context.get('metric');
@@ -90,9 +101,8 @@ export default Ember.Component.extend({
     const svg = d3.select(`#${normalizedTitle}`).select('svg').select('g');
 
     const legend = d3.select(`#${normalizedTitle}`)
-                     .append('div')
-                     .attr('class', 'legend')
-                     .append('ul')
+                     .select('.legend')
+                     .select('ul')
                      .selectAll('li')
                      .data(fuelTypes)
                      .enter()
@@ -138,7 +148,7 @@ export default Ember.Component.extend({
     }
 
     // Get total for all fuel consumption
-    data.cent = fuelTypes.map(type => totals[`${type}_tot`]).reduce((x, y) => x + y);
+    data.cent = fuelTypes.map(type => totals[`${type}_tot`]).reduce((x, y) => x + (y || 0));
 
     const results = fuelTypes.map(type => {
       return {
