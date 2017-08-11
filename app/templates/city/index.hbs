@@ -79,26 +79,59 @@
       </div>
     </h2>
 
-    <div class="comparison-table">
-      <div class="comparison-column">
-        <h5></h5>
-        {{#each fuelNames as |name|}}
-          <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
-        {{/each}}
-      </div>
-      <div class="comparison-column current-muni">
-        <h5>{{uppercase municipality}}</h5>
-        {{#each fuelPercentages as |value|}}
-          <div><span>{{value}}%</span></div>
-        {{/each}}
-      </div>
-      <div class="comparison-column">
-        <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase comparingTo.municipality}}</h5>
-        {{#each comparingTo.values as |value|}}
-          <div><span>{{value}}%</span></div>
-        {{/each}}
-      </div>
-    </div>
+    <div class="comparison-tables">
+    
+      <div class="comparison-table-wrapper">
+        <h4>Percent of Total Energy Emissions</h4>
+
+        <div class="comparison-table">
+          <div class="comparison-column">
+            <h5></h5>
+            {{#each fuelNames as |name|}}
+              <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
+            {{/each}}
+          </div>
+          <div class="comparison-column current-muni">
+            <h5>{{uppercase municipality}}</h5>
+            {{#each fuelPercentages.consumption as |value|}}
+              <div><span>{{value}}%</span></div>
+            {{/each}}
+          </div>
+          <div class="comparison-column">
+            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase comparingTo.municipality}}</h5>
+            {{#each comparingTo.consumption as |value|}}
+              <div><span>{{value}}%</span></div>
+            {{/each}}
+          </div>
+        </div>
+      </div><!--/ .comparison-table-wrapper -->
+
+      <div class="comparison-table-wrapper">
+        <h4>Percent of Total Energy Consumption</h4>
+
+        <div class="comparison-table">
+          <div class="comparison-column">
+            <h5></h5>
+            {{#each fuelNames as |name|}}
+              <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
+            {{/each}}
+          </div>
+          <div class="comparison-column current-muni">
+            <h5>{{uppercase municipality}}</h5>
+            {{#each fuelPercentages.emissions as |value|}}
+              <div><span>{{value}}%</span></div>
+            {{/each}}
+          </div>
+          <div class="comparison-column">
+            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase comparingTo.municipality}}</h5>
+            {{#each comparingTo.emissions as |value|}}
+              <div><span>{{value}}%</span></div>
+            {{/each}}
+          </div>
+        </div>
+      </div><!--/ .comparison-table-wrapper -->
+
+    </div><!--/ .comparison-tables -->
 
   </div><!--/ .overview-compare -->
 

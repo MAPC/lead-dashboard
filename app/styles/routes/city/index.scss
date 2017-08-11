@@ -126,20 +126,16 @@
 
 
   .overview-compare {
-    display: flex;
-
-    padding: 50px 0;
+    padding: 10px 0;
 
     border-top: 3px solid $color_bg-medium;
 
     h2 {
-      flex: 1;
-
-      width: 40%; 
       margin-right: 5%;
 
       .power-select {
-        width: 70%; 
+        display: inline-block;
+        width: 40%; 
 
         div, input { width: 100%; }
       }
@@ -154,9 +150,24 @@
       }
     }
 
+    .comparison-tables {
+      display: flex;
+
+      margin: 50px auto;
+    }
+
+    .comparison-table-wrapper {
+      width: 48%; 
+
+      margin: 0 1%;
+
+      h4 { text-align: center; }
+    }
+
     .comparison-table {
       display: flex;
-      width: 55%; 
+
+      width: 100%;
 
       border: 2px solid $color_bg-medium;
     }

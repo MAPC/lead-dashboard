@@ -67,7 +67,10 @@ export default Ember.Controller.extend({
   fuelPercentages: Ember.computed('fuelTypeData', function() {
     const fuelTypeData = this.get('fuelTypeData');
 
-    return fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumption);
+    return {
+      emissions: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].emissions),
+      consumption: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumption),
+    };
   }),
 
 
@@ -213,7 +216,8 @@ export default Ember.Controller.extend({
         if (munged) {
           const comparingTo = {
             municipality: _comparingTo ,
-            values: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
+            emissions: munged.map(row => row.sectors[row.sectors.length - 1].emissions),
+            consumption: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
           };
 
           this.set('comparingTo', comparingTo);
