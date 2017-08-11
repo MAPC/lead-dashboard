@@ -39,7 +39,7 @@
     left: 130px;
     display: none;
 
-    min-width: 230px;
+    min-width: 240px;
     width: auto;
     padding: 10px;
 
@@ -50,6 +50,22 @@
     background: $color_bg-medium;
     border: 2px solid darken($color_bg-medium, 10);
     box-shadow: 1px 1px 4px rgba($color_font-dark, .1);
+
+    small {
+      display: inline-block;
+      top: 4px;
+
+      font-size: 8px; 
+      margin: 0 0px;
+    }
+
+    span {
+      margin-left: 2px;
+
+      color: lighten($color_font-dark, 10);
+      font-size: 12px;
+      font-weight: 300;
+    }
 
     .path-info {
       padding: 5px 10px;

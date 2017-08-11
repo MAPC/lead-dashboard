@@ -86,13 +86,17 @@ export default Ember.Component.extend({
       
       //If the supplied maxValue is smaller than the actual one, replace by the max in the data
       var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+
+      const allAxis = data.map(d => d.map(i => i.axis))
+                          .reduce((a, b) => a.concat(b));
           
-      var allAxis = (data[0].map(function(i){return i.axis})),    //Names of each axis
+      var uniqueAxis = Array.from((new Set(allAxis))),    //Names of each axis
           total = allAxis.length,                    //The number of different axes
           radius = Math.min(cfg.w/2, cfg.h/2),     //Radius of the outermost circle
           Format = d3.format(','),                 //Percentage formatting
           angleSlice = Math.PI * 2 / total;        //The width in radians of each "slice"
       
+
       //Scale for the radius
       var rScale = d3.scaleLinear()
           .range([0, radius])
@@ -131,34 +135,6 @@ export default Ember.Component.extend({
       
       //Wrapper for the grid & axes
       var axisGrid = g.append("g").attr("class", "axisWrapper");
-      
-      //Draw the background circles
-    /*
-      axisGrid.selectAll(".levels")
-         .data(d3.range(1,(cfg.levels+1)).reverse())
-         .enter()
-          .append("circle")
-          .attr("class", "gridCircle")
-          .attr("r", function(d){return radius/cfg.levels*d;})
-          .style("fill", "#CDCDCD")
-          .style("stroke", "#CDCDCD")
-          .style("fill-opacity", cfg.opacityCircles)
-          .style("filter" , "url(#glow)");
-          */
-
-    /*
-      //Text indicating at what % each level is
-      axisGrid.selectAll(".axisLabel")
-         .data(d3.range(1,(cfg.levels+1)).reverse())
-         .enter().append("text")
-         .attr("class", "axisLabel")
-         .attr("x", 4)
-         .attr("y", function(d){return -d*radius/cfg.levels;})
-         .attr("dy", "0.4em")
-         .style("font-size", "10px")
-         .attr("fill", "#737373")
-         .text(function(d) { return Format(maxValue * d/cfg.levels); });
-         */
 
       /////////////////////////////////////////////////////////
       //////////////////// Draw the axes //////////////////////
@@ -166,7 +142,7 @@ export default Ember.Component.extend({
       
       //Create the straight lines radiating outward from the center
       var axis = axisGrid.selectAll(".axis")
-          .data(allAxis)
+          .data(uniqueAxis)
           .enter()
           .append("g")
           .attr("class", "axis");

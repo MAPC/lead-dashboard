@@ -68,9 +68,9 @@ export default Ember.Component.extend({
     const metric = context.get('metric');
 
     const transforms = {
-      con_mmbtu: val => `${val} mmbtu`,
-      emissions_co2: val => `${val} ppm`,
-      exp_dollar: val => `$${val}`,
+      con_mmbtu: val => `${val} <span>mmbtu</span>`,
+      emissions_co2: val => `${val} <span>lbs CO<small>2</small>e</span>`,
+      exp_dollar: val => `<span>$</span>${val}`,
     };
 
     return transforms[metric](val);
