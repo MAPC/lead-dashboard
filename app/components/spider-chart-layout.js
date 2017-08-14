@@ -17,6 +17,8 @@ export default Ember.Component.extend({
 
   criteria: null,
 
+  sector: null,
+
   municipality: null,
   municipalities: [],
   municipalityList: [],
@@ -79,6 +81,7 @@ export default Ember.Component.extend({
      * @param String municipality 
      */
     addToComparisonList(municipality) {
+      const sector = this.get('sector');
       let list = this.get('comparisonList');
 
       if (list.length < this.get('comparisonLimit')) {
@@ -96,7 +99,7 @@ export default Ember.Component.extend({
 
         // Fetch the data for the selected municipality then add
         this.get('carto')
-            .query(`SELECT * FROM led_commercial WHERE municipal = '${municipality}'`)
+            .query(`SELECT * FROM led_${sector} WHERE municipal = '${municipality}'`)
             .then(response => {
         
               // In order to have Ember components rerender properly, we must
