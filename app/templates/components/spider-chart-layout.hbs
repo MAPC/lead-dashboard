@@ -33,7 +33,12 @@
 
   <div class="comparison-window">
     <div class="spider-chart">
-      {{spider-chart municipality=municipality data=chartData}}
+      {{spider-chart 
+        municipality=municipality 
+        valueMap=valueMap
+        sector=sector 
+        data=chartData
+      }}
     </div>
   </div>
 

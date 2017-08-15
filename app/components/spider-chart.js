@@ -9,6 +9,8 @@ export default Ember.Component.extend({
    */
 
   tagName: '',
+  sector: null,
+  valueMap: null,
   municipality: null,
 
   chartPaddingPercentage: .05,
@@ -54,7 +56,7 @@ export default Ember.Component.extend({
       });
     });
 
-    const mungedNested = nestedData.map(obj => {
+    let mungedNested = nestedData.map(obj => {
       return obj.values.map(obj => {
         return {
           axis: obj.criterion, 
@@ -63,6 +65,10 @@ export default Ember.Component.extend({
         };
       });
     });
+
+    if (this.get('sector') === 'residential') {
+      mungedNested = mungedNested.map(muni => muni.filter(row => row.axis !== 'total'));
+    }
 
     let values = mungedNested.map(town => town.map(data => parseInt(data.value)))
                              .reduce((town, towns) => towns.concat(town));
@@ -98,6 +104,8 @@ export default Ember.Component.extend({
       strokeWidth: 2,         //The width of the stroke around each blob
       roundStrokes: true,    //If true the area and stroke will follow a round path (cardinal-closed)
     };
+
+    const valueMap = this.get('valueMap');
       
       //Put all of the options into a variable called cfg
       if('undefined' !== typeof options){
@@ -188,7 +196,13 @@ export default Ember.Component.extend({
           .attr("dy", "0.35em")
           .attr("x", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.cos(angleSlice*i - Math.PI/2); })
           .attr("y", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice*i - Math.PI/2); })
-          .text(function(d){return d})
+          .text(function(d){
+            if (valueMap) {
+              d = valueMap[d];
+            }
+
+            return d;
+          })
           .call(wrap, cfg.wrapWidth);
 
       /////////////////////////////////////////////////////////
