@@ -19,6 +19,7 @@ export default Ember.Component.extend({
     w: 500,
     h: 500,
     levels: 2,
+    //labelFactor: 1.3,
     roundStrokes: true,
   },
 
