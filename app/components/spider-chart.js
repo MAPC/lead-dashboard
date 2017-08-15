@@ -16,9 +16,9 @@ export default Ember.Component.extend({
   chartPaddingPercentage: .05,
 
   chartOptions: {
-    w: 400,
-    height: 300,
-    levels: 5,
+    w: 500,
+    h: 500,
+    levels: 2,
     roundStrokes: true,
   },
 
@@ -93,7 +93,7 @@ export default Ember.Component.extend({
     var cfg = {
       w: 600,                //Width of the circle
       h: 600,                //Height of the circle
-      margin: {top: 20, right: 20, bottom: 20, left: 20}, //The margins of the SVG
+      margin: {top: 0, right: 0, bottom: 0, left: 0}, //The margins of the SVG
       levels: 3,                //How many levels or inner circles should there be drawn
       maxValue: 0,             //What is the value that the biggest circle will represent
       labelFactor: 1.25,     //How much farther than the radius of the outer circle should the labels be placed
@@ -122,7 +122,7 @@ export default Ember.Component.extend({
           
       var uniqueAxis = Array.from((new Set(allAxis))),    //Names of each axis
           total = uniqueAxis.length,                    //The number of different axes
-          radius = Math.min(cfg.w/2, cfg.h/2),     //Radius of the outermost circle
+          radius = Math.min(cfg.w/3, cfg.h/3),     //Radius of the outermost circle
           Format = d3.format(','),                 //Percentage formatting
           angleSlice = Math.PI * 2 / total;        //The width in radians of each "slice"
       
