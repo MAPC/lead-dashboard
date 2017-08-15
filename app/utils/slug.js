@@ -1,3 +1,5 @@
+import capitalize from './capitalize';
+
 export default function slug(value) {
 
   return {
@@ -6,16 +8,8 @@ export default function slug(value) {
     },
 
     denormalize() {
-      return value.split('-').map(_capitalize).join(' ');
+      return value.split('-').map(capitalize).join(' ');
     }
   };
 
-
-  /**
-   * @private
-   */
-
-  function _capitalize(value) {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
 }
