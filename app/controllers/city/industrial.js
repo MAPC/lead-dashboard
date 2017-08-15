@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
   }),
 
   sectorData: Ember.computed('model', function() {
-    return this.get('model').sectorData;
+    return Ember.copy(this.get('model').sectorData, true);
   }),
 
 
