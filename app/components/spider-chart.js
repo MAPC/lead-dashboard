@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   valueMap: null,
   municipality: null,
 
-  chartPaddingPercentage: .05,
+  chartPaddingPercentage: .1,
 
   chartOptions: {
     w: 500,
@@ -183,8 +183,8 @@ export default Ember.Component.extend({
       axis.append("line")
           .attr("x1", 0)
           .attr("y1", 0)
-          .attr("x2", function(d, i){ return rScale(maxValue*1.1) * Math.cos(angleSlice*i - Math.PI/2); })
-          .attr("y2", function(d, i){ return rScale(maxValue*1.1) * Math.sin(angleSlice*i - Math.PI/2); })
+          .attr("x2", function(d, i){ return rScale(maxValue) * Math.cos(angleSlice*i - Math.PI/2); })
+          .attr("y2", function(d, i){ return rScale(maxValue) * Math.sin(angleSlice*i - Math.PI/2); })
           .attr("class", "line")
           .style("stroke", '#ddd')
           .style("stroke-width", "1px");
