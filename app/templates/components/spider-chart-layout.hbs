@@ -32,6 +32,7 @@
   </div><!--/ .comparison-selector -->
 
   <div class="comparison-window">
+
     <div class="spider-chart">
       {{spider-chart 
         municipality=municipality 
@@ -40,6 +41,16 @@
         data=chartData
       }}
     </div>
-  </div>
+
+    <div class="callout">
+      <div class="callout-content">
+        <h3>How does {{municipality}} compare?</h3>
+        <p>{{analysis.consumption}}</p>
+        <p>{{analysis.emissions}}</p>
+        <p>{{analysis.cost}}</p>
+      </div>
+    </div>
+
+  </div><!--/ .comparison-window -->
 
 </section>

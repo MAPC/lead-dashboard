@@ -1,7 +1,7 @@
 .component.spider-chart-layout {
 
   width: 100%;
-  padding: 25px;
+  padding: 25px 0;
 
   .comparison-selector {
     margin-bottom: 40px;
@@ -71,7 +71,28 @@
     width: 100%;
 
     .spider-chart {
-      width: 40%;
+      width: 55%;
+    }
+
+    .callout {
+      width: 45%;
+
+      .callout-content {
+        padding: 25px;
+
+        color: $color_font-light;
+        background: $color_brand-primary;//--light;
+
+        h3 {
+          margin: 0; 
+
+          font-size: 22px;
+        }
+
+        p {
+        
+        }
+      }
     }
   }
 

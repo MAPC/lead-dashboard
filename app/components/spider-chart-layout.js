@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import d3 from "npm:d3";
 import fuelTypes from '../utils/fuel-types';
 
 export default Ember.Component.extend({
@@ -18,6 +19,12 @@ export default Ember.Component.extend({
   criteria: null,
 
   sector: null,
+
+  analysis: {
+    consumption: '',
+    emissions: '',
+    cost: '',
+  },
 
   municipality: null,
   municipalities: [],
@@ -72,6 +79,17 @@ export default Ember.Component.extend({
     });
 
     this.set('chartData', munged);
+    this.updateTextAnalysis();
+  },
+
+
+  updateTextAnalysis() {
+    const chartData = this.get('chartData');
+
+    const nestedData = d3.nest()
+                         .key(d => d.municipal)
+                         .entries(chartData);
+
   },
 
 
@@ -137,8 +155,8 @@ export default Ember.Component.extend({
       this.set('data', data);
 
       this.updateCharts();
-    }
-  
+    },
+
   }
 
 });

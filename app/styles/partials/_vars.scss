@@ -7,6 +7,7 @@ $color_brand-primary: #1D74F2;
 $color_brand-secondary: #13e3bc;
 $color_brand-tertiary: #9176e3;
 
+$color_brand-primary--light: lighten($color_brand-primary, 10);
 $color_brand-primary--dark: darken($color_brand-primary, 25);
 
 $color_brand-primary--hover: mix(black, $color_brand-primary, 10);
