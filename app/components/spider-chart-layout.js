@@ -73,7 +73,13 @@ export default Ember.Component.extend({
       row.color = this.get('colorManager').colorFor(row.municipal, beingViewed);
 
       row.totalConsumption = 0;
-      fuelTypes.forEach(type => row.totalConsumption += row[`${type}_con_mmbtu`]);
+      row.totalEmissions = 0;
+      row.totalCost = 0;
+      fuelTypes.forEach(type => {
+        row.totalConsumption += row[`${type}_con_mmbtu`];
+        row.totalEmissions += row[`${type}_emissions_co2`];
+        row.totalCost += row[`${type}_exp_dollar`];
+      });
 
       return row;
     });
@@ -84,11 +90,25 @@ export default Ember.Component.extend({
 
 
   updateTextAnalysis() {
-    const chartData = this.get('chartData');
+    const chartData = Ember.copy(this.get('chartData'), true);
 
     const nestedData = d3.nest()
                          .key(d => d.municipal)
                          .entries(chartData);
+
+    const aggregateData = nestedData.map(muniSet => {
+      const aggregate = muniSet.values.reduce((a,b) => {
+        const values = {};
+
+        ['totalConsumption', 'totalEmissions', 'totalCost'].forEach(col => {
+          values[col] = a[col] + b[col];
+        });
+
+        return values;
+      });
+
+      return {municipal: muniSet.key, values: aggregate};
+    });
 
   },
 
