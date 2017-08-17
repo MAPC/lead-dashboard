@@ -45,9 +45,12 @@
     <div class="callout">
       <div class="callout-content">
         <h3>How does {{municipality}} compare?</h3>
-        <p>{{analysis.consumption}}</p>
-        <p>{{analysis.emissions}}</p>
-        <p>{{analysis.cost}}</p>
+
+        {{#if showingAnalysis}}
+          <p>{{analysis.consumption}}</p>
+          <p>{{analysis.emissions}}</p>
+          <p>{{analysis.cost}}</p>
+        {{/if}}
       </div>
     </div>
 

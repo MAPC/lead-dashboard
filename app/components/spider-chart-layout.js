@@ -27,6 +27,8 @@ export default Ember.Component.extend({
     cost: '',
   },
 
+  showingAnalysis: false,
+
   municipality: null,
   municipalities: [],
   municipalityList: [],
@@ -113,59 +115,68 @@ export default Ember.Component.extend({
 
     const currentMuni = aggregateData.shift();
 
-    const analysis = {
-      consumption: `${currentMuni.municipal} consumes `,
-      emissions: `${currentMuni.municipal} emits `,
-      cost: `${currentMuni.municipal} spends `,
-    };
+    if (aggregateData.length === 0) {
+      this.set('showingAnalysis', false) ;
+    }
+    else {
+    
+      const analysis = {
+        consumption: `${currentMuni.municipal} consumes `,
+        emissions: `${currentMuni.municipal} emits `,
+        cost: `${currentMuni.municipal} spends `,
+      };
 
 
-    Object.keys(analysis).forEach(metric => {
-      const metricString = `total${capitalize(metric)}`;
-       
-      analysis[metric] = aggregateData.reduce((a,b) => {
-        var comparison = '',
-            percent = null,
-            bValue = b.values[metricString],
-            currentMuniValue = currentMuni.values[metricString];
+      Object.keys(analysis).forEach(metric => {
+        const metricString = `total${capitalize(metric)}`;
+         
+        // Generate the string analysis
+        analysis[metric] = aggregateData.reduce((a,b) => {
+          var comparison = '',
+              percent = null,
+              bValue = b.values[metricString],
+              currentMuniValue = currentMuni.values[metricString];
 
-        if (bValue > currentMuniValue) {
-          percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
-          comparison = `${percent}% less than ${b.municipal}`; 
+          if (bValue > currentMuniValue) {
+            percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
+            comparison = `${percent}% less than ${b.municipal}`; 
+          }
+          else if (bValue < currentMuniValue) {
+            percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
+            comparison = `${percent}% more than ${b.municipal}`;
+          }
+          else {
+            comparison = `the same ammount as ${b.municipal}`;
+          }
+
+          return `${a} ${comparison},`;
+        }, analysis[metric]);
+
+
+        // Format the string with proper grammar
+        const split = analysis[metric].split(',');
+
+        if (split.length !== 1) {
+          split.pop(); // Remove trailing comma
+          let lastComparison = split.pop() + '.';
+
+          if (split.length !== 0) {
+            lastComparison = ` and ${lastComparison}`;
+          }
+
+          if (split.length === 1) {
+            lastComparison = `${split.pop()}${lastComparison}`;
+          }
+
+          split.push(lastComparison);
         }
-        else if (bValue < currentMuniValue) {
-          percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
-          comparison = `${percent}% more than ${b.municipal}`;
-        }
-        else {
-          comparison = `the same ammount as ${b.municipal}`;
-        }
 
-        return `${a} ${comparison},`;
-      }, analysis[metric]);
+        analysis[metric] = split.join(',');
+      });
 
-      const split = analysis[metric].split(',');
-
-      if (split.length !== 1) {
-        split.pop();
-        let lastComparison = split.pop() + '.';
-
-        if (split.length !== 0) {
-          lastComparison = ` and ${lastComparison}`;
-        }
-
-        if (split.length === 1) {
-          lastComparison = `${split.pop()}${lastComparison}`;
-        }
-
-        split.push(lastComparison);
-      }
-
-      analysis[metric] = split.join(',');
-    });
-
-
-    this.set('analysis', analysis);
+      this.set('analysis', analysis);
+      this.set('showingAnalysis', true);
+    }
   },
 
 
