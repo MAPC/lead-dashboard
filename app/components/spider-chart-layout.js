@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import d3 from "npm:d3";
 import fuelTypes from '../utils/fuel-types';
+import capitalize from '../utils/capitalize';
 
 export default Ember.Component.extend({
 
@@ -110,6 +111,61 @@ export default Ember.Component.extend({
       return {municipal: muniSet.key, values: aggregate};
     });
 
+    const currentMuni = aggregateData.shift();
+
+    const analysis = {
+      consumption: `${currentMuni.municipal} consumes `,
+      emissions: `${currentMuni.municipal} emits `,
+      cost: `${currentMuni.municipal} spends `,
+    };
+
+
+    Object.keys(analysis).forEach(metric => {
+      const metricString = `total${capitalize(metric)}`;
+       
+      analysis[metric] = aggregateData.reduce((a,b) => {
+        var comparison = '',
+            percent = null,
+            bValue = b.values[metricString],
+            currentMuniValue = currentMuni.values[metricString];
+
+        if (bValue > currentMuniValue) {
+          percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
+          comparison = `${percent}% less than ${b.municipal}`; 
+        }
+        else if (bValue < currentMuniValue) {
+          percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
+          comparison = `${percent}% more than ${b.municipal}`;
+        }
+        else {
+          comparison = `the same ammount as ${b.municipal}`;
+        }
+
+        return `${a} ${comparison},`;
+      }, analysis[metric]);
+
+      const split = analysis[metric].split(',');
+
+      if (split.length !== 1) {
+        split.pop();
+        let lastComparison = split.pop() + '.';
+
+        if (split.length !== 0) {
+          lastComparison = ` and ${lastComparison}`;
+        }
+
+        if (split.length === 1) {
+          lastComparison = `${split.pop()}${lastComparison}`;
+        }
+
+        split.push(lastComparison);
+      }
+
+      analysis[metric] = split.join(',');
+    });
+
+
+    this.set('analysis', analysis);
   },
 
 
