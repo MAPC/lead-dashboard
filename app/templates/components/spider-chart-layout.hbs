@@ -47,9 +47,11 @@
         <h3>How does {{municipality}} compare?</h3>
 
         {{#if showingAnalysis}}
-          <p>{{{analysis.consumption}}}</p>
-          <p>{{{analysis.emissions}}}</p>
-          <p>{{{analysis.cost}}}</p>
+          <div class="callout-comparisons">
+            <p>{{{analysis.consumption}}}</p>
+            <p>{{{analysis.emissions}}}</p>
+            <p>{{{analysis.cost}}}</p>
+          </div>
         {{/if}}
       </div>
     </div>

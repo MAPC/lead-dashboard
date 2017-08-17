@@ -78,19 +78,24 @@
       width: 45%;
 
       .callout-content {
-        padding: 25px;
 
-        color: $color_font-light;
-        background: $color_brand-primary;//--light;
+        color: $color_font-dark;
+        background: $color_bg-medium;
 
         h3 {
+          width: 100%;
           margin: 0; 
+          padding: 10px 25px;
 
+          color: $color_font-light;
           font-size: 22px;
+          background: $color_brand-primary;
         }
 
-        p {
-        
+        span { font-weight: 700; }        
+
+        .callout-comparisons {
+          padding: 10px 25px; 
         }
       }
     }

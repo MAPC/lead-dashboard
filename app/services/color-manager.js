@@ -14,7 +14,7 @@ export default Ember.Service.extend({
     lightBlue: '#11cfff',
     red: '#f44b36',
     pink: '#f43673',
-    millenial: '#f9c9c9',
+    //millenial: '#f9c9c9',
     blue: '#1D74F2',
     lightGreen: '#13e3bc',
     orellow: '#f4af5a',
