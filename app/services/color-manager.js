@@ -27,12 +27,26 @@ export default Ember.Service.extend({
 
   assignedColors: {},
 
+  cached: {
+    viewed: null,
+  },
+
 
   /**
    * Methods
    */
 
-  colorFor(municipality, viewed = []) {
+  colorFor(municipality, viewed) {
+    const cached = this.get('cached');
+
+    if (viewed) {
+      cached.viewed = viewed;
+      this.set('cached', cached);
+    }
+    else {
+      viewed = cached.viewed;
+    }
+
     const colors = this.get('assignedColors');
     const colorPool = this.get('colorPool');
 

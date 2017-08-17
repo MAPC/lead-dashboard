@@ -94,6 +94,7 @@ export default Ember.Component.extend({
 
   updateTextAnalysis() {
     const chartData = Ember.copy(this.get('chartData'), true);
+    const colorManager = this.get('colorManager');
 
     const nestedData = d3.nest()
                          .key(d => d.municipal)
@@ -134,19 +135,21 @@ export default Ember.Component.extend({
         analysis[metric] = aggregateData.reduce((a,b) => {
           var comparison = '',
               percent = null,
+              bColor = colorManager.colorFor(b.municipal),
+              bString = Ember.String.htmlSafe(`<span style="color: ${bColor};">${b.municipal}</span>`),
               bValue = b.values[metricString],
               currentMuniValue = currentMuni.values[metricString];
 
           if (bValue > currentMuniValue) {
             percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
-            comparison = `${percent}% less than ${b.municipal}`; 
+            comparison = `${percent}% less than ${bString}`; 
           }
           else if (bValue < currentMuniValue) {
             percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
-            comparison = `${percent}% more than ${b.municipal}`;
+            comparison = `${percent}% more than ${bString}`;
           }
           else {
-            comparison = `the same ammount as ${b.municipal}`;
+            comparison = `the same ammount as ${bString}`;
           }
 
           return `${a} ${comparison},`;
