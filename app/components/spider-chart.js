@@ -12,6 +12,7 @@ export default Ember.Component.extend({
   sector: null,
   valueMap: null,
   municipality: null,
+  mungedNested: [],
 
   chartPaddingPercentage: .1,
 
@@ -23,12 +24,39 @@ export default Ember.Component.extend({
     roundStrokes: true,
   },
 
+  init() {
+    this._super(...arguments);
+
+    this.calculateChartDimensions();
+
+    Ember.$(window).resize(() => {
+      this.calculateChartDimensions(true);
+    });
+  },
+
+  calculateChartDimensions(render = false) {
+    const chartOptions = this.get('chartOptions');
+
+    const size = (window.innerWidth > 600) ? 500 : 360;
+
+    chartOptions.w = size;
+    chartOptions.h = size;
+
+    this.set('chartOptions', chartOptions);
+
+    if (render)  {
+      const chartTitle = slug(this.get('municipality')).normalize();
+
+      this.radarChart(`#${chartTitle}`, chartOptions);
+    }
+  },
+
 
   /**
    * Methods
    */
 
-  didRender() {
+  didInsertElement() {
     const chartOptions = this.get('chartOptions');
     const data = this.get('data');
 
@@ -78,18 +106,21 @@ export default Ember.Component.extend({
     chartOptions.maxValue = maxValue + (maxValue * this.get('chartPaddingPercentage'));
 
     const chartTitle = slug(this.get('municipality')).normalize();
-  
-    this.radarChart(`#${chartTitle}`, mungedNested, chartOptions);
+
+    this.set('mungedNested', mungedNested);
+    this.radarChart(`#${chartTitle}`, chartOptions);
   },
 
 
-  radarChart(id, data, options) {
+  radarChart(id, options) {
     /////////////////////////////////////////////////////////
     /////////////// The Radar Chart Function ////////////////
     /////////////// Written by Nadieh Bremer ////////////////
     ////////////////// VisualCinnamon.com ///////////////////
     /////////// Inspired by the code of alangrafu ///////////
     /////////////////////////////////////////////////////////
+
+    const data = this.get('mungedNested');
       
     var cfg = {
       w: 600,                //Width of the circle
@@ -123,7 +154,7 @@ export default Ember.Component.extend({
           
       var uniqueAxis = Array.from((new Set(allAxis))),    //Names of each axis
           total = uniqueAxis.length,                    //The number of different axes
-          radius = Math.min(cfg.w/3, cfg.h/3),     //Radius of the outermost circle
+          radius = Math.min(cfg.w/3.1, cfg.h/3.1),     //Radius of the outermost circle
           Format = d3.format(','),                 //Percentage formatting
           angleSlice = Math.PI * 2 / total;        //The width in radians of each "slice"
       
