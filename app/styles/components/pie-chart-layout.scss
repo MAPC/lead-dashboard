@@ -3,7 +3,7 @@
 
   margin: 60px auto;
 
-  @include media('medium') { margin: 30px auto; }
+  @include media('medium') { margin: 30px auto 50px; }
 
   @include media('medium-small') {
     display: block;
