@@ -37,6 +37,40 @@ export default Ember.Component.extend({
     this._super(...arguments) ;
 
     this.set('normalizedTitle', slug(this.get('title')).normalize());
+
+    this.calculateChartDimensions();
+
+    Ember.$(window).resize(() => {
+      this.calculateChartDimensions(true);
+    });
+  },
+
+  calculateChartDimensions(render = false) {
+    const chartOptions = this.get('chartOptions');
+
+    const size = (window.innerWidth > 670) ? 320 : 240;
+
+    chartOptions.width = size;
+    chartOptions.height = size;
+
+    this.set('chartOptions', chartOptions);
+
+    if (render)  {
+      this.resizeSVGElement(size);
+
+      this.didRender();
+    }
+  },
+
+  resizeSVGElement(size) {
+    const normalizedTitle = this.get('normalizedTitle');
+
+    d3.select(`#${normalizedTitle}`)
+      .select('svg')
+      .attr('width', size)
+      .attr('height', size)
+      .select('g')
+      .attr('transform', `translate(${size/2},${size/2})`);
   },
 
 
@@ -48,10 +82,9 @@ export default Ember.Component.extend({
 
     d3.select(`#${normalizedTitle}`)
       .append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .append('g')
-      .attr('transform', `translate(${width/2},${height/2})`);
+      .append('g');
+
+    this.resizeSVGElement(Math.max(width, height));
 
     d3.select(`#${normalizedTitle}`)
       .append('div')

@@ -1,24 +1,70 @@
 .component.pie-chart-layout {
-
   display: flex;
 
   margin: 60px auto;
 
+  @include media('medium') { margin: 30px auto; }
+
+  @include media('medium-small') {
+    display: block;
+    width: 100%;
+  }
+
   .chart-modifiers {
     width: 50%;
 
+    @include media('medium-small') {
+      width: $layout_content-width--full;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
     h4 {
-      margin-bottom: 0;
+      margin-bottom: 10px;
 
       font-size: 28px; 
+
+      @include media('medium') { font-size: 26px; }
+      @include media('medium-small') { font-size: 28px; }
+      @include media('small') { 
+        font-size: 24px; 
+
+        .ember-power-select-trigger { 
+          width: 200px;
+
+          font-size: 24px; 
+        }
+      }
+      @include media('x-small') { 
+        font-size: 20px; 
+
+        .ember-power-select-trigger { 
+          width: 180px;
+
+          font-size: 20px; 
+        }
+      }
     }
 
     h5 {
-      margin-top: 0;
+      margin-top: 0px;
 
       color: $color_brand-secondary;
       font-size: 20px;  
       font-weight: 300;
+
+      @include media('medium') { font-size: 18px; }
+      @include media('medium-small') {
+        margin-bottom: 10px;
+
+        font-size: 20px; 
+      }
+      @include media('small') { font-size: 18px; }
+      @include media('x-small') { 
+        margin-bottom: 0;
+
+        font-size: 16px; 
+      }
     }
 
     .criteria-selector {
@@ -27,6 +73,11 @@
 
         margin-right: 10px;
         font-size: 20px;
+
+        @include media('medium') { font-size: 18px; }
+        @include media('medium-small') { font-size: 20px; }
+        @include media('small') { font-size: 18px; }
+        @include media('x-small') { font-size: 16px; }
       } 
     }
   }
@@ -34,6 +85,10 @@
   .chart-wrapper {
     width: 50%;
     padding-top: 50px;
+
+    @include media('medium-small') {
+      width: 100%; 
+    }
   }
 
 }

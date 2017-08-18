@@ -4,11 +4,24 @@
 
   .legend {
     $square_size: 11px;
+    $square_size--small: $square_size - 2px;
 
     position: absolute;
     top: -10%;
     right: 0;
     text-align: left;
+
+    @include media('medium-small') {
+      right: 10%; 
+    }
+
+    @include media('x-small') {
+      top: -15%;
+      right: 5%; 
+
+      ul { margin: 5px auto; }
+      li { margin: -3px auto; }
+    }
 
     .fuel-color {
       display: inline-block; 
@@ -17,11 +30,21 @@
       width: $square_size;
       height: $square_size;
       margin-right: $square_size;
+
+      @include media('small') {
+        width: $square_size--small;
+        height: $square_size--small;
+        margin-right: $square_size--small;
+      }
     }
 
     .fuel-name {
       font-size: $square_size + 2;
       font-weight: 300;
+
+      @include media('small') {
+        font-size: $square_size--small + 2;
+      }
     }
   }
 
@@ -51,6 +74,8 @@
     border: 2px solid darken($color_bg-medium, 10);
     box-shadow: 1px 1px 4px rgba($color_font-dark, .1);
 
+    @include media('medium-small') { padding: 4px; }
+
     small {
       display: inline-block;
       top: 4px;
@@ -70,11 +95,15 @@
     .path-info {
       padding: 5px 10px;
 
+      @include media('medium-small') { padding: 3px 8px; }
+
       .fuel-type { 
         margin-top: -2px;
 
         font-size: 16px;
         font-weight: 700; 
+
+        @include media('medium-small') { font-size: 15px; }
       }
     }
 
@@ -88,6 +117,10 @@
       font-size: 30px; 
 
       border-right: 2px solid darken($color_bg-medium, 8);
+
+      @include media('medium-small') {
+        font-size: 26px;
+      } 
     }
   }
 

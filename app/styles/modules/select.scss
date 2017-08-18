@@ -1,6 +1,7 @@
 .select-wrapper {
   display: inline-block;
   $arrow_size: 10px;
+  $arrow_size--small: $arrow_size - 3;
 
   select {
     -webkit-appearance: none;
@@ -22,6 +23,14 @@
 
     outline: none;
     cursor: pointer;
+
+    @include media('medium') {
+      padding: 4px 6px; 
+      padding-right: ($arrow_size--small * 2);
+
+      font-size: 14px;
+    }
+    @include media('small') { font-size: 12px; }
   }
 
   &:after {
@@ -40,6 +49,10 @@
     border-color: $color_font-medium transparent transparent;
 
     transition: border-top-color .15s;
+
+    @include media('medium') {
+      border-width:  $arrow_size--small ($arrow_size--small / 1.5);
+    }
   }
 
   &:hover {
