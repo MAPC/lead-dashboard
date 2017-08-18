@@ -3,7 +3,7 @@
   @if $size == 'x-small' {
     @media (max-width: 480px) { @content; }
   } @else if $size == 'small' {
-    @media (max-width: 650px) { @content; }
+    @media (max-width: 670px) { @content; }
   } @else if $size == 'medium-small' {
     @media (max-width: 960px) { @content; }
   } @else if $size == 'medium' {
