@@ -5,9 +5,9 @@
   } @else if $size == 'small' {
     @media (max-width: 650px) { @content; }
   } @else if $size == 'medium-small' {
-    @media (max-width: 985px) { @content; }
+    @media (max-width: 960px) { @content; }
   } @else if $size == 'medium' {
-    @media (max-width: 1207px) { @content; }
+    @media (max-width: 1180px) { @content; }
   } @else if $size == 'large' {
     @media (max-width: 1280px) { @content; }
   } @else if $size == 'x-large' {
