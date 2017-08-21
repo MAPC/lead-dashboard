@@ -2,9 +2,11 @@
 
   <nav class="city-nav">
 
-    {{#link-to 'index' class="home-button"}}
-      <img src="/assets/images/house.svg">  
-    {{/link-to}}
+    <div class="home-button-wrapper">
+      {{#link-to 'index' class="home-button"}}
+        <img src="/assets/images/house.svg">  
+      {{/link-to}}
+    </div>
 
     <ul>
       <li><span>{{model.municipality}}</span></li>

@@ -21,6 +21,14 @@
       height: $layout_nav-height--small;
     }
 
+    .home-button-wrapper {
+      z-index: 50;
+
+      min-width: $layout_nav-height + 10px; 
+
+      box-shadow: 0 0 20px 20px $color_bg-light;
+    }
+
     .home-button {
       box-sizing: initial;
       display: flex;
