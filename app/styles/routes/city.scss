@@ -5,6 +5,7 @@
     top: 0;
     left: 0;
     z-index: 999;
+    display: flex;
 
     width: 100%;
     height: $layout_nav-height;
@@ -14,15 +15,18 @@
     border-bottom: 1px solid $color_bg-medium;
 
     animation: slideIn 0.2s;
+    overflow: hidden;
+
+    @include media('small') {
+      height: $layout_nav-height--small;
+    }
 
     .home-button {
-      position: absolute;
-      top: 0;
-      left: 0;
       box-sizing: initial;
       display: flex;
 
       width: $layout_nav-height;
+      min-width: $layout_nav-height;
       height: $layout_nav-height;
 
       text-align: center;
@@ -31,6 +35,12 @@
       border-left: 0px solid $color_brand-primary--dark;
 
       transition: border-width .2s;
+
+      @include media('small') {
+        width: $layout_nav-height--small;
+        min-width: $layout_nav-height--small;
+        height: $layout_nav-height--small;
+      }
 
       &:hover {
         border-width: 10px;
@@ -49,20 +59,17 @@
 
       display: flex;
 
-      height: $layout_nav-height;
+      height: $layout_nav-height + 17px;
 
-      overflow: hidden;
+      overflow-x: scroll;
 
-      @include media('medium-small') {
-        position: absolute;
-        top: 0;
-
-        height: 100%; 
-      }
+      @include media('small') { height: $layout_nav-height--small + 17px; }
     }
 
     li {
       flex: 1;
+
+      min-width: 130px;
 
       text-align: center;
 
@@ -71,14 +78,17 @@
 
       a, span {
         @extend ._vertical-center;
+        top: calc(50% - 13px);
 
-        color: $color_brand-primary;
         font-size: 18px;
+
+        @include media('small') { font-size: 16px; }
       }
 
       a {
         $trans_duration: .2s;
 
+        color: $color_brand-primary;
         transition: color $trans_duration;
 
         &:after {
@@ -103,6 +113,10 @@
           &:after {
             height: $layout_nav-height - 17px;
             transition: height $trans_duration;
+
+            @include media('small') {
+              height: $layout_nav-height--small - 13px;
+            }
           }
         }
 
@@ -110,6 +124,11 @@
           font-weight: 700;
         }
       }
+
+      span { 
+        font-weight: 300;
+      }
+
     }
   }
 
@@ -117,6 +136,8 @@
     min-height: 100vh;
     height: 100%;
     padding-top: $layout_nav-height;
+
+    @include media('small') { padding-top: $layout_nav-height--small; }
   }
 
   .city-information {
