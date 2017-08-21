@@ -36,8 +36,7 @@ export default Ember.Component.extend({
 
   calculateChartDimensions(render = false) {
     const chartOptions = this.get('chartOptions');
-
-    const size = (window.innerWidth > 600) ? 500 : 360;
+    const size = (window.innerWidth > 600) ? 500 : 330;
 
     chartOptions.w = size;
     chartOptions.h = size;

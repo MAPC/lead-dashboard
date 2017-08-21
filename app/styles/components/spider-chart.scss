@@ -1,13 +1,15 @@
 .component.spider-chart {
   flex: 1;
 
-  //width: 33.33%;
-
   text-align: center;
 
   text.legend {
     fill: $color_font-dark;
     font-size: 10px !important;
     font-weight: 300;
+
+    @include media('small') {
+      font-size: 9px !important;  
+    }
   }
 }
