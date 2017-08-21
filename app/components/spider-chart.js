@@ -55,9 +55,9 @@ export default Ember.Component.extend({
    * Methods
    */
 
-  didInsertElement() {
+  didRender() {
     const chartOptions = this.get('chartOptions');
-    const data = this.get('data');
+    const data = Ember.copy(this.get('data'), true);
 
     const allAxis = Array.from(new Set(data.map(d => d.criterion)));
 

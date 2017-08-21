@@ -131,12 +131,20 @@
           color: $color_font-light;
           font-size: 22px;
           background: $color_brand-primary;
+
+          @include media('small') {
+            font-size: 18px; 
+          }
         }
 
         span { font-weight: 700; }        
 
         .callout-comparisons {
           padding: 10px 25px; 
+
+          @include media('small') {
+            font-size: 15px;
+          }
         }
       }
     }
