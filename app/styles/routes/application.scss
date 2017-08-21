@@ -15,11 +15,20 @@
 
     text-align: left;
 
+    @include media('medium-small') { width: 95%; }
+
     h1 {
       $box_size: 20px;
+      $box_size--medium-small: 15px;
 
       padding-left: $box_size * 4;
       margin-top: 30px;
+
+      @include media('medium-small') { 
+        padding-left: $box_size--medium-small * 4;
+
+        font-size: 25px; 
+      }
 
       span { 
         top: -2px;
@@ -29,6 +38,12 @@
         color: lighten($color_font-dark, 10);
         font-size: 24px;
         font-weight: 100; 
+
+        @include media('medium-small') {
+          top: 0;
+
+          font-size: 21px; 
+        }
       }
 
       &:before {
@@ -44,6 +59,12 @@
         border-color: $color_brand-primary transparent transparent;
         border-width: $box_size ($box_size * 1.2);
         transform: rotate(-120deg);
+
+        @include media('medium-small') {
+          top: 30%;
+          left: 28px;
+          border-width: $box_size--medium-small ($box_size--medium-small * 1.2);
+        }
       }
 
       &:after {
@@ -58,6 +79,10 @@
         border-color: $color_brand-primary--dark transparent transparent;
         border-width: $box_size ($box_size * 1.2);
         transform: rotate(70deg);
+
+        @include media('medium-small') {
+          border-width: $box_size--medium-small ($box_size--medium-small * 1.2);
+        }
       }
     }
   }
@@ -68,6 +93,10 @@
     right: 0;
     top: 55%;
 
+    @include media('medium-small') {
+      top: 60%; 
+    }
+
     li {
       display: inline-block;
 
@@ -75,6 +104,13 @@
       padding-bottom: 8px;
 
       border-bottom: 2px solid $color_brand-primary;
+
+      @include media('medium-small') {
+        margin: 0 10px;
+        padding-bottom: 5px; 
+
+        font-size: 14px;
+      }
     }
   }
 
@@ -98,12 +134,23 @@
       z-index: 10;
 
       margin-right: 20px;
+
+      @include media('medium-small') {
+        top: 15px;
+
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
     }
 
     .power-select {
       display: inline-block;
       width: calc(100% - 60px);
       max-width: 780px;
+
+      @include media('medium') { max-width: 690px; }
+      @include media('medium-small') { max-width: 530px; }
     }
   }
 

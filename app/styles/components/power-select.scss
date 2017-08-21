@@ -47,6 +47,7 @@
     outline: none;
     cursor: pointer;
     transition: border-color $transition_time;
+    border-radius: 0;
 
     &:hover {
       border-color: rgba($color_brand-primary--hover, 1);
@@ -59,6 +60,13 @@
 
         transition: top $transition_time / 2, border-top-color $transition_time;
       }
+    }
+
+    @include media('medium') { font-size: 26px; }
+    @include media('medium-small') { 
+      padding: 6px 0px 4px;
+
+      font-size: 20px; 
     }
 
     &[aria-expanded="true"] {
