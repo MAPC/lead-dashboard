@@ -8,6 +8,14 @@
 
     & > * { display: inline-block; }
 
+    @include media('small') {
+      margin-bottom: 20px; 
+
+      .selection-box {
+        font-size: 14px; 
+      }
+    }
+
     .power-select {
       display: inline-block; 
       top: 5px;
@@ -19,6 +27,10 @@
         width: 100%;
 
         font-size: 16px;
+
+        @include media('small') {
+          font-size: 14px; 
+        }
       }
 
       #power-select-destination {
@@ -40,6 +52,15 @@
         background: $color_bg-medium; 
 
         border-bottom: 3px solid darken($color_bg-medium, 10);
+
+        @include media('small') {
+          margin: 15px 2px 8px;
+          padding: 3px 30px 5px 10px;
+
+          font-size: 14px;
+
+          border-bottom-width: 3px;
+        }
       }
 
       span.remove {
@@ -59,6 +80,10 @@
           color: lighten($color_font-dark, 30);
 
           transition: color .15s;
+        }
+
+        @include media('medium-small') {
+          font-size: 16px; 
         }
       }
     }
