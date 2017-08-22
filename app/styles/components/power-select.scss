@@ -111,6 +111,20 @@
 
     width: 240px; 
     padding: 4px 1px 0px;
+  }
+
+  .ember-power-select-selected-item {
+    margin-left: 2px;
+  }
+}
+
+.route.city-index {
+
+  .ember-power-select-trigger {
+    display: inline-block;
+
+    width: 240px; 
+    padding: 4px 1px 0px;
 
     font-size: 24px;
 
@@ -121,8 +135,12 @@
     }
   }
 
-  .ember-power-select-selected-item {
-    margin-left: 2px;
-  }
+}
 
+.power-select {
+  #power-select-destination {
+    .ember-power-select-dropdown {
+      top: 0 !important;   
+    } 
+  }
 }

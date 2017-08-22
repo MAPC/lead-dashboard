@@ -180,6 +180,8 @@
       width: calc(100% - 60px);
       max-width: 780px;
 
+      text-align: left;
+
       @include media('medium') { max-width: 690px; }
       @include media('medium-small') { max-width: 530px; }
       @include media('small') { max-width: 550px; }

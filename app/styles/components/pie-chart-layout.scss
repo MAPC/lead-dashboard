@@ -24,6 +24,11 @@
 
       font-size: 28px; 
 
+      .ember-power-select-trigger {
+        top: 2px; 
+        font-size: 28px;
+      }
+
       @include media('medium') { font-size: 26px; }
       @include media('medium-small') { font-size: 28px; }
       @include media('small') { 

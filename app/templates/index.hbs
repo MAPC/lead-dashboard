@@ -31,11 +31,14 @@
         {{#power-select
           options=municipalities   
           selected=placeholder
+          destination="power-select-destination"
           onchange=(action 'toMunicipality')
           as |municipality|
         }}
           {{municipality}}
         {{/power-select}}
+
+        <div id="power-select-destination"></div>
       </div>
     </div>
   </div>
