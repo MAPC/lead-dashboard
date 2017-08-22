@@ -110,15 +110,6 @@
     @include media('medium-small') {
       top: 60%; 
     }
-    @include media('small') { 
-      position: fixed;
-      top: 70%;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-
-      text-align: center;
-    }
 
     li {
       display: inline-block;
@@ -134,6 +125,22 @@
 
         font-size: 14px;
       }
+    }
+
+    &.header-nav {
+      @include media('small') { display: none; }
+    }
+
+    &.footer-nav {
+      display: none; 
+      top: 45%;
+
+      li { 
+        font-size: 12px; 
+        border-bottom: 1px solid $color_brand-primary;
+      }
+
+      @include media('small') { display: block; }
     }
   }
 
@@ -184,7 +191,6 @@
 
       @include media('medium') { max-width: 690px; }
       @include media('medium-small') { max-width: 530px; }
-      @include media('small') { max-width: 550px; }
     }
   }
 
@@ -211,19 +217,7 @@
 
       height: 60%;
 
-      h4 {
-        display: inline-block;
-        bottom: 1px;
-
-        margin: 0;
-        margin-right: 5px;
-
-        text-align: left;
-        text-transform: uppercase;
-        font-family: $font_family-secondary;
-        font-size: 19px;
-        font-weight: 400;
-      }
+      @include media('x-small') { height: 50%; }
 
       .mapc-logo {
         height: 100%; 
@@ -238,6 +232,8 @@
       img {
         height: 100%;
       }
+
+      @include media('small') { display: none; }
     }
   }
 

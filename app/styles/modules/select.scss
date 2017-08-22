@@ -26,7 +26,7 @@
 
     @include media('medium') {
       padding: 4px 6px; 
-      padding-right: ($arrow_size--small * 2);
+      padding-right: ($arrow_size--small * 3);
 
       font-size: 14px;
     }
@@ -52,6 +52,10 @@
 
     @include media('medium') {
       border-width:  $arrow_size--small ($arrow_size--small / 1.5);
+    }
+    @include media('small') {
+      top: 68%;
+      right: 7px;
     }
   }
 
