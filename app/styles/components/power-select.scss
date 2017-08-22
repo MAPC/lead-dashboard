@@ -14,6 +14,8 @@
 .route.application, .route.city {
   $transition_time: .2s;
   $arrow_size: 12px;
+  $arrow_size--medium-small: 10px;
+  $arrow_size--small: 8px;
 
   .ember-power-select-status-icon {
     @extend ._vertical-center;
@@ -30,6 +32,15 @@
     border-color: $color_brand-primary transparent transparent;
 
     transition: top $transition_time / 2, border-top-color $transition_time;
+
+    @include media('medium-small') {
+      height: $arrow_size--medium-small / 2;
+      border-width: $arrow_size--medium-small ($arrow_size--medium-small / 1.2) 0;
+    }
+    @include media('small') {
+      height: $arrow_size--small / 2;
+      border-width: $arrow_size--small ($arrow_size--small / 1.2) 0;
+    }
   }
 
   .ember-power-select-trigger {
@@ -89,33 +100,26 @@
   }
 
   .ember-power-select-selected-item {
-    @include media('small')  {
-      margin-left: 0; 
-    }
+    @include media('small') { margin-left: 0; }
   }
 }
 
 .route.city {
 
   .ember-power-select-status-icon {
-    height: 75%;
     width: 0;
 
-    &:after {
-      border-width: 15px (15px / 1.2) 0;
-    }
+    &:after { border-width: 15px (15px / 1.2) 0; }
   }
 
   .ember-power-select-trigger {
     display: inline-block;
 
     width: 240px; 
-    padding: 4px 1px 0px;
+    padding: 6px 1px;
   }
 
-  .ember-power-select-selected-item {
-    margin-left: 2px;
-  }
+  .ember-power-select-selected-item { margin-left: 2px; }
 }
 
 .route.city-index {

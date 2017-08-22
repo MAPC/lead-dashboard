@@ -11,9 +11,7 @@
     @include media('small') {
       margin-bottom: 20px; 
 
-      .selection-box {
-        font-size: 14px; 
-      }
+      .selection-box { font-size: 14px; }
     }
 
     .power-select {
@@ -28,9 +26,7 @@
 
         font-size: 16px;
 
-        @include media('small') {
-          font-size: 14px; 
-        }
+        @include media('small') { font-size: 14px; }
       }
     }
 
@@ -76,9 +72,7 @@
           transition: color .15s;
         }
 
-        @include media('medium-small') {
-          font-size: 16px; 
-        }
+        @include media('medium-small') { font-size: 16px; }
       }
     }
   }
