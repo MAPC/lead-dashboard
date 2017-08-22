@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import slug from '../utils/slug';
 
 export default Ember.Route.extend({
 

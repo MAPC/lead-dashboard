@@ -13,10 +13,9 @@
 
 .route.application, .route.city {
   $transition_time: .2s;
+  $arrow_size: 12px;
 
   .ember-power-select-status-icon {
-    $arrow_size: 12px;
-
     @extend ._vertical-center;
     top: 60%;
     left: initial;
@@ -68,6 +67,13 @@
 
       font-size: 20px; 
     }
+    @include media('small') { 
+      padding-right: $arrow_size * 3;
+      padding-bottom: 12px;
+
+      font-size: 24px; 
+      line-height: 1.25;
+    }
 
     &[aria-expanded="true"] {
       .ember-power-select-status-icon {
@@ -79,6 +85,12 @@
           top: 52%; 
         } 
       }
+    }
+  }
+
+  .ember-power-select-selected-item {
+    @include media('small')  {
+      margin-left: 0; 
     }
   }
 }
