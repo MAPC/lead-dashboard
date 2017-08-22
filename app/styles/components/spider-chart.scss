@@ -8,8 +8,7 @@
     font-size: 10px !important;
     font-weight: 300;
 
-    @include media('small') {
-      font-size: 9px !important;  
-    }
+    @include media('small') { font-size: 9px !important; }
+    @include media('x-small') { font-size: 8px !important; }
   }
 }

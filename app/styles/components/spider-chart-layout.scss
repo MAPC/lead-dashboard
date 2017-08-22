@@ -9,7 +9,7 @@
     & > * { display: inline-block; }
 
     @include media('small') {
-      margin-bottom: 20px; 
+      margin-bottom: 10px; 
 
       .selection-box { font-size: 14px; }
     }
@@ -20,6 +20,8 @@
 
       width: 300px;
       margin-right: 20px;
+
+      @include media('x-small') { width: 270px; }
 
       .ember-power-select-trigger {
         width: 100%;

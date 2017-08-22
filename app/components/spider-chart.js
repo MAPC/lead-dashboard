@@ -20,7 +20,6 @@ export default Ember.Component.extend({
     w: 500,
     h: 500,
     levels: 2,
-    //labelFactor: 1.3,
     roundStrokes: true,
   },
 
@@ -36,10 +35,10 @@ export default Ember.Component.extend({
 
   calculateChartDimensions(render = false) {
     const chartOptions = this.get('chartOptions');
-    const size = (window.innerWidth > 600) ? 500 : 330;
+    const size = (window.innerWidth > 600) ? 500 : (window.innerWidth > 480) ? 330 : 290;
 
     chartOptions.w = size;
-    chartOptions.h = size;
+    chartOptions.h = size + 10;
 
     this.set('chartOptions', chartOptions);
 
