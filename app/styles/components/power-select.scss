@@ -107,13 +107,18 @@
   }
 
   .ember-power-select-trigger {
-    top: 2px;
     display: inline-block;
 
     width: 240px; 
-    padding: 4px 1px 1px;
+    padding: 4px 1px 0px;
 
-    font-size: 28px;
+    font-size: 24px;
+
+    @include media('small') { 
+      padding: 4px 1px 2px;
+
+      font-size: 16px; 
+    }
   }
 
   .ember-power-select-selected-item {

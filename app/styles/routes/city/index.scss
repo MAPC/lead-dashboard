@@ -230,6 +230,8 @@
     h2 {
       margin-right: 5%;
 
+      @include media('small') { font-size: 16px; }
+
       .power-select {
         display: inline-block;
         width: 40%; 
@@ -250,7 +252,10 @@
     .comparison-tables {
       display: flex;
 
-      margin: 50px auto;
+      margin: 40px auto;
+
+      @include media('medium-small') { margin: 30px auto; }
+      @include media('small') { display: block; }
     }
 
     .comparison-table-wrapper {
@@ -259,6 +264,12 @@
       margin: 0 1%;
 
       h4 { text-align: center; }
+
+      @include media('small') {
+        width: 100%; 
+        margin: 50px auto;
+      }
+      @include media('x-small') { margin: 40px auto; }
     }
 
     .comparison-table {
@@ -289,6 +300,9 @@
         border-bottom: 3px solid transparent;
 
         transition: border-bottom-color .15s;
+
+        @include media('medium-small') { font-size: 16px; }
+        @include media('x-small') { font-size: 13px; }
       }
 
       &:not(.current-muni) {
@@ -305,11 +319,17 @@
       & > div {
         height: 80px;
 
+        @include media('medium-small') { height: 65px; }
+        @include media('x-small') { height: 60px; }
+
         img { 
           @extend ._vertical-center;
 
           max-height: 66%;
           margin: 0 auto;
+
+          @include media('medium-small') { max-height: 55%; }
+          @include media('x-small') { max-height: 50%; }
         }
 
         span {
@@ -317,6 +337,9 @@
           top: 40%;
 
           font-size: 36px;
+
+          @include media('medium-small') { font-size: 30px; }
+          @include media('x-small') { font-size: 24px; }
         }
       }
     }
