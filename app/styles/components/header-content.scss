@@ -1,0 +1,117 @@
+header {
+  width: $layout_index-width;
+  margin: 0 auto;
+
+  text-align: left;
+
+  @include media('medium-small') { width: 95%; }
+
+  h1 {
+    $box_size: 20px;
+    $box_size--medium-small: 15px;
+    $box_size--small: 10px;
+    $box_size--x-small: 8px;
+
+    padding-left: $box_size * 4;
+    margin-top: 30px;
+
+    @include media('medium-small') { 
+      padding-left: $box_size--medium-small * 4;
+
+      font-size: 25px; 
+    }
+    @include media('small') {
+      padding-left: $box_size--small * 4;
+
+      font-size: 20px;
+    }
+    @include media('x-small') { 
+      padding-left: $box_size--x-small * 4;
+
+      font-size: 18px; 
+    }
+
+    span { 
+      top: -2px;
+
+      margin-left: 8px;
+
+      color: lighten($color_font-dark, 10);
+      font-size: 24px;
+      font-weight: 100; 
+
+      @include media('medium-small') {
+        top: -1px;
+
+        font-size: 21px; 
+      }
+      @include media('small') { font-size: 17px; }
+      @include media('x-small') { 
+        margin-left: 5px;
+
+        font-size: 15px;
+      }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 35px;
+      top: 29%;
+      z-index: 5;
+
+      width: 0;
+
+      border-style: solid;
+      border-color: $color_brand-primary transparent transparent;
+      border-width: $box_size ($box_size * 1.2);
+
+      transform: rotate(-120deg);
+
+      @include media('medium-small') {
+        top: 30%;
+        left: 28px;
+
+        border-width: $box_size--medium-small ($box_size--medium-small * 1.2);
+      }
+      @include media('small') {
+        top: 31%;
+        left: 20px;
+
+        border-width: $box_size--small ($box_size--small * 1.2);
+      }
+      @include media('x-small') { 
+        top: 27%;
+        left: 14px;
+
+        border-width: $box_size--x-small ($box_size--x-small * 1.2); 
+      }
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0px;
+      top: 0%;
+
+      width: 0;
+
+      border-style: solid;
+      border-color: $color_brand-primary--dark transparent transparent;
+      border-width: $box_size ($box_size * 1.2);
+
+      transform: rotate(70deg);
+
+      @include media('medium-small') {
+        border-width: $box_size--medium-small ($box_size--medium-small * 1.2);
+      }
+      @include media('small') {
+        border-width: $box_size--small ($box_size--small * 1.2);
+      }
+      @include media('x-small') {
+        top: 6%;
+        border-width: $box_size--x-small ($box_size--x-small * 1.2);
+      }
+    }
+  }
+}

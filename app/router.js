@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('residential');
     this.route('commercial');
   });
+  this.route('learn-more');
 });
 
 export default Router;

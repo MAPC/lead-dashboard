@@ -1,0 +1,43 @@
+nav {
+  @extend ._vertical-center;
+  left: initial;
+  right: 0;
+  top: 55%;
+
+  @include media('medium-small') {
+    top: 60%; 
+  }
+
+  li {
+    display: inline-block;
+
+    margin: 0 20px;
+    padding-bottom: 8px;
+
+    border-bottom: 2px solid $color_brand-primary;
+
+    @include media('medium-small') {
+      margin: 0 10px;
+      padding-bottom: 5px; 
+
+      font-size: 14px;
+    }
+  }
+
+  &.header-nav {
+    @include media('small') { display: none; }
+  }
+
+  &.footer-nav {
+    display: none; 
+    top: 45%;
+
+    li { 
+      font-size: 12px; 
+
+      border-bottom: 1px solid $color_brand-primary;
+    }
+
+    @include media('small') { display: block; }
+  }
+}
