@@ -51,5 +51,15 @@
       @include media('medium') { max-width: 690px; }
       @include media('medium-small') { max-width: 530px; }
     }
+
+    .subnote {
+      top: 16px;
+      left: 21.7%;
+      text-align: left;
+
+      color: lighten($color_font-dark, 30);
+      font-size: 16px; 
+      font-weight: 100;
+    }
   }
 }
