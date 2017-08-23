@@ -198,20 +198,19 @@
     .sector-graphic {
       position: absolute;
       right: 0;
-      bottom: -($vertical_padding * 1.75);
+      bottom: -($vertical_padding * 1.8);
 
       height: calc(100% + 135px);
+      max-width: 42%;
 
       @include media('medium-small') {
         right: -5%;
-        bottom: -($vertical_padding * 1.25);
+        bottom: -($vertical_padding * 1.35);
 
         height: calc(100% + 50px);
+        max-width: 52%;
       }
-
-      @include media('small') {
-        display: none; 
-      }
+      @include media('small') { display: none; }
     }
   }
 
