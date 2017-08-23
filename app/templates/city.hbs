@@ -9,10 +9,7 @@
     </div>
 
     <ul>
-      <li><span>{{model.municipality}}</span></li>
-      <li>
-        {{link-to 'All Sectors' 'city.index'}}
-      </li>
+      <li>{{#link-to 'city.index'}}{{model.municipality}}{{/link-to}}</li>
       {{#each sectors as |sector|}}
         <li>
           {{link-to sector.name sector.route}}
