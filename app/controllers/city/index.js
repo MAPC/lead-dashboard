@@ -73,14 +73,45 @@ export default Ember.Controller.extend({
     };
   }),
 
-  totalEmissions: Ember.computed('fuelTypeData', function() {
+  totalEmissions: Ember.computed('model', 'sectors', function() {
+    const sectors = this.get('sectors').filter(sector => sector !== 'total');
+    const model = this.get('model');
+
+    const totalEmissions = sectors.map(sector => model[sector].rows)
+                          .reduce((a,b) => a.concat(b))
+                          .map(row => fuelTypes.reduce((a,type) => a + row[`${type}_emissions_co2`], 0))
+                          .reduce((a,b) => a + b);
+
+    return Math.floor(totalEmissions);
+  }),
+
+
+  largestEmitter: Ember.computed('fuelTypeData', function() {
     const fuelTypeData = this.get('fuelTypeData');
+    const sectorTotals = {};
 
-    const emissions = fuelTypeData.map(data => data.sectors.map(sector => sector.emissions))
-                                  .reduce((a,b) => a.concat(b))
-                                  .reduce((a,b) => a + b);
+    fuelTypeData.forEach(type => {
+      type.sectors.filter(x => x.sector !== 'total').forEach(sectorData => {
+        if (!sectorTotals[sectorData.sector]) {
+          sectorTotals[sectorData.sector] = 0;
+        }
 
-    return emissions;
+        sectorTotals[sectorData.sector] += sectorData.emissions;
+      });
+    });
+
+    let max = -1;
+    let largestEmitter = null;
+    Object.keys(sectorTotals).forEach(sector => {
+      if (sectorTotals[sector] > max) {
+        max = sectorTotals[sector];
+        largestEmitter = sector;
+      }
+    });
+
+    this.set('largestEmitterPerc', max);
+
+    return largestEmitter;
   }),
 
 
