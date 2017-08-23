@@ -160,10 +160,11 @@
   }
 
   .city-information {
-    $vertical_padding: 50px;
+    $vertical_padding: 40px;
 
     width: 100%;
-    padding: ($vertical_padding * 2) 0 $vertical_padding;
+    min-height: 350px;
+    padding: ($vertical_padding * 2) 0 $vertical_padding / 2;
 
     background: $color_bg-medium;
     border-bottom: 5px solid $color_brand-primary;
@@ -193,21 +194,29 @@
       @include media('small') {
         width: 100%; 
       }
+
+      small {
+        top: 3px;
+
+        margin-left: -1px;
+
+        font-size: 9px; 
+      }
     }
 
     .sector-graphic {
       position: absolute;
       right: 0;
-      bottom: -($vertical_padding * 1.8);
+      bottom: -$vertical_padding;
 
-      height: calc(100% + 135px);
-      max-width: 42%;
+      height: 100%;
+      max-width: 38%;
 
       @include media('medium-small') {
         right: -5%;
-        bottom: -($vertical_padding * 1.35);
+        bottom: -$vertical_padding;
 
-        height: calc(100% + 50px);
+        height: 100%;
         max-width: 52%;
       }
       @include media('small') { display: none; }

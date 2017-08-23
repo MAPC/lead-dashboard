@@ -36,10 +36,10 @@ export default Ember.Controller.extend({
   }),
 
 
-  municipality: Ember.computed('model', function() {
-    return this.get('model').municipality;
-  }),
+  municipality: Ember.computed.readOnly('model.municipality'),
 
+  censusYear: '2010',
+  population: 150700,
 
   fuelTypeData: Ember.computed('model', 'city', function() {
     //const cityController = this.get('city');
@@ -71,6 +71,16 @@ export default Ember.Controller.extend({
       emissions: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].emissions),
       consumption: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumption),
     };
+  }),
+
+  totalEmissions: Ember.computed('fuelTypeData', function() {
+    const fuelTypeData = this.get('fuelTypeData');
+
+    const emissions = fuelTypeData.map(data => data.sectors.map(sector => sector.emissions))
+                                  .reduce((a,b) => a.concat(b))
+                                  .reduce((a,b) => a + b);
+
+    return emissions;
   }),
 
 
@@ -183,6 +193,8 @@ export default Ember.Controller.extend({
 
     const totalEmissions = data.map(datum => datum.sectors[datum.sectors.length - 1].emissions)
                                  .reduce((a, b) => a + b);
+
+    //this.set('totalEmissions', totalEmissions);
 
     // Normalize the data
     data.forEach(datum => {
