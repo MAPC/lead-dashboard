@@ -42,7 +42,7 @@ export default Ember.Controller.extend({
 
 
   fuelTypeData: Ember.computed('model', 'city', function() {
-    const cityController = this.get('city');
+    //const cityController = this.get('city');
     const munged = this.munger(this.get('model'));
 
     const sectorSummary = munged.map(type => type.sectors)
@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
 
     Object.keys(sectorSummary)
           .filter(sector => sectorSummary[sector] === 0)
-          .forEach(sector => {
+          .forEach(()/*sector*/ => {
             //cityController.send('disableSector', sector);
           });
 
