@@ -35,7 +35,7 @@ export default Ember.Service.extend({
     const municipality = slug(_municipality).denormalize();
 
     sectors.forEach(sector => {
-      data[sector] = this.query(`SELECT * FROM led_${sector} WHERE municipal = '${municipality}'`);
+      data[sector] = this.query(`SELECT * FROM lead_${sector} WHERE municipal = '${municipality}'`);
     });
 
     return {sectorData: data, municipality: municipality};

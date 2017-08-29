@@ -34,7 +34,7 @@ export default Ember.Service.extend({
       list = cachedLists[sector];
     }
     else {
-      list = carto.query(`SELECT DISTINCT municipal FROM led_${sector}`);
+      list = carto.query(`SELECT DISTINCT municipal FROM lead_${sector}`);
       cachedLists[sector] = list;
     }
 
