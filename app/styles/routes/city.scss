@@ -131,9 +131,7 @@
           }
         }
 
-        &.active {
-          font-weight: 700;
-        }
+        &.active { font-weight: 700; }
 
         &:hover {
           &:not(.active):after {
@@ -144,9 +142,7 @@
         }
       }
 
-      span { 
-        font-weight: 300;
-      }
+      span { font-weight: 300;}
 
     }
   }
@@ -160,41 +156,31 @@
   }
 
   .city-information {
-    $vertical_padding: 40px;
-
     width: 100%;
-    min-height: 350px;
-    padding: ($vertical_padding * 2) 0 $vertical_padding / 2;
 
     background: $color_bg-medium;
     border-bottom: 5px solid $color_brand-primary;
-    overflow: hidden;
 
-    @include media('medium-small') {
-      padding: $vertical_padding 0 ($vertical_padding / 1.5);
+    .content-wrapper {
+      display: flex; 
+
+      min-height: 350px;
+    }
+
+    .content-copy {
+      flex: 1 0 60%; 
+
+      padding-top: 70px;
+      padding-bottom: 20px;
     }
 
     h1 { 
       margin-top: 0; 
 
-      @include media('medium-small') {
-        font-size: 26px; 
-      }
+      @include media('medium-small') { font-size: 26px; }
     }
 
     p { 
-      width: 60%; 
-
-      @include media('medium-small') {
-        width: 50%; 
-
-        font-size: 15px;
-      }
-
-      @include media('small') {
-        width: 100%; 
-      }
-
       small {
         top: 3px;
 
@@ -204,21 +190,18 @@
       }
     }
 
-    .sector-graphic {
-      position: absolute;
-      right: 0;
-      bottom: -$vertical_padding;
+    .sector-graphic-wrapper {
+      flex: 1 0 40%;
 
-      height: 100%;
-      max-width: 38%;
+      img {
+        position: absolute;
+        right: 0;
+        bottom: -5px;
 
-      @include media('medium-small') {
-        right: -5%;
-        bottom: -$vertical_padding;
-
-        height: 100%;
-        max-width: 52%;
+        max-height: 80%;
+        max-width: 90%;
       }
+
       @include media('small') { display: none; }
     }
   }
