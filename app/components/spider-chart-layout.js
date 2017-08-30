@@ -211,7 +211,7 @@ export default Ember.Component.extend({
 
         // Fetch the data for the selected municipality then add
         this.get('carto')
-            .query(`SELECT * FROM led_${sector} WHERE municipal = '${municipality}'`)
+            .query(`SELECT * FROM lead_${sector} WHERE municipal = '${municipality}'`)
             .then(response => {
         
               // In order to have Ember components rerender properly, we must
