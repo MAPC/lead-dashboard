@@ -12,6 +12,7 @@
   
     width: $layout_index-width;
     height: 100%;
+    min-height: 80vh;
     margin: 0 auto;
 
     @include media('small') { width: 95%; }
