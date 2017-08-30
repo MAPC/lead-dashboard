@@ -8,8 +8,8 @@
   .page-content {
     flex: 1 0 100%;
 
-    width: 45%;
-    max-width: 670px;
+    width: 48%;
+    max-width: 700px;
     min-width: 570px;
     margin: 0 auto;
     padding: 60px 35px;
@@ -34,16 +34,40 @@
   }
 
   h3 {
+    font-weight: 700;
     @include media('small') { font-size: 16px; }
   }
 
   p {
-    margin-bottom: 50px;
+    margin-bottom: 45px;
 
     text-align: justify; 
-    line-height: 1.40;
+    font-weight: 300;
+    line-height: 1.6;
 
     @include media('small') { margin-bottom: 35px; }
+
+    a { 
+      padding-bottom: 1px;
+
+      font-weight: 300;
+
+      border-bottom: 1px solid $color_brand-tertiary;
+
+      opacity: .90;
+      transition: opacity .12s;
+
+      &:hover {
+        opacity: 1; 
+        transition: opacity .12s;
+      }
+
+      &.button {
+        padding-bottom: 8px; 
+
+        font-weight: 400;
+      }
+    }
   }
 
 }
