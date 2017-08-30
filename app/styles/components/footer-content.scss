@@ -34,26 +34,26 @@ footer {
 
       @include media('x-small') { display: block; }
 
-      &.mapc-energy {
-        a { text-decoration: underline; }
-        .mapc-logo { 
-          visibility: hidden; 
+      &.mapc-energy a { text-decoration: underline; }
 
-          @include media('x-small') { display: none; }
-        }
+      &.mapc-general img {
+        @include media('x-small') { width: 75px; }
       }
     }
 
-    .mapc-logo {
+    .logo-image {
       flex: 1 0 20%;
       display: block;
 
+      width: auto;
       height: 100%;
       max-height: 35px;
 
+      text-align: left;
+
       img { 
-        height: 100%; 
         max-height: 35px;
+        max-width: 100%;
       }
 
       @include media('x-small') { margin-bottom: 15px; }
