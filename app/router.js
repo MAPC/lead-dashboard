@@ -13,6 +13,7 @@ Router.map(function() {
     this.route('commercial');
   });
   this.route('learn-more');
+  this.route('methodology');
 });
 
 export default Router;
