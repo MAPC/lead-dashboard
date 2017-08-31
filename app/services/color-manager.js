@@ -8,18 +8,16 @@ export default Ember.Service.extend({
 
   colors: {
     lightPurple: '#9176e3',
-    deepPurple: '#2c1784',
     poiple: '#51498c',
-    orange: '#f7b045',
     lightBlue: '#11cfff',
     red: '#f44b36',
     pink: '#f43673',
     blue: '#1D74F2',
     lightGreen: '#13e3bc',
-    offbrand: '#67a0f4'
+    orellow: '#f4af5a',
   },
 
-  colorPool: Ember.computed.oneWay('colors', function() {
+  colorPool: Ember.computed('colors', function() {
     return Object.values(this.get('colors'));
   }),
 
