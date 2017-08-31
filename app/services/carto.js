@@ -56,7 +56,13 @@ export default Ember.Service.extend({
     });
 
     return {sectorData: data, municipality: municipality};
- 
+  },
+
+
+  populationFor(_municipality) {
+    const municipality = slug(_municipality).denormalize();
+
+    return this.query(`SELECT pop_est, years FROM demo_pop_estimates_m WHERE municipal = '${municipality}' AND years = '2015'`);
   }
 
 });

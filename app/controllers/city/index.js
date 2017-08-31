@@ -1,7 +1,10 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import slug from '../../utils/slug';
 import sectors from '../../utils/sectors';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
+
+const computed = Ember.computed;
 
 export default Ember.Controller.extend({
 
@@ -28,7 +31,7 @@ export default Ember.Controller.extend({
   comparingTo: null,
   municipalities: [],
 
-  sectors: Ember.computed(function() {
+  sectors: computed(function() {
     const _sectors = sectors;
     _sectors.push('total');
 
@@ -36,12 +39,9 @@ export default Ember.Controller.extend({
   }),
 
 
-  municipality: Ember.computed.readOnly('model.municipality'),
+  municipality: computed.readOnly('model.municipality'),
 
-  censusYear: '2010',
-  population: 150700,
-
-  fuelTypeData: Ember.computed('model', function() {
+  fuelTypeData: computed('model', function() {
     const munged = this.munger(this.get('model'));
 
     return munged.map(fuelType => {
@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
   }),
 
 
-  fuelPercentages: Ember.computed('fuelTypeData', function() {
+  fuelPercentages: computed('fuelTypeData', function() {
     const fuelTypeData = this.get('fuelTypeData');
 
     return {
@@ -64,7 +64,7 @@ export default Ember.Controller.extend({
     };
   }),
 
-  totalEmissions: Ember.computed('model', 'sectors', function() {
+  totalEmissions: computed('model', 'sectors', function() {
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
     const model = this.get('model');
 
@@ -77,7 +77,7 @@ export default Ember.Controller.extend({
   }),
 
 
-  largestEmitter: Ember.computed('fuelTypeData', function() {
+  largestEmitter: computed('fuelTypeData', function() {
     const fuelTypeData = this.get('fuelTypeData');
     const sectorTotals = {};
 
@@ -105,6 +105,20 @@ export default Ember.Controller.extend({
     return largestEmitter;
   }),
 
+
+  populationCensus: computed('carto', 'municipality',function() {
+    const carto = this.get('carto');
+    const municipality = this.get('municipality');
+
+    return DS.PromiseObject.create({
+      promise: carto.populationFor(municipality).then(response => {
+        return {
+          estimate: response.rows[0].pop_est,
+          year: response.rows[0].years,
+        };
+      }),
+    });
+  }),
 
   fuelNames: Object.values(fuelTypesMap),
 
