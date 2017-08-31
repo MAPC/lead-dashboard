@@ -57,7 +57,6 @@ export default Ember.Component.extend({
 
     if (render)  {
       this.resizeSVGElement(size);
-
       this.didRender();
     }
   },
@@ -168,11 +167,16 @@ export default Ember.Component.extend({
 
     fuelTypes.forEach(type => data[0][`${type}_tot`] = 0);
 
+    console.log(data);
+
     // Aggregate totals for each fuel type
     let totals = {};
     if (data.length > 1) {
       totals = data.reduce((aggregate, current) => {
         fuelTypes.forEach(type => aggregate[`${type}_tot`] += parseFloat(current[`${type}_${metric}`]));
+
+        console.log(aggregate.elec_tot);
+
         return aggregate;
       });
     }
