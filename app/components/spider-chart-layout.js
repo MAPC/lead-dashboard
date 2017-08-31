@@ -93,6 +93,7 @@ export default Ember.Component.extend({
 
 
   updateTextAnalysis() {
+    const carto = this.get('carto');
 
     const colorWrap = function colorWrap(muni) {
       const muniColor = this.get('colorManager').colorFor(muni);
@@ -105,85 +106,99 @@ export default Ember.Component.extend({
                          .key(d => d.municipal)
                          .entries(chartData);
 
-    const aggregateData = nestedData.map(muniSet => {
-      const aggregate = muniSet.values.reduce((a,b) => {
-        const values = {};
 
-        ['totalConsumption', 'totalEmissions', 'totalCost'].forEach(col => {
-          values[col] = a[col] + b[col];
+    const promises = nestedData.reduce((promises, muniSet) => {
+      promises[muniSet.key] = carto.populationFor(muniSet.key);
+      return promises;
+    }, {});
+
+
+    Ember.RSVP.hash(promises).then(populationCensusData => {
+
+      const aggregateData = nestedData.map(muniSet => {
+        const aggregate = muniSet.values.reduce((a,b) => {
+          const values = {};
+
+          ['totalConsumption', 'totalEmissions', 'totalCost'].forEach(col => {
+            values[col] = a[col] + b[col];
+          });
+
+          return values;
         });
 
-        return values;
+        Object.keys(aggregate).forEach(total => {
+          aggregate[total] /= populationCensusData[muniSet.key].rows[0].pop_est;
+        });
+
+        return {municipal: muniSet.key, values: aggregate};
       });
 
-      return {municipal: muniSet.key, values: aggregate};
+      const currentMuni = aggregateData.shift();
+
+      if (aggregateData.length === 0) {
+        this.set('showingAnalysis', false) ;
+      }
+      else {
+      
+        const analysis = {
+          consumption: `${colorWrap(currentMuni.municipal)} consumes `,
+          emissions: `${colorWrap(currentMuni.municipal)} emits `,
+          cost: `${colorWrap(currentMuni.municipal)} spends `,
+        };
+
+
+        Object.keys(analysis).forEach(metric => {
+          const metricString = `total${capitalize(metric)}`;
+           
+          // Generate the string analysis
+          analysis[metric] = aggregateData.reduce((a,b) => {
+            var comparison = '',
+                percent = null,
+                bString = colorWrap(b.municipal),
+                bValue = b.values[metricString],
+                currentMuniValue = currentMuni.values[metricString];
+
+            if (bValue > currentMuniValue) {
+              percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
+              comparison = `<span>${percent}%</span> less than ${bString}`; 
+            }
+            else if (bValue < currentMuniValue) {
+              percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
+              comparison = `<span>${percent}%</span> more than ${bString}`;
+            }
+            else {
+              comparison = `the same ammount as ${bString}`;
+            }
+
+            return `${a} ${comparison},`;
+          }, analysis[metric]);
+
+
+          // Format the string with proper grammar
+          const split = analysis[metric].split(',');
+
+          if (split.length !== 1) {
+            split.pop(); // Remove trailing comma
+            let lastComparison = split.pop() + '.';
+
+            if (split.length !== 0) {
+              lastComparison = ` and ${lastComparison}`;
+            }
+
+            if (split.length === 1) {
+              lastComparison = `${split.pop()}${lastComparison}`;
+            }
+
+            split.push(lastComparison);
+          }
+
+          analysis[metric] = split.join(',');
+        });
+
+        this.set('analysis', analysis);
+        this.set('showingAnalysis', true);
+      }
     });
-
-    const currentMuni = aggregateData.shift();
-
-    if (aggregateData.length === 0) {
-      this.set('showingAnalysis', false) ;
-    }
-    else {
-    
-      const analysis = {
-        consumption: `${colorWrap(currentMuni.municipal)} consumes `,
-        emissions: `${colorWrap(currentMuni.municipal)} emits `,
-        cost: `${colorWrap(currentMuni.municipal)} spends `,
-      };
-
-
-      Object.keys(analysis).forEach(metric => {
-        const metricString = `total${capitalize(metric)}`;
-         
-        // Generate the string analysis
-        analysis[metric] = aggregateData.reduce((a,b) => {
-          var comparison = '',
-              percent = null,
-              bString = colorWrap(b.municipal),
-              bValue = b.values[metricString],
-              currentMuniValue = currentMuni.values[metricString];
-
-          if (bValue > currentMuniValue) {
-            percent = Math.floor(((bValue - currentMuniValue) / currentMuniValue) * 100);
-            comparison = `<span>${percent}%</span> less than ${bString}`; 
-          }
-          else if (bValue < currentMuniValue) {
-            percent = Math.floor(((currentMuniValue - bValue) / bValue) * 100);
-            comparison = `<span>${percent}%</span> more than ${bString}`;
-          }
-          else {
-            comparison = `the same ammount as ${bString}`;
-          }
-
-          return `${a} ${comparison},`;
-        }, analysis[metric]);
-
-
-        // Format the string with proper grammar
-        const split = analysis[metric].split(',');
-
-        if (split.length !== 1) {
-          split.pop(); // Remove trailing comma
-          let lastComparison = split.pop() + '.';
-
-          if (split.length !== 0) {
-            lastComparison = ` and ${lastComparison}`;
-          }
-
-          if (split.length === 1) {
-            lastComparison = `${split.pop()}${lastComparison}`;
-          }
-
-          split.push(lastComparison);
-        }
-
-        analysis[metric] = split.join(',');
-      });
-
-      this.set('analysis', analysis);
-      this.set('showingAnalysis', true);
-    }
   },
 
 
