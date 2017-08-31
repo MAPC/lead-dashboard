@@ -41,26 +41,17 @@ export default Ember.Controller.extend({
   censusYear: '2010',
   population: 150700,
 
-  fuelTypeData: Ember.computed('model', 'city', function() {
-    //const cityController = this.get('city');
+  fuelTypeData: Ember.computed('model', function() {
     const munged = this.munger(this.get('model'));
 
-    const sectorSummary = munged.map(type => type.sectors)
-                                .reduce((a,b) => a.concat(b))
-                                .map(a => { return {[a.sector]: a.emissions }})
-                                .reduce((a,b) => {
-                                  Object.keys(b).forEach(key => a[key] =  a[key] + b[key] || 0);
-                                  return a;
-                                });
+    return munged.map(fuelType => {
 
-    Object.keys(sectorSummary)
-          .filter(sector => sectorSummary[sector] === 0)
-          .forEach(()/*sector*/ => {
-            //cityController.send('disableSector', sector);
-          });
+      if (fuelType.type.toLowerCase() === 'electricity') {
+        fuelType.footnote = true; 
+      }
 
-
-    return munged;
+      return fuelType; 
+    });
   }),
 
 

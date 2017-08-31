@@ -50,7 +50,7 @@
       <article class="type-row">
 
         <div class="row-index">
-          <h4>{{uppercase typeData.type}}</h4>
+          <h4>{{uppercase typeData.type}} {{#if typeData.footnote}}<span>*</span>{{/if}}</h4>
 
           <div class="type-icon-wrapper">
             <img src="/assets/images/{{normalize-slug typeData.type}}.svg">
@@ -75,6 +75,11 @@
 
       </article>
     {{/each}}
+
+    <div class="footnote">
+      <span>*</span> If your city or town uses <a href="http://www.mapc.org/cca">Green Municipal Aggregation</a>,
+      actual electricity emissions may be significantly lower than this estimate.
+    </div>
 
   </div><!--/ .city-overview-table -->
 
