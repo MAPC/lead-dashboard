@@ -149,9 +149,11 @@
         font-size: 18px;
 
         @include media('medium-small') {
-          width: 100%; 
+          display: inline-block;
+
+          width: auto;
           margin: 0;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
 
           text-align: left;
           font-size: 16px;
@@ -225,16 +227,16 @@
 
     .footnote {
       margin-top: 45px;
-      padding-left: 10px;
+      padding-left: 20px;
 
-      color: darken($color_font-medium, 15) !important;
+      color: darken($color_font-medium, 15);
       font-size: 12px;
       font-weight: 100;
 
       span { 
-        display: inline-block;
-
-        margin-right: 5px;
+        position: absolute;
+        left: 8px;
+        top: 0;
 
         color: $color_state-warn;
       } 
@@ -242,6 +244,14 @@
       a { 
         color: inherit;
         text-decoration: underline; 
+
+        transition: color .15s;
+
+        &:hover { 
+          color: $color_font-dark; 
+
+          transition: color .12s;
+        }
       }
     }
 
@@ -278,7 +288,7 @@
     .comparison-tables {
       display: flex;
 
-      margin: 40px auto;
+      margin: 40px auto 60px;
 
       @include media('medium-small') { margin: 30px auto; }
       @include media('small') { display: block; }
