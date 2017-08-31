@@ -54,13 +54,17 @@
     }
 
     .subnote {
-      top: 16px;
-      left: 21.7%;
+      position: absolute;
+      bottom: -60%;
+      left: 10px;
       text-align: left;
 
       color: lighten($color_font-dark, 30);
       font-size: 16px; 
       font-weight: 100;
+
+      @include media('medium-small') { font-size: 14px; }
+      @include media('small') { bottom: -60%; }
     }
   }
 }
