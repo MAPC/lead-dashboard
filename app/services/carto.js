@@ -11,6 +11,13 @@ export default Ember.Service.extend({
 
 
   /**
+   * Members
+   */
+
+  cache: {},
+
+
+  /**
    * Methods
    */
 
@@ -20,11 +27,21 @@ export default Ember.Service.extend({
    * @return AjaxResponseObject
    */
   query(queryString) {
+    const cache = this.get('cache');
     const cartoURL = 'https://mapc-admin.carto.com/api/v2/sql?format=json&q=';
-    let cleanQueryString = queryString.split(" ").join("%20")
-                                      .split("‘").join("%27");
 
-    return this.get('ajax').request(`${cartoURL}${cleanQueryString}`);
+    if (Object.keys(cache).indexOf(queryString) !== -1) {
+      return cache[queryString];
+    }
+    else {
+      let cleanQueryString = queryString.split(" ").join("%20")
+                                        .split("‘").join("%27");
+
+      let response = this.get('ajax').request(`${cartoURL}${cleanQueryString}`);
+      cache[queryString] = response;
+
+      return response;
+    }
   },
 
 
