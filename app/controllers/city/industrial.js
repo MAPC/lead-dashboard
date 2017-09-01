@@ -63,16 +63,22 @@ export default Ember.Controller.extend({
   }),
 
 
+  muniSectorData: computed('sectorData', 'municipality', function() {
+    const municipality = this.get('municipality');
+    return this.get('sectorData').rows.filter(row => row.municipal === municipality);
+  }),
+
+
   topConsumingNames: computed('topConsumingIndustries', function() {
     return this.get('topConsumingIndustries').map(consumer => consumer.naicstitle);
   }),
 
 
-  topConsumingPercentage: computed('topConsumingIndustries', 'sectorData', function() {
+  topConsumingPercentage: computed('topConsumingIndustries', 'muniSectorData', function() {
     const topConsumers = Ember.copy(this.get('topConsumingIndustries'), true);
-    const sectorData =  Ember.copy(this.get('sectorData'), true);
+    const muniSectorData =  Ember.copy(this.get('muniSectorData'), true);
 
-    const total = sectorData.rows.reduce((a, row) => a += row.total_con_mmbtu, 0);
+    const total = muniSectorData.reduce((a, row) => a += row.total_con_mmbtu, 0);
     const topTotal = topConsumers.reduce((a, row) => a += row.total_con_mmbtu, 0);
 
     return Math.round(((topTotal * 10000) / total)) / 100;
@@ -95,17 +101,7 @@ export default Ember.Controller.extend({
   topFuel: computed('sectorData', function() {
     const sectorData = Ember.copy(this.get('sectorData'), true);
 
-    const fuelTotals = fuelTypes.map(_type => {
-                                  return {
-                                    type: _type,
-                                    value: sectorData.rows.reduce((a,b) => a += b[`${_type}_con_mmbtu`], 0)
-                                  };
-                                })
-                                .reduce((a, _typeSet) => {
-                                  a[_typeSet.type] = _typeSet.value;
-                                  return a;
-                                }, {});
-
+    const fuelTotals = this.totalFuelByColumn(sectorData, 'con_mmbtu');
     const topFuelKey = Object.keys(fuelTotals).reduce((a,b) => fuelTotals[a] > fuelTotals[b] ? a : b);
 
     return fuelTypesMap[topFuelKey].toLowerCase();
@@ -119,6 +115,60 @@ export default Ember.Controller.extend({
 
     return grammaticList(otherFuels, {conjunction: 'or'});
   }),
+
+
+  topEmissionsIndustry: computed('sectorData', 'municipality', function() {
+    const sectorData = Ember.copy(this.get('sectorData'), true);
+    const municipality = this.get('municipality');
+  
+    const muniSectorData = sectorData.rows.filter(row => row.municipal === municipality);
+
+    const totalEmissions = muniSectorData.map(row => {
+      return {
+        naicstitle: row.naicstitle,
+        emissions: fuelTypes.reduce((a, type) => a += row[`${type}_emissions_co2`], 0)
+      };
+    });
+
+    let max = -1;
+    let maxIndex = null;
+    totalEmissions.forEach((row, index) => {
+      if (row.emissions > max) {
+        max = row.emissions;
+        maxIndex = index; 
+      }
+    });
+
+    return totalEmissions[maxIndex];
+  }),
+
+
+  topEmissionsName: computed('topEmissionsIndustry', function() {
+    return this.get('topEmissionsIndustry').naicstitle;
+  }),
+
+  topEmissionsPercentage: computed('topEmissionsIndustry', 'muniSectorData', function() {
+    const muniSectorData = Ember.copy(this.get('muniSectorData'), true);
+    const topEmissionsIndustry = this.get('topEmissionsIndustry');
+
+    const total = muniSectorData.reduce((a,b) => a += fuelTypes.reduce((a, type) => a += b[`${type}_emissions_co2`], 0), 0);
+
+    console.log(total);
+  }),
+
+
+  totalFuelByColumn(data, columnName) {
+     return fuelTypes.map(_type => {
+                        return {
+                          type: _type,
+                          value: data.rows.reduce((a,b) => a += b[`${_type}_${columnName}`], 0)
+                        };
+                      })
+                      .reduce((a, _typeSet) => {
+                        a[_typeSet.type] = _typeSet.value;
+                        return a;
+                      }, {});
+  },
 
 
   /**
