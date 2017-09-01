@@ -3,7 +3,7 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: 'leap-dashboard',
+    modulePrefix: 'lead-dashboard',
     environment,
     rootURL: '/',
     locationType: 'auto',
