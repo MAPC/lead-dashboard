@@ -2,6 +2,7 @@ import Ember from 'ember';
 import d3 from "npm:d3";
 import fuelTypes from '../utils/fuel-types';
 import capitalize from '../utils/capitalize';
+import grammaticList from '../utils/grammatic-list';
 
 export default Ember.Component.extend({
 
@@ -173,26 +174,7 @@ export default Ember.Component.extend({
             return `${a} ${comparison},`;
           }, analysis[metric]);
 
-
-          // Format the string with proper grammar
-          const split = analysis[metric].split(',');
-
-          if (split.length !== 1) {
-            split.pop(); // Remove trailing comma
-            let lastComparison = split.pop() + '.';
-
-            if (split.length !== 0) {
-              lastComparison = ` and ${lastComparison}`;
-            }
-
-            if (split.length === 1) {
-              lastComparison = `${split.pop()}${lastComparison}`;
-            }
-
-            split.push(lastComparison);
-          }
-
-          analysis[metric] = split.join(',');
+          analysis[metric] = grammaticList(analysis[metric]);
         });
 
         this.set('analysis', analysis);

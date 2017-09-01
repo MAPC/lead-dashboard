@@ -57,6 +57,10 @@ export default Ember.Controller.extend({
     return topConsumers.map(consumer => consumer.naicstitle);
   }),
 
+  topConsumingIndustriesString: computed('topConsumingIndustries', function() {
+     
+  }),
+
   topConsumingIndustry: computed('topConsumingIndustries', function() {
     return Ember.copy(this.get('topConsumingIndustries'))[0];
   }),
