@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import grammaticList from '../../utils/grammatic-list';
 
 const { computed } = Ember;
 
@@ -22,13 +23,16 @@ export default Ember.Controller.extend({
 
   municipalities: [],
 
+
   municipality: computed('model', function() {
     return (this.get('model')) ? this.get('model').municipality : '';
   }),
 
+
   sectorData: computed('model', function() {
     return Ember.copy(this.get('model').sectorData, true);
   }),
+
 
   topConsumingIndustries: computed('sectorData', 'municipality', function() {
     const sectorData = this.get('sectorData');
@@ -57,9 +61,14 @@ export default Ember.Controller.extend({
     return topConsumers.map(consumer => consumer.naicstitle);
   }),
 
+
   topConsumingIndustriesString: computed('topConsumingIndustries', function() {
-     
+    const topConsumers = this.get('topConsumingIndustries');
+    const gList = grammaticList(topConsumers, {period: false});
+    
+    return gList + ((topConsumers.length > 1) ? ' together make ' : ' makes ');
   }),
+
 
   topConsumingIndustry: computed('topConsumingIndustries', function() {
     return Ember.copy(this.get('topConsumingIndustries'))[0];
