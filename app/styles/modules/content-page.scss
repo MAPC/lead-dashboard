@@ -63,10 +63,23 @@
       }
 
       &.big-link {
+        display: inline-block;
+
+        margin: 10px auto;
         padding-bottom: 8px; 
 
         font-weight: 400;
       }
+    }
+
+    ul {
+      padding-left: 30px;
+      list-style: circle; 
+
+      font-size: 13px;
+      text-align: left;
+
+      li { margin: 15px auto; }
     }
   }
 

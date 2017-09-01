@@ -45,8 +45,6 @@ export default Ember.Component.extend({
     const criteria = this.get('criteria');
     const data = this.get('data');
 
-    console.log(fuelTypes);
-
     const chartData = data.rows.filter(row => {
       return !fuelTypes.every(type => row[`${type}_${metric}`] === 0 || row[`${type}_${metric}`] === null);
     });
