@@ -3,7 +3,7 @@ export default function grammaticList(input, options = {}) {
 
   // Set and override default values
   const defaults = {
-    period: true,
+    period: false,
     conjunction: 'and',
     stringDelimiter: ',',
   };
@@ -15,11 +15,14 @@ export default function grammaticList(input, options = {}) {
 
   if (typeof input === 'string') {
     input = input.split(defaults.stringDelimiter);
+
+    if (input[input.length - 1] === '') {
+      input.pop(); // Remove trailing comma
+    }
   }
 
   if (input.length !== 1) {
-    input.pop(); // Remove trailing comma
-    let lastComparison = input.pop() + ((defaults.period) ? '.':'');
+    let lastComparison = input.pop();
 
     if (input.length !== 0) {
       lastComparison = ` ${defaults.conjunction} ${lastComparison}`;
@@ -30,6 +33,10 @@ export default function grammaticList(input, options = {}) {
     }
 
     input.push(lastComparison);
+  }
+
+  if (defaults.period) {
+    input[input.length - 1] += '.';
   }
 
   return input.join(',');

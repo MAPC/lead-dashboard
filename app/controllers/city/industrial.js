@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import grammaticList from '../../utils/grammatic-list';
+import {fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
 const { computed } = Ember;
 
@@ -80,7 +81,7 @@ export default Ember.Controller.extend({
 
   topConsumingIndustriesString: computed('topConsumingNames', function() {
     const topConsumers = Ember.copy(this.get('topConsumingNames'));
-    const gList = grammaticList(topConsumers, {period: false});
+    const gList = grammaticList(topConsumers);
     
     return gList + ((topConsumers.length > 1) ? ' together make ' : ' makes ');
   }),
@@ -92,7 +93,31 @@ export default Ember.Controller.extend({
 
 
   topFuel: computed('sectorData', function() {
-  
+    const sectorData = Ember.copy(this.get('sectorData'), true);
+
+    const fuelTotals = fuelTypes.map(_type => {
+                                  return {
+                                    type: _type,
+                                    value: sectorData.rows.reduce((a,b) => a += b[`${_type}_con_mmbtu`], 0)
+                                  };
+                                })
+                                .reduce((a, _typeSet) => {
+                                  a[_typeSet.type] = _typeSet.value;
+                                  return a;
+                                }, {});
+
+    const topFuelKey = Object.keys(fuelTotals).reduce((a,b) => fuelTotals[a] > fuelTotals[b] ? a : b);
+
+    return fuelTypesMap[topFuelKey].toLowerCase();
+  }),
+
+
+  otherFuels: computed('topFuel', function() {
+    const topFuel = this.get('topFuel');
+    const otherFuels = fuelTypes.filter(type => fuelTypesMap[type].toLowerCase() !== topFuel)
+                                .map(fuel => fuelTypesMap[fuel].toLowerCase());
+
+    return grammaticList(otherFuels, {conjunction: 'or'});
   }),
 
 

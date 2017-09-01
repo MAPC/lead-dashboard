@@ -174,7 +174,7 @@ export default Ember.Component.extend({
             return `${a} ${comparison},`;
           }, analysis[metric]);
 
-          analysis[metric] = grammaticList(analysis[metric]);
+          analysis[metric] = grammaticList(analysis[metric], {period: true});
         });
 
         this.set('analysis', analysis);
