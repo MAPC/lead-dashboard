@@ -33,7 +33,7 @@ export default Ember.Controller.extend({
     const sectorData = this.get('sectorData');
 
     const filteredRows = sectorData.rows.filter(row => {
-      return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0);
+      return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0 || row[`${type}_con_mmbtu`] !== null);
     });
 
     return filteredRows.map(row => huTypeMap[row.hu_type]);

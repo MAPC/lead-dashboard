@@ -1,8 +1,9 @@
 export const huTypeMap = {
-  'u1': 'Single-family Homes',
-  'u2_4': 'Apartments in 2-4 Unit Buildings',
-  'u5ov': 'Apartments in 5 or More Unit Buildings',
-  'u_oth': 'Mobile Homes',
+  'u1a': 'Single-Family, Attached',
+  'u1d': 'Single-Family, Detached',
+  'u2_4': 'Multi-Family, 2-4 Units',
+  'u5ov': 'Multi-Family, 5+ Units',
+  'u_oth': 'Other',
 };
 
 const maps = {
