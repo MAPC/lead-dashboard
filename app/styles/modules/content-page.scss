@@ -12,7 +12,7 @@
     max-width: 700px;
     min-width: 570px;
     margin: 0 auto;
-    padding: 60px 35px;
+    padding: 60px 35px 30px;
 
     @include media('medium-small') { width: 80%; }
     @include media('small') { min-width: 460px; }
@@ -20,6 +20,12 @@
       width: 95%;
       min-width: initial; 
       padding: 40px 25px;
+    }
+
+    & + .page-content { 
+      padding: 40px 35px 60px;
+
+      border-top: 4px solid $color_bg-medium; 
     }
   }
 
