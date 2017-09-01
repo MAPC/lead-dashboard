@@ -40,7 +40,7 @@ export default Ember.Controller.extend({
 
     let muniSectorData = sectorData.rows.filter(row => row.municipal === municipality);
 
-    const topCount = Math.min(3, muniSectorData.length);
+    const topCount = Math.min(3, muniSectorData.length - 1);
     const topConsumers = [];
     
     while (topConsumers.length < topCount) {
@@ -58,20 +58,41 @@ export default Ember.Controller.extend({
       muniSectorData.splice(maxIndex, 1);
     }
 
-    return topConsumers.map(consumer => consumer.naicstitle);
+    return topConsumers;
   }),
 
 
-  topConsumingIndustriesString: computed('topConsumingIndustries', function() {
-    const topConsumers = this.get('topConsumingIndustries');
+  topConsumingNames: computed('topConsumingIndustries', function() {
+    return this.get('topConsumingIndustries').map(consumer => consumer.naicstitle);
+  }),
+
+
+  topConsumingPercentage: computed('topConsumingIndustries', 'sectorData', function() {
+    const topConsumers = Ember.copy(this.get('topConsumingIndustries'), true);
+    const sectorData =  Ember.copy(this.get('sectorData'), true);
+
+    const total = sectorData.rows.reduce((a, row) => a += row.total_con_mmbtu, 0);
+    const topTotal = topConsumers.reduce((a, row) => a += row.total_con_mmbtu, 0);
+
+    return Math.round(((topTotal * 10000) / total)) / 100;
+  }),
+
+
+  topConsumingIndustriesString: computed('topConsumingNames', function() {
+    const topConsumers = Ember.copy(this.get('topConsumingNames'));
     const gList = grammaticList(topConsumers, {period: false});
     
     return gList + ((topConsumers.length > 1) ? ' together make ' : ' makes ');
   }),
 
 
-  topConsumingIndustry: computed('topConsumingIndustries', function() {
-    return Ember.copy(this.get('topConsumingIndustries'))[0];
+  topConsumingIndustry: computed('topConsumingNames', function() {
+    return Ember.copy(this.get('topConsumingNames'))[0];
+  }),
+
+
+  topFuel: computed('sectorData', function() {
+  
   }),
 
 

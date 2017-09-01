@@ -4,7 +4,8 @@ export default function grammaticList(input, options = {}) {
   // Set and override default values
   const defaults = {
     period: true,
-    delimiter: ',',
+    conjunction: 'and',
+    stringDelimiter: ',',
   };
 
   Object.keys(options).forEach(key => {
@@ -13,7 +14,7 @@ export default function grammaticList(input, options = {}) {
 
 
   if (typeof input === 'string') {
-    input = input.split(defaults.delimiter);
+    input = input.split(defaults.stringDelimiter);
   }
 
   if (input.length !== 1) {
@@ -21,7 +22,7 @@ export default function grammaticList(input, options = {}) {
     let lastComparison = input.pop() + ((defaults.period) ? '.':'');
 
     if (input.length !== 0) {
-      lastComparison = ` and ${lastComparison}`;
+      lastComparison = ` ${defaults.conjunction} ${lastComparison}`;
     }
 
     if (input.length === 1) {
