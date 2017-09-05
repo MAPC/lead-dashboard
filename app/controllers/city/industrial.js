@@ -94,7 +94,17 @@ export default Ember.Controller.extend({
   topFuel: computed('sectorData', function() {
     const sectorData = Ember.copy(this.get('sectorData'), true);
 
-    const fuelTotals = this.totalFuelByColumn(sectorData, 'con_mmbtu');
+    const fuelTotals = fuelTypes.map(_type => {
+                          return {
+                            type: _type,
+                            value: sectorData.rows.reduce((a,b) => a += b[`${_type}_con_mmbtu`], 0)
+                          };
+                        })
+                        .reduce((a, _typeSet) => {
+                          a[_typeSet.type] = _typeSet.value;
+                          return a;
+                        }, {});
+
     const topFuelKey = Object.keys(fuelTotals).reduce((a,b) => fuelTotals[a] > fuelTotals[b] ? a : b);
 
     return fuelTypesMap[topFuelKey].toLowerCase();
@@ -140,20 +150,6 @@ export default Ember.Controller.extend({
 
     return Math.round(((topEmissionsIndustry.emissions * 10000) / total)) / 100;
   }),
-
-
-  totalFuelByColumn(data, columnName) {
-     return fuelTypes.map(_type => {
-                        return {
-                          type: _type,
-                          value: data.rows.reduce((a,b) => a += b[`${_type}_${columnName}`], 0)
-                        };
-                      })
-                      .reduce((a, _typeSet) => {
-                        a[_typeSet.type] = _typeSet.value;
-                        return a;
-                      }, {});
-  },
 
 
   /**
