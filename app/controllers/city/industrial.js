@@ -91,13 +91,13 @@ export default Ember.Controller.extend({
   }),
 
 
-  topFuel: computed('sectorData', function() {
-    const sectorData = Ember.copy(this.get('sectorData'), true);
+  topFuel: computed('muniSectorData', function() {
+    const muniSectorData = Ember.copy(this.get('muniSectorData'), true);
 
     const fuelTotals = fuelTypes.map(_type => {
                           return {
                             type: _type,
-                            value: sectorData.rows.reduce((a,b) => a += b[`${_type}_con_mmbtu`], 0)
+                            value: muniSectorData.reduce((a,b) => a += b[`${_type}_con_mmbtu`], 0)
                           };
                         })
                         .reduce((a, _typeSet) => {
@@ -120,11 +120,9 @@ export default Ember.Controller.extend({
   }),
 
 
-  topEmissionsIndustry: computed('sectorData', 'municipality', function() {
-    const sectorData = Ember.copy(this.get('sectorData'), true);
+  topEmissionsIndustry: computed('muniSectorData', 'municipality', function() {
+    const muniSectorData = Ember.copy(this.get('muniSectorData'), true);
     const municipality = this.get('municipality');
-  
-    const muniSectorData = sectorData.rows.filter(row => row.municipal === municipality);
 
     const totalEmissions = muniSectorData.map(row => {
       return {
