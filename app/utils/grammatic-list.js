@@ -39,5 +39,5 @@ export default function grammaticList(input, options = {}) {
     input[input.length - 1] += '.';
   }
 
-  return input.join(',');
+  return input.map(x => x.trim()).join(', ');
 }

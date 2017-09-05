@@ -3,7 +3,13 @@
     <div class="content-wrapper">
       <div class="content-copy">
         <h1>{{municipality}}: Industrial</h1>
-        {{sector-analysis data=muniSectorData}}
+
+        {{sector-analysis 
+          sector=sector
+          data=muniSectorData 
+          criteriaName=criteriaName
+          criteriaColumn=criteriaColumn
+        }}
       </div>
       <div class="sector-graphic-wrapper">
         <img class="sector-graphic" src="/assets/images/industrial.svg">
@@ -14,8 +20,8 @@
   {{pie-chart-layout 
     data=sectorData
     criteria=criteria 
+    criteriaName=criteriaName
     criteriaColumn=criteriaColumn
-    criteriaName='Industry' 
     municipality=municipality 
   }}
 

@@ -2,6 +2,9 @@ import Ember from 'ember';
 import { huTypeMap } from '../../utils/maps';
 import fuelTypes from  '../../utils/fuel-types';
 
+const { computed } = Ember;
+
+
 export default Ember.Controller.extend({
 
   /**
@@ -16,20 +19,29 @@ export default Ember.Controller.extend({
    */
 
   sector: 'residential',
+  criteriaName: 'Building',
   criteriaColumn: 'hu_type',
   valueMap: huTypeMap,
 
   municipalities: [],
 
-  municipality: Ember.computed('model', function() {
+  municipality: computed('model', function() {
     return (this.get('model')) ? this.get('model').municipality : '';
   }),
 
-  sectorData: Ember.computed('model', function() {
+
+  sectorData: computed('model', function() {
     return Ember.copy(this.get('model').sectorData, true);
   }),
 
-  criteria: Ember.computed('sectorData', function() {
+
+  muniSectorData: computed('municipality', 'sectorData', function() {
+    const municipality = this.get('municipality');
+    return this.get('sectorData').rows.filter(row => row.municipal === municipality && row.hu_type !== 'total');
+  }),
+
+
+  criteria: computed('sectorData', function() {
     const sectorData = this.get('sectorData');
 
     const filteredRows = sectorData.rows.filter(row => {

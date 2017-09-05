@@ -8,12 +8,14 @@
           with an average age of [avg. year]. Older buildings are likely to be more inefficient and 
           have opportunities for deep energy retrofits. A majority of residents are [renters or owners]. 
         </p>
-        <p>
-          The building type that consumes the most energy in {{municipality}} is [building type 1]. 
-          The residential sector consumes more [fuel type] than [other fuel types]. The 
-          [housing structure type] buildings account for [x] percent of residential greenhouse gas 
-          emissions in {{municipality}} annually.
-        </p>
+
+        {{sector-analysis
+          sector=sector
+          criteriaName=criteriaName
+          criteriaColumn=criteriaColumn
+          valueMap=valueMap
+          data=muniSectorData
+        }}
       </div>
       <div class="sector-graphic-wrapper">
         <img class="sector-graphic" src="/assets/images/residential.svg">

@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default Ember.Controller.extend({
 
   /**
@@ -14,18 +16,24 @@ export default Ember.Controller.extend({
    */
 
   sector: 'commercial',
-  criteriaColumn: 'activity',
   criteria: [],
+  criteriaName: 'Business',
+  criteriaColumn: 'activity',
 
 
   municipalities: [],
 
-  municipality: Ember.computed('model', function() {
+  municipality: computed('model', function() {
     return (this.get('model')) ? this.get('model').municipality : '';
   }),
 
-  sectorData: Ember.computed('model', function() {
+  sectorData: computed('model', function() {
     return Ember.copy(this.get('model').sectorData, true);
+  }),
+
+  muniSectorData: computed('sectorData', 'municipality', function() {
+    const municipality = this.get('municipality');
+    return this.get('sectorData').rows.filter(row => row.municipal === municipality);
   }),
 
 

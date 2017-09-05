@@ -4,13 +4,13 @@
     <div class="content-wrapper">
       <div class="content-copy">
         <h1>{{municipality}}: Commercial</h1>
-        <p>
-          The business type that consumes the most energy in {{municipality}} is [business 1]. 
-          [business 1], [business 2] and [business 3] together make up [x] percent of the commercial 
-          sector consumption in {{municipality}}. The commercial sector consumes more [fuel type] than 
-          [other fuel types]. The [business type] businesses account for [x] percent of commercial 
-          greenhouse gas emissions in {{municipality}} annually. 
-        </p>
+
+        {{sector-analysis 
+          sector=sector
+          data=muniSectorData 
+          criteriaName=criteriaName
+          criteriaColumn=criteriaColumn
+        }}
       </div>
       <div class="sector-graphic-wrapper">
         <img class="sector-graphic" src="/assets/images/commercial.svg">
@@ -22,7 +22,7 @@
     data=sectorData
     criteria=criteria 
     criteriaColumn=criteriaColumn 
-    criteriaName='Business' 
+    criteriaName=criteriaName
     municipality=municipality 
     sector=sector
   }}
