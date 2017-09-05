@@ -147,13 +147,14 @@ export default Ember.Controller.extend({
     return this.get('topEmissionsIndustry').naicstitle;
   }),
 
+
   topEmissionsPercentage: computed('topEmissionsIndustry', 'muniSectorData', function() {
     const muniSectorData = Ember.copy(this.get('muniSectorData'), true);
     const topEmissionsIndustry = this.get('topEmissionsIndustry');
 
     const total = muniSectorData.reduce((a,b) => a += fuelTypes.reduce((a, type) => a += b[`${type}_emissions_co2`], 0), 0);
 
-    console.log(total);
+    return Math.round(((topEmissionsIndustry.emissions * 10000) / total)) / 100;
   }),
 
 
