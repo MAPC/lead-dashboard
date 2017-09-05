@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import maxRowByKey from '../../utils/max-row-by-key';
 import grammaticList from '../../utils/grammatic-list';
 import {fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
@@ -45,18 +46,10 @@ export default Ember.Controller.extend({
     const topConsumers = [];
     
     while (topConsumers.length < topCount) {
+      var { row, index } = maxRowByKey(muniSectorData, 'total_con_mmbtu');
 
-      let max = -1;
-      var maxIndex = null;
-      muniSectorData.forEach((row, index) => {
-        if (row.total_con_mmbtu > max) {
-          max = row.total_con_mmbtu;
-          maxIndex = index; 
-        }
-      });
-
-      topConsumers.push(muniSectorData[maxIndex]);
-      muniSectorData.splice(maxIndex, 1);
+      topConsumers.push(row);
+      muniSectorData.splice(index, 1);
     }
 
     return topConsumers;
@@ -130,16 +123,7 @@ export default Ember.Controller.extend({
       };
     });
 
-    let max = -1;
-    let maxIndex = null;
-    totalEmissions.forEach((row, index) => {
-      if (row.emissions > max) {
-        max = row.emissions;
-        maxIndex = index; 
-      }
-    });
-
-    return totalEmissions[maxIndex];
+    return maxRowByKey(totalEmissions, 'emissions').row;
   }),
 
 
