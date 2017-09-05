@@ -76,9 +76,15 @@
       </article>
     {{/each}}
 
-    <div class="footnote">
-      <span>*</span> If your city or town uses <a href="http://www.mapc.org/cca">Green Municipal Aggregation</a>,
-      actual electricity emissions may be significantly lower than this estimate.
+    <div class="table-footer">
+      <div class="footnote">
+        <span>*</span> If your city or town uses <a href="http://www.mapc.org/cca">Green Municipal Aggregation</a>,
+        actual electricity emissions may be significantly lower than this estimate.
+      </div>
+
+      <button {{action 'downloadTableData'}}>
+        Download Table <img src="/assets/images/download.svg">
+      </button>
     </div>
 
   </div><!--/ .city-overview-table -->

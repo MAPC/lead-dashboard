@@ -225,8 +225,50 @@
       }
     }
 
-    .footnote {
+    .table-footer {
+      display: flex;  
+
       margin-top: 45px;
+
+      button {
+        display: inline-block;
+
+        margin: 8px 15px 0;
+        padding-right: 22px;
+
+        color: $color_font-dark;
+        font-size: 14px;
+        text-align: left;
+
+        background: none; 
+        border: none;
+        opacity: .80;
+
+        transition: opacity .15s;
+
+        &:hover {
+          opacity: 1; 
+
+          transition: opacity .15s;
+        }
+
+        img {
+          @extend ._vertical-center;
+          top: 50%;
+          left: initial;
+          right: 0;
+          display: inline-block; 
+
+          height: 16px;
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .footnote {
+      flex: 1 0 75%;
+
+      margin-top: 10px;
       padding-left: 20px;
 
       color: darken($color_font-medium, 15);
