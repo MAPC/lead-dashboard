@@ -66,9 +66,9 @@
         <div class="row-values">
           {{#each typeData.sectors as |sector|}} 
             <div class="row-value">
-              <h5 class="consumption">{{sector.consumption}}%</h5>
-              <h5 class="emissions">{{sector.emissions}}%</h5>
-              <h5 class="cost">${{commas sector.cost}}</h5>
+              <h5 class="consumption">{{sector.consumptionPercentage}}%</h5>
+              <h5 class="emissions">{{sector.emissionsPercentage}}%</h5>
+              <h5 class="cost">${{commas sector.costPercentage}}</h5>
             </div>
           {{/each}}
         </div><!--/ .row-values -->

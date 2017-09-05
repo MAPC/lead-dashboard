@@ -59,12 +59,13 @@ export default Ember.Controller.extend({
     const fuelTypeData = this.get('fuelTypeData');
 
     return {
-      emissions: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].emissions),
-      consumption: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumption),
+      emissions: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].emissionsPercentage),
+      consumption: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumptionPercentage),
     };
   }),
 
-  totalEmissions: computed('model', 'sectors', function() {
+
+  totalEmissions: computed('model', 'sectors', 'fuelTypeData', function() {
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
     const model = this.get('model');
 
@@ -87,7 +88,7 @@ export default Ember.Controller.extend({
           sectorTotals[sectorData.sector] = 0;
         }
 
-        sectorTotals[sectorData.sector] += sectorData.emissions;
+        sectorTotals[sectorData.sector] += sectorData.emissionsPercentage;
       });
     });
 
@@ -205,10 +206,9 @@ export default Ember.Controller.extend({
       sectorData.push(sectorData.reduce((aggregate, current) => {
         Object.keys(aggregate)
               .filter(key => key !== 'sector')
-              .forEach(
-          key => {
-            aggregate[key] += current[key];
-          });
+              .forEach(key => {
+                aggregate[key] += current[key];
+              });
 
         return aggregate;         
       }));
@@ -230,8 +230,6 @@ export default Ember.Controller.extend({
     const totalEmissions = data.map(datum => datum.sectors[datum.sectors.length - 1].emissions)
                                  .reduce((a, b) => a + b);
 
-    //this.set('totalEmissions', totalEmissions);
-
     // Normalize the data
     data.forEach(datum => {
       datum.sectors.forEach(sector => {
@@ -244,10 +242,14 @@ export default Ember.Controller.extend({
           let roundFactor = 1;
           if (sector[key] % 1 === sector[key]) roundFactor = 10;
 
-          sector[key] = Math.round(sector[key] * roundFactor) / roundFactor;
+          sector[`${key}Percentage`] = Math.round(sector[key] * roundFactor) / roundFactor;
         });
+
+        sector.consumption /= (100 / totalConsumption);
+        sector.emissions /= (100 / totalEmissions);
       });
     });
+
 
     return data;
   },
@@ -264,8 +266,8 @@ export default Ember.Controller.extend({
         if (munged) {
           const comparingTo = {
             municipality: _comparingTo ,
-            emissions: munged.map(row => row.sectors[row.sectors.length - 1].emissions),
-            consumption: munged.map(row => row.sectors[row.sectors.length - 1].consumption),
+            emissions: munged.map(row => row.sectors[row.sectors.length - 1].emissionsPercentage),
+            consumption: munged.map(row => row.sectors[row.sectors.length - 1].consumptionPercentage),
           };
 
           this.set('comparingTo', comparingTo);
@@ -277,7 +279,10 @@ export default Ember.Controller.extend({
     changeMunicipality(municipality) {
       this.transitionToRoute('city.index', slug(municipality).normalize());
       this.send('compareTo', this.randomMunicipality());
-    }
+    },
+
+
+
   
   }
 
