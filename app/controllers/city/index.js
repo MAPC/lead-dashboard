@@ -282,7 +282,50 @@ export default Ember.Controller.extend({
     },
 
 
+    downloadTableData() {
+      const fuelTypeData = this.get('fuelTypeData');
+      const municipality = this.get('municipality');
 
+      const flattened = fuelTypeData.map(typeSet => {
+        return typeSet.sectors.map(sector => {
+          sector.fuel_type = typeSet.type.toLowerCase();
+          return sector;
+        });
+      });
+
+      const reduced = flattened.reduce((a,b) => a.concat(b));
+
+      const renamed = reduced.map(row => {
+        return {
+          fuel_type_index: row.fuel_type,
+          sector_index: row.sector,
+          consumption_total_mmbtu: row.consumption,
+          consumption_percentage: row.consumptionPercentage / 100,
+          emissions_total_mmbtu: row.emissions,
+          emissions_percentage: row.emissionsPercentage / 100,
+          cost_dollars: row.cost,
+        };
+      });
+
+      const csvHeader = "data:text/csv;charset=utf-8,";
+
+      const documentHeader = Object.keys(renamed[0]);
+      const documentRows = renamed.map(row => Object.keys(row).map(key => row[key]));
+
+      const documentStructure = [[documentHeader], documentRows].reduce((a,b) => a.concat(b));
+      const documentBody = documentStructure.reduce((a,b) => `${a}\n${b}`)
+
+      const csvFile = csvHeader + documentBody;
+      const encoded = encodeURI(csvFile);
+
+      const link = document.createElement('a');
+      link.setAttribute('href', encoded);
+      link.setAttribute('download', `${municipality.toLowerCase()}_at-a-glance_data.csv`);
+
+      document.body.appendChild(link);
+      link.click();
+    },
+    
   
   }
 
