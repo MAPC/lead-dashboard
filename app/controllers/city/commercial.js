@@ -16,20 +16,22 @@ export default Ember.Controller.extend({
    */
 
   sector: 'commercial',
+  municipalities: [],
+
   criteria: [],
   criteriaName: 'Business',
   criteriaColumn: 'activity',
 
 
-  municipalities: [],
-
   municipality: computed('model', function() {
     return (this.get('model')) ? this.get('model').municipality : '';
   }),
 
+
   sectorData: computed('model', function() {
     return Ember.copy(this.get('model').sectorData, true);
   }),
+
 
   muniSectorData: computed('sectorData', 'municipality', function() {
     const municipality = this.get('municipality');

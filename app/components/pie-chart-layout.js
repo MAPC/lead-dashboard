@@ -43,6 +43,7 @@ export default Ember.Component.extend({
     const metric = this.get('metric');
     const criteriaColumn = this.get('criteriaColumn');
     const criteria = this.get('criteria');
+
     const data = this.get('data');
 
     const chartData = data.rows.filter(row => {

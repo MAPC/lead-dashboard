@@ -1,0 +1,11 @@
+.component.sector-layout {
+  min-height: 100vh; 
+
+  &.no-data {
+    min-height: 82vh; 
+
+    .city-information {
+      height: 82vh;
+    }
+  }
+}

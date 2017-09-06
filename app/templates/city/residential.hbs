@@ -1,45 +1,21 @@
 <section class="route city-residential">
-  <div class="city-information">
-    <div class="content-wrapper">
-      <div class="content-copy">
-        <h1>{{municipality}}: Residential</h1>
-        <p>
-          The age of residential buildings in {{municipality}} ranges from [max year] to [min year], 
-          with an average age of [avg. year]. Older buildings are likely to be more inefficient and 
-          have opportunities for deep energy retrofits. A majority of residents are [renters or owners]. 
-        </p>
 
-        {{sector-analysis
-          sector=sector
-          criteriaName=criteriaName
-          criteriaColumn=criteriaColumn
-          valueMap=valueMap
-          data=muniSectorData
-        }}
-      </div>
-      <div class="sector-graphic-wrapper">
-        <img class="sector-graphic" src="/assets/images/residential.svg">
-      </div>
-    </div>
-  </div>
+  {{sector-layout
 
-  {{pie-chart-layout 
-    data=sectorData
-    valueMap=valueMap
-    criteria=criteria 
-    criteriaColumn=criteriaColumn
-    criteriaName='Residence' 
-    municipality=municipality
-  }}
-
-  {{spider-chart-layout 
-    action='fetchDataFor'
-    data=sectorData
-    valueMap=valueMap
-    criteria=criteriaColumn
-    municipalities=municipalities
-    municipality=municipality 
     sector=sector
+    municipality=municipality
+    municipalities=municipalities
+
+    sectorData=sectorData
+    muniSectorData=muniSectorData
+
+    valueMap=valueMap
+
+    criteria=criteria
+    criteriaName=criteriaName
+    criteriaColumn=criteriaColumn
+
+    action='fetchDataFor'
   }}
 
 </section>

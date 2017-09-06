@@ -53,31 +53,6 @@
 
     @include media('small') { margin-bottom: 35px; }
 
-    a { 
-      padding-bottom: 1px;
-
-      font-weight: 300;
-
-      border-bottom: 1px solid $color_brand-tertiary;
-
-      opacity: .90;
-      transition: opacity .12s;
-
-      &:hover {
-        opacity: 1; 
-        transition: opacity .12s;
-      }
-
-      &.big-link {
-        display: inline-block;
-
-        margin: 10px auto;
-        padding-bottom: 8px; 
-
-        font-weight: 400;
-      }
-    }
-
     ul {
       padding-left: 30px;
       list-style: circle; 

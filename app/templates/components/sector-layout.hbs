@@ -1,0 +1,49 @@
+<section class="component sector-layout {{if noSectorData 'no-data'}}">
+
+  <div class="city-information">
+    <div class="content-wrapper">
+      <div class="content-copy">
+        <h1>{{municipality}}: {{capitalize sector}}</h1>
+
+        {{#unless noSectorData}}
+          {{sector-analysis 
+            sector=sector
+            data=muniSectorData 
+            valueMap=valueMap
+            criteriaName=criteriaName
+            criteriaColumn=criteriaColumn
+          }}
+        {{else}}
+          {{no-data-message sector=sector municipality=municipality}}
+        {{/unless}}
+      </div>
+      <div class="sector-graphic-wrapper">
+        {{#unless noSectorData}}
+          <img class="sector-graphic" src="/assets/images/{{sector}}.svg">
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+
+  {{#unless noSectorData}}
+    {{pie-chart-layout 
+      municipality=municipality 
+      data=sectorData
+      valueMap=valueMap
+      criteria=criteria 
+      criteriaName=criteriaName
+      criteriaColumn=criteriaColumn
+    }}
+
+    {{spider-chart-layout 
+      sector=sector
+      municipality=municipality 
+      municipalities=municipalities
+      data=sectorData 
+      valueMap=valueMap
+      criteria=criteriaColumn
+      action=action
+    }}
+  {{/unless}}
+
+</section>

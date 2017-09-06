@@ -1,39 +1,21 @@
-<section class="route city city-commercial">
+<section class="route city-commercial">
 
-  <div class="city-information">
-    <div class="content-wrapper">
-      <div class="content-copy">
-        <h1>{{municipality}}: Commercial</h1>
+  {{sector-layout
 
-        {{sector-analysis 
-          sector=sector
-          data=muniSectorData 
-          criteriaName=criteriaName
-          criteriaColumn=criteriaColumn
-        }}
-      </div>
-      <div class="sector-graphic-wrapper">
-        <img class="sector-graphic" src="/assets/images/commercial.svg">
-      </div>
-    </div>
-  </div>
+    sector=sector
+    municipality=municipality
+    municipalities=municipalities
 
-  {{pie-chart-layout 
-    data=sectorData
-    criteria=criteria 
-    criteriaColumn=criteriaColumn 
+    sectorData=sectorData
+    muniSectorData=muniSectorData
+
+    valueMap=valueMap
+
+    criteria=criteria
     criteriaName=criteriaName
-    municipality=municipality 
-    sector=sector
-  }}
+    criteriaColumn=criteriaColumn
 
-  {{spider-chart-layout 
-    action='fetchDataFor' 
-    data=sectorData
-    criteria=criteriaColumn 
-    municipalities=municipalities 
-    municipality=municipality 
-    sector=sector
+    action='fetchDataFor'
   }}
 
 </section>

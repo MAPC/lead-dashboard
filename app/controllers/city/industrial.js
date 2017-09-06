@@ -40,6 +40,11 @@ export default Ember.Controller.extend({
   }),
 
 
+  noSectorData: computed('muniSectorData', function() {
+    return !(this.get('muniSectorData').length);
+  }),
+
+
   /**
    * Methods
    */

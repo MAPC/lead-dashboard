@@ -148,12 +148,12 @@
   }
 
   .content-window {
-    min-height: 100vh;
     height: 100%;
     padding-top: $layout_nav-height;
 
     @include media('small') { padding-top: $layout_nav-height--small; }
   }
+
 
   .city-information {
     width: 100%;
@@ -209,5 +209,4 @@
   .spider-chart-layout {
     border-top: 1px solid $color_font-medium;
   }
-
 }

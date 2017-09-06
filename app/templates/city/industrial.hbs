@@ -1,37 +1,21 @@
 <section class="route city-industrial">
-  <div class="city-information">
-    <div class="content-wrapper">
-      <div class="content-copy">
-        <h1>{{municipality}}: Industrial</h1>
 
-        {{sector-analysis 
-          sector=sector
-          data=muniSectorData 
-          criteriaName=criteriaName
-          criteriaColumn=criteriaColumn
-        }}
-      </div>
-      <div class="sector-graphic-wrapper">
-        <img class="sector-graphic" src="/assets/images/industrial.svg">
-      </div>
-    </div>
-  </div>
+  {{sector-layout
 
-  {{pie-chart-layout 
-    data=sectorData
-    criteria=criteria 
+    sector=sector
+    municipality=municipality
+    municipalities=municipalities
+
+    sectorData=sectorData
+    muniSectorData=muniSectorData
+
+    valueMap=valueMap
+
+    criteria=criteria
     criteriaName=criteriaName
     criteriaColumn=criteriaColumn
-    municipality=municipality 
-  }}
 
-  {{spider-chart-layout 
     action='fetchDataFor'
-    data=sectorData 
-    criteria=criteriaColumn
-    municipalities=municipalities
-    municipality=municipality 
-    sector=sector
   }}
 
 </section>

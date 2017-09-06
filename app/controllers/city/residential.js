@@ -19,11 +19,12 @@ export default Ember.Controller.extend({
    */
 
   sector: 'residential',
+  municipalities: [],
+
   criteriaName: 'Building',
   criteriaColumn: 'hu_type',
   valueMap: huTypeMap,
 
-  municipalities: [],
 
   municipality: computed('model', function() {
     return (this.get('model')) ? this.get('model').municipality : '';
@@ -41,11 +42,13 @@ export default Ember.Controller.extend({
   }),
 
 
-  criteria: computed('sectorData', function() {
-    const sectorData = this.get('sectorData');
+  criteria: computed('muniSectorData', function() {
+    const sectorData = this.get('muniSectorData');
 
-    const filteredRows = sectorData.rows.filter(row => {
-      return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0 || row[`${type}_con_mmbtu`] !== null);
+    console.log(sectorData);
+
+    const filteredRows = sectorData.filter(row => {
+      return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0 || row[`${type}_con_mmbtu`] === null);
     });
 
     return filteredRows.map(row => huTypeMap[row.hu_type]);
