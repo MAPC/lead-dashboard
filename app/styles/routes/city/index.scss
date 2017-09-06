@@ -243,6 +243,7 @@
         background: none; 
         border: none;
         opacity: .80;
+        outline: none;
 
         transition: opacity .15s;
 
@@ -261,6 +262,8 @@
 
           height: 16px;
           margin-left: 5px;
+
+          outline: none;
         }
       }
     }
