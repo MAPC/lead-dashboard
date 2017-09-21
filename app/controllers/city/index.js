@@ -301,7 +301,7 @@ export default Ember.Controller.extend({
           sector_index: row.sector,
           consumption_total_mmbtu: row.consumption,
           consumption_percentage: row.consumptionPercentage / 100,
-          emissions_total_mmbtu: row.emissions,
+          emissions_total_lbs_CO2e: row.emissions,
           emissions_percentage: row.emissionsPercentage / 100,
           cost_dollars: row.cost,
         };
