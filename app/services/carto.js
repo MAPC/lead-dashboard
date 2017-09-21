@@ -34,8 +34,7 @@ export default Ember.Service.extend({
       return cache[queryString];
     }
     else {
-      let cleanQueryString = queryString.split(" ").join("%20")
-                                        .split("‘").join("%27");
+      const cleanQueryString = encodeURIComponent(queryString);
 
       let response = this.get('ajax').request(`${cartoURL}${cleanQueryString}`);
       cache[queryString] = response;
