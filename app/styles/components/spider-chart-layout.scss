@@ -97,6 +97,15 @@
       }
     }
 
+    .spider-chart-tag {
+      margin-top: 40px;
+
+      color: lighten($color_font-dark, 30);
+      font-size: 11px; 
+      text-align: center;
+      font-weight: 300;
+    }
+
     .callout {
       width: 45%;
       margin: 0 auto;
