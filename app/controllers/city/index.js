@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import slug from '../../utils/slug';
 import sectors from '../../utils/sectors';
+import acronyze from '../../utils/acronyze';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
 const computed = Ember.computed;
@@ -265,7 +266,7 @@ export default Ember.Controller.extend({
 
         if (munged) {
           const comparingTo = {
-            municipality: _comparingTo ,
+            municipality: _comparingTo,
             emissions: munged.map(row => row.sectors[row.sectors.length - 1].emissionsPercentage),
             consumption: munged.map(row => row.sectors[row.sectors.length - 1].consumptionPercentage),
           };

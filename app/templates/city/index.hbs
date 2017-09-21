@@ -5,11 +5,11 @@
       <div class="content-copy">
         <h1>{{municipality}}: At a Glance</h1>
         <p>
-          {{municipality}} is a municipality with a population of {{commas populationCensus.estimate}} as 
-          of the {{populationCensus.year}} Census. {{municipality}} is responsible for emitting {{commas totalEmissions}} 
-          lbs. CO<small>2</small>e greenhouse gas emissions each year. In {{municipality}}, the {{capitalize largestEmitter}} sector 
+          {{acronyze municipality}} is a municipality with a population of {{commas populationCensus.estimate}} as 
+          of the {{populationCensus.year}} Census. {{acronyze municipality}} is responsible for emitting {{commas totalEmissions}} 
+          lbs. CO<small>2</small>e greenhouse gas emissions each year. In {{acronyze municipality}}, the {{capitalize largestEmitter}} sector 
           produces {{largestEmitterPerc}} percent of the total emissions resulting from the local built environment – making it 
-          {{municipality}}’s largest greenhouse gas emitter. 
+          {{acronyze municipality}}’s largest greenhouse gas emitter. 
         </p>
       </div>
       <div class="sector-graphic-wrapper">
@@ -29,7 +29,7 @@
 
     <article class="table-header">
       <div class="row-index">
-        <h2>How does {{municipality}}'s homes &amp; businesses consume energy?</h2>
+        <h2>How does {{acronyze municipality}}'s homes &amp; businesses consume energy?</h2>
       </div>
       <div class="row-values">
         {{#each sectors as |sector|}}
@@ -117,7 +117,7 @@
             {{/each}}
           </div>
           <div class="comparison-column current-muni">
-            <h5>{{uppercase municipality}}</h5>
+            <h5>{{uppercase (acronyze municipality)}}</h5>
             {{#each fuelPercentages.consumption as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
@@ -142,7 +142,7 @@
             {{/each}}
           </div>
           <div class="comparison-column current-muni">
-            <h5>{{uppercase municipality}}</h5>
+            <h5>{{uppercase (acronyze municipality)}}</h5>
             {{#each fuelPercentages.emissions as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
