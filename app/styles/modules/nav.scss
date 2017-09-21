@@ -8,7 +8,7 @@ nav {
 
     border-bottom: 2px solid $color_brand-primary;
 
-    @include media('medium-small') {
+    @include media('medium') {
       margin: 0 10px;
       padding-bottom: 5px; 
 
@@ -22,8 +22,8 @@ nav {
     right: 0;
     top: 55%;
 
-    @include media('medium-small') { top: 60%; }
-    @include media('small') { display: none; }
+    @include media('medium') { top: 60%; }
+    @include media('medium-small') { display: none; }
   }
 
   &.footer-nav {
