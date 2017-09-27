@@ -123,7 +123,7 @@
             {{/each}}
           </div>
           <div class="comparison-column">
-            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase comparingTo.municipality}}</h5>
+            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
             {{#each comparingTo.consumption as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
@@ -148,7 +148,7 @@
             {{/each}}
           </div>
           <div class="comparison-column">
-            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase comparingTo.municipality}}</h5>
+            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
             {{#each comparingTo.emissions as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}

@@ -4,7 +4,6 @@ import fuelTypes from  '../../utils/fuel-types';
 
 const { computed } = Ember;
 
-
 export default Ember.Controller.extend({
 
   /**
@@ -44,8 +43,6 @@ export default Ember.Controller.extend({
 
   criteria: computed('muniSectorData', function() {
     const sectorData = this.get('muniSectorData');
-
-    console.log(sectorData);
 
     const filteredRows = sectorData.filter(row => {
       return row.hu_type !== 'total' && !fuelTypes.every(type => row[`${type}_con_mmbtu`] === 0 || row[`${type}_con_mmbtu`] === null);

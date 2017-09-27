@@ -12,7 +12,7 @@
       <li>{{#link-to 'city.index'}}{{acronyze model.municipality}}{{/link-to}}</li>
       {{#each sectors as |sector|}}
         <li>
-          {{link-to sector.name sector.route}}
+          {{#link-to sector.route}}{{sector.name}}{{/link-to}}
         </li>
       {{/each}}
     </ul>

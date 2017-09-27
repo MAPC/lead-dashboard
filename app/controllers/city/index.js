@@ -2,10 +2,10 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import slug from '../../utils/slug';
 import sectors from '../../utils/sectors';
-import acronyze from '../../utils/acronyze';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
-const computed = Ember.computed;
+const { computed } = Ember;
+
 
 export default Ember.Controller.extend({
 
