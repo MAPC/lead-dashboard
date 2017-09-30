@@ -70,6 +70,7 @@
       height: $layout_nav-height + 17px;
 
       overflow-x: scroll;
+      overflow-y: hidden;
 
       @include media('small') { height: $layout_nav-height--small + 28px; }
     }
@@ -77,6 +78,7 @@
     li {
       flex: 1;
 
+      height: 77px;
       min-width: 120px;
 
       text-align: center;
