@@ -89,11 +89,13 @@
       display: block; 
     }
 
-    .spider-chart { 
-      width: 55%; 
+    .spider-chart-wrapper { 
+      width: 53%; 
+      margin-right: 2%;
 
       @include media('medium-small') {
         width: 100%; 
+        margin-right: 0;
       }
     }
 
@@ -104,6 +106,8 @@
       font-size: 11px; 
       text-align: center;
       font-weight: 300;
+
+      @include media('medium-small') { right: inherit; }
     }
 
     .callout {
