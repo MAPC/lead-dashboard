@@ -34,7 +34,7 @@ export default Ember.Controller.extend({
 
   sectors: computed(function() {
     const _sectors = sectors;
-    _sectors.push('total');
+    _sectors.unshift('total');
 
     return _sectors;
   }),
@@ -218,6 +218,8 @@ export default Ember.Controller.extend({
       sectorData[0] = original;
       sectorData[sectorData.length - 1].sector = 'total';
 
+      sectorData.unshift(sectorData.pop());
+
       return {
         type: fuelTypesMap[_type],
         sectors: sectorData,
@@ -225,10 +227,10 @@ export default Ember.Controller.extend({
     });
 
     // Sum the consumption values from the 'total' column
-    const totalConsumption = data.map(datum => datum.sectors[datum.sectors.length - 1].consumption)
+    const totalConsumption = data.map(datum => datum.sectors[0].consumption)
                                  .reduce((a, b) => a + b);
 
-    const totalEmissions = data.map(datum => datum.sectors[datum.sectors.length - 1].emissions)
+    const totalEmissions = data.map(datum => datum.sectors[0].emissions)
                                  .reduce((a, b) => a + b);
 
     // Normalize the data

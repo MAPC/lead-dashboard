@@ -55,6 +55,8 @@
     .row-value {
       width: 25%; 
       padding: 0 10px;
+
+      &:first-of-type { border-right: 1px solid darken($color_bg-medium, 15); }
     }
 
     .table-header {
@@ -121,6 +123,8 @@
           margin-top: 30px;
         }
       }
+
+      .row-value:first-of-type { border-right: none; }
     }
 
     .type-row {

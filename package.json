@@ -13,7 +13,8 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember test",
-    "stage": "ember build --prod && rsync -r dist/* lead-dashboard@youth-match-v2-staging:/var/www/lead-dashboard"
+    "stage": "ember build --prod && rsync -r dist/* lead-dashboard@youth-match-v2-staging:/var/www/lead-dashboard",
+    "deploy": "ember build --prod && rsync -r dist/* lead-dashboard@youth-match-v2:/var/www/lead-dashboard"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
