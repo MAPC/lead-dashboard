@@ -87,7 +87,7 @@ export default Ember.Component.extend({
       return obj.values.map(obj => {
         return {
           axis: obj.criterion, 
-          value: obj.totalConsumption,
+          value: Math.round(obj.totalConsumption),
           color: obj.color,
         };
       });
