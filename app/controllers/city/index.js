@@ -60,8 +60,8 @@ export default Ember.Controller.extend({
     const fuelTypeData = this.get('fuelTypeData');
 
     return {
-      emissions: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].emissionsPercentage),
-      consumption: fuelTypeData.map(type => type.sectors[type.sectors.length - 1].consumptionPercentage),
+      emissions: fuelTypeData.map(type => type.sectors[0].emissionsPercentage),
+      consumption: fuelTypeData.map(type => type.sectors[0].consumptionPercentage),
     };
   }),
 
@@ -267,10 +267,13 @@ export default Ember.Controller.extend({
         const munged = this.munger(response);
 
         if (munged) {
+
+          console.log(munged);
+
           const comparingTo = {
             municipality: _comparingTo,
-            emissions: munged.map(row => row.sectors[row.sectors.length - 1].emissionsPercentage),
-            consumption: munged.map(row => row.sectors[row.sectors.length - 1].consumptionPercentage),
+            emissions: munged.map(row => row.sectors[0].emissionsPercentage),
+            consumption: munged.map(row => row.sectors[0].consumptionPercentage),
           };
 
           this.set('comparingTo', comparingTo);
