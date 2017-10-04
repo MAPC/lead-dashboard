@@ -1,9 +1,9 @@
 import capitalize from './capitalize';
 
 const sectors = [
-  'industrial',
-  'commercial',
   'residential',
+  'commercial',
+  'industrial',
 ];
 
 export const sectorRouteMap = sectors.map(sector => {

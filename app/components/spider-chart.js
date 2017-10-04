@@ -325,7 +325,7 @@ export default Ember.Component.extend({
               tooltip
                   .attr('x', newX)
                   .attr('y', newY)
-                  .text(Format(d.value))
+                  .text(Format(d.value) + ' MMBTU')
                   .transition().duration(200)
                   .style('opacity', 1);
           })
