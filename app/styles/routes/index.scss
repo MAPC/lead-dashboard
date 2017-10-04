@@ -63,8 +63,13 @@
       font-size: 16px; 
       font-weight: 100;
 
-      @include media('medium-small') { font-size: 14px; }
-      @include media('small') { bottom: -60%; }
+      @include media('medium') { bottom: -90%; }
+      @include media('medium-small') { 
+        bottom: -100%; 
+
+        font-size: 14px; 
+      }
+      @include media('small') { bottom: -90%; }
     }
   }
 }

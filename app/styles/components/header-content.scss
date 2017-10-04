@@ -14,6 +14,7 @@ header {
 
     padding-left: $box_size * 4;
     margin-top: 30px;
+    font-weight: 100;
 
     @include media('medium-small') { 
       padding-left: $box_size--medium-small * 4;
@@ -31,35 +32,26 @@ header {
       font-size: 18px; 
     }
 
-    span { 
-      top: -2px;
-
-      margin-left: 8px;
-
-      color: lighten($color_font-dark, 10);
-      font-size: 24px;
-      font-weight: 100; 
-
-      @include media('medium-small') {
-        top: -1px;
-
-        font-size: 21px; 
-      }
-      @include media('small') { font-size: 17px; }
-      @include media('x-small') { 
-        margin-left: 5px;
-
-        font-size: 15px;
-      }
-    }
-
     em {
       position: absolute;
-      top: -16px;
+      bottom: -20px;
+      left: ($box_size * 4) + 3;
 
+      color: darken($color_font-medium, 20);
       font-size: 11px;
-      font-weight: 100;
+      font-weight: 400;
       font-style: normal;
+
+      @include media('medium-small') { left: ($box_size--medium-small * 4) + 3; }
+      @include media('small') { 
+        bottom: -15px;
+        left: ($box_size--small * 4) + 3; 
+      }
+      @include media('x-small') { 
+        left: ($box_size--x-small * 4) + 2; 
+
+        font-size: 9px;
+      }
     }
 
     &:before {
