@@ -55,7 +55,7 @@
 
     .subnote {
       position: absolute;
-      bottom: -60%;
+      bottom: -80%;
       left: 10px;
       text-align: left;
 
@@ -63,13 +63,13 @@
       font-size: 16px; 
       font-weight: 100;
 
-      @include media('medium') { bottom: -90%; }
+      @include media('medium') { bottom: -110%; }
       @include media('medium-small') { 
-        bottom: -100%; 
+        bottom: -120%;
 
         font-size: 14px; 
       }
-      @include media('small') { bottom: -90%; }
+      @include media('small') { bottom: -110%; }
     }
   }
 }
