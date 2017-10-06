@@ -53,6 +53,8 @@
 
     @include media('small') { margin-bottom: 35px; }
 
+    &.intro { margin-top: 50px;}
+
     ul {
       padding-left: 30px;
       list-style: circle; 
