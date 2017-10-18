@@ -51,7 +51,7 @@ export default Ember.Service.extend({
     const municipality = slug(_municipality).denormalize();
 
     sectors.forEach(sector => {
-      data[sector] = this.query(`SELECT * FROM lead_${sector} WHERE municipal = '${municipality}'`);
+      data[sector] = this.query(`SELECT * FROM lead_${sector} WHERE municipal ILIKE '${municipality}'`);
     });
 
     return {sectorData: data, municipality: municipality};
@@ -61,7 +61,7 @@ export default Ember.Service.extend({
   populationFor(_municipality) {
     const municipality = slug(_municipality).denormalize();
 
-    return this.query(`SELECT pop_est, years FROM demo_pop_estimates_m WHERE municipal = '${municipality}' AND years = '2015'`);
+    return this.query(`SELECT pop_est, years FROM demo_pop_estimates_m WHERE municipal ILIKE '${municipality}' AND years = '2015'`);
   }
 
 });
