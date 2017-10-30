@@ -53,8 +53,6 @@ export default Ember.Controller.extend({
       return fuelType; 
     });
 
-    console.log(fuelTypeData);
-
     return fuelTypeData;
   }),
 
