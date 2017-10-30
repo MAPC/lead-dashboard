@@ -45,14 +45,17 @@ export default Ember.Controller.extend({
   fuelTypeData: computed('model', function() {
     const munged = this.munger(this.get('model'));
 
-    return munged.map(fuelType => {
-
+    const fuelTypeData = munged.map(fuelType => {
       if (fuelType.type.toLowerCase() === 'electricity') {
         fuelType.footnote = true; 
       }
 
       return fuelType; 
     });
+
+    console.log(fuelTypeData);
+
+    return fuelTypeData;
   }),
 
 
@@ -67,15 +70,15 @@ export default Ember.Controller.extend({
 
 
   totalEmissions: computed('model', 'sectors', 'fuelTypeData', function() {
-    const sectors = this.get('sectors').filter(sector => sector !== 'total');
-    const model = this.get('model');
+    const fuelTypeData = this.get('fuelTypeData');
 
-    const totalEmissions = sectors.map(sector => model[sector].rows)
-                          .reduce((a,b) => a.concat(b))
-                          .map(row => fuelTypes.reduce((a,type) => a + row[`${type}_emissions_co2`], 0))
-                          .reduce((a,b) => a + b);
+    const totals = fuelTypeData.map(type => type.sectors)
+                               .reduce((a,b) => a.concat(b))
+                               .filter(row => row.sector === 'total');
 
-    return Math.floor(totalEmissions);
+    const totalEmissions = totals.reduce((x, total) => x + total.emissions, 0);
+
+    return totalEmissions;
   }),
 
 
@@ -267,9 +270,6 @@ export default Ember.Controller.extend({
         const munged = this.munger(response);
 
         if (munged) {
-
-          console.log(munged);
-
           const comparingTo = {
             municipality: _comparingTo,
             emissions: munged.map(row => row.sectors[0].emissionsPercentage),
