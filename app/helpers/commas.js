@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 export function commas(params) {
   return parseInt(params[0]).toLocaleString('en-us');
 }
 
-export default Ember.Helper.helper(commas);
+export default helper(commas);

@@ -1,31 +1,29 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { service } from '@ember-decorators/service';
+
 import slug from '../utils/slug';
 
-export default Ember.Service.extend({
+
+export default class extends Service {
 
   /**
    * Services
    */
 
-  ajax: Ember.inject.service(),
+  @service ajax;
 
 
   /**
    * Members
    */
 
-  cache: {},
+  cache = {};
 
 
   /**
    * Methods
    */
 
-  /**
-   * @param String queryString
-   *
-   * @return AjaxResponseObject
-   */
   query(queryString) {
     const cache = this.get('cache');
     const cartoURL = 'https://mapc-admin.carto.com/api/v2/sql?format=json&q=';
@@ -41,7 +39,7 @@ export default Ember.Service.extend({
 
       return response;
     }
-  },
+  }
 
 
   allSectorDataFor(_municipality) {
@@ -55,7 +53,7 @@ export default Ember.Service.extend({
     });
 
     return {sectorData: data, municipality: municipality};
-  },
+  }
 
 
   populationFor(_municipality) {
@@ -64,4 +62,4 @@ export default Ember.Service.extend({
     return this.query(`SELECT pop_est, years FROM demo_pop_estimates_m WHERE municipal ILIKE '${municipality}' AND years = '2015'`);
   }
 
-});
+}

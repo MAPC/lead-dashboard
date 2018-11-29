@@ -1,54 +1,58 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { copy } from '@ember/object/internals';
+import { service } from '@ember-decorators/service';
+import { computed } from '@ember-decorators/object';
 
-const { computed } = Ember;
 
-export default Ember.Controller.extend({
+export default class extends Controller {
 
   /**
    * Services
    */
 
-  municipalityList: Ember.inject.service(),
+  @service municipalityList;
 
 
   /**
    * Members
    */
 
-  sector: 'commercial',
-  municipalities: [],
+  sector = 'commercial';
+  municipalities = [];
+  criteria = [];
+  criteriaName = 'Business';
+  criteriaColumn = 'activity';
 
-  criteria: [],
-  criteriaName: 'Business',
-  criteriaColumn: 'activity',
 
-
-  municipality: computed('model', function() {
+  @computed('model')
+  get municipality() {
     return (this.get('model')) ? this.get('model').municipality : '';
-  }),
+  }
 
 
-  sectorData: computed('model', function() {
-    return Ember.copy(this.get('model').sectorData, true);
-  }),
+  @computed('model')
+  get sectorData() {
+    return copy(this.get('model').sectorData, true);
+  }
 
 
-  muniSectorData: computed('sectorData', 'municipality', function() {
+  @computed('sectorData', 'municipality')
+  get muniSectorData() {
     const municipality = this.get('municipality');
     return this.get('sectorData').rows.filter(row => row.municipal === municipality);
-  }),
+  }
 
 
   /**
    * Methods
    */
 
-  init() {
-    this._super(...arguments);
-  
+  constructor() {
+    super(...arguments);
+
     this.get('municipalityList').listFor(this.get('sector')).then(response => {
       this.set('municipalities', response.rows.map(row => row.municipal));
     });
   }
 
-});
+}

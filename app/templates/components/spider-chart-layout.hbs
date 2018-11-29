@@ -1,7 +1,6 @@
 <section class="component spider-chart-layout content-wrapper">
 
   <div class="comparison-selector">
-
     <div class="selection-box">
       Compare {{acronyze municipality}} to:
 
@@ -10,8 +9,8 @@
           options=municipalityList
           placeholder="Add Municipality"
           destination="power-select-destination"
-          onchange=(action 'addToComparisonList')
-          as |municipality|
+          onchange=(action "addToComparisonList")
+        as |municipality|
         }}
           {{municipality}}
         {{/power-select}}
@@ -24,20 +23,18 @@
       {{#each comparisonList as |municipality|}}
         <li style="border-color: {{municipality.color}}">
           {{municipality.name}}
-          <span {{action 'removeFromComparisonList' municipality}} class="remove">x</span>
+          <span {{action "removeFromComparisonList" municipality}} class="remove">x</span>
         </li>
       {{/each}}
     </ul>
-
-  </div><!--/ .comparison-selector -->
+  </div>
 
   <div class="comparison-window">
-
     <div class="spider-chart-wrapper">
-      {{spider-chart 
-        municipality=municipality 
+      {{spider-chart
+        municipality=municipality
         valueMap=valueMap
-        sector=sector 
+        sector=sector
         data=chartData
       }}
 
@@ -59,7 +56,6 @@
         {{/if}}
       </div>
     </div>
-
-  </div><!--/ .comparison-window -->
+  </div>
 
 </section>

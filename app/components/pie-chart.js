@@ -1,49 +1,52 @@
-import Ember from 'ember';
+import $ from 'jquery';
 import d3 from 'npm:d3';
+import Component from '@ember/component';
+import { run } from '@ember/runloop';
+import { copy } from '@ember/object/internals';
+import { service } from '@ember-decorators/service';
+
+
 import slug from '../utils/slug';
 import { fuelTypes, fuelTypesMap } from '../utils/fuel-types';
 
-export default Ember.Component.extend({
+
+export default class extends Component {
 
   /**
    * Services
    */
 
-  colorManager: Ember.inject.service(),
+  @service colorManager;
 
 
   /**
    * Members
    */
 
-  tagName: '',
-  normalizedTitle: null,
-  metric: null,
-
-  chartOptions: {
+  chartOptions = {
     width: 320,
     height: 320,
     numTicks: 3,
     tooltipDisplacement: 20,
     transitionDuration: 200,
-  },
+  };
 
 
   /**
    * Methods
    */
 
-  init() {
-    this._super(...arguments) ;
+  constructor() {
+    super(...arguments);
 
     this.set('normalizedTitle', slug(this.get('title')).normalize());
 
     this.calculateChartDimensions();
 
-    Ember.$(window).resize(() => {
-      this.calculateChartDimensions(true);
+    $(window).resize(() => {
+      run(() => this.calculateChartDimensions(true));
     });
-  },
+  }
 
   calculateChartDimensions(render = false) {
     const chartOptions = this.get('chartOptions');
@@ -59,7 +62,7 @@ export default Ember.Component.extend({
       this.resizeSVGElement(size);
       this.didRender();
     }
-  },
+  }
 
   resizeSVGElement(size) {
     const normalizedTitle = this.get('normalizedTitle');
@@ -70,11 +73,11 @@ export default Ember.Component.extend({
       .attr('height', size)
       .select('g')
       .attr('transform', `translate(${size/2},${size/2})`);
-  },
+  }
 
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
 
     const { width, height } = this.get('chartOptions');
     const normalizedTitle = this.get('normalizedTitle');
@@ -93,7 +96,7 @@ export default Ember.Component.extend({
     d3.select('.tooltip-holder')
       .append('div')
       .attr('class', 'tooltip');
-  },
+  }
 
 
   unitTransform(context, val) {
@@ -106,11 +109,11 @@ export default Ember.Component.extend({
     };
 
     return transforms[metric](val);
-  },
+  }
 
 
   didRender() {
-    this._super(...arguments);
+    //super.didRender(...arguments);
 
     const { width, height, transitionDuration, tooltipDisplacement } = this.get('chartOptions');
     const normalizedTitle = this.get('normalizedTitle');
@@ -120,7 +123,7 @@ export default Ember.Component.extend({
 
     const color = d3.scaleOrdinal([colors.orellow, colors.lightGreen, colors.blue]);
 
-    const data = Ember.copy(this.get('data'), true);
+    const data = copy(this.get('data'), true);
 
     const arc = d3.arc()
                   .innerRadius(minDim/3.5)
@@ -139,7 +142,7 @@ export default Ember.Component.extend({
                      .data(fuelTypes)
                      .enter()
                      .append('li');
-                    
+
     legend.append("span")
           .attr('class', 'fuel-color')
           .style('background', d => color(d));
@@ -160,7 +163,7 @@ export default Ember.Component.extend({
 
     pathInfo.append('div')
            .attr('class', 'fuel-type');
-    
+
     pathInfo.append('div')
            .attr('class', 'value');
 
@@ -231,6 +234,6 @@ export default Ember.Component.extend({
           this._current = i(0);
           return function(t) { return arc(i(t)) };
         });
-  },
+  }
 
-});
+}

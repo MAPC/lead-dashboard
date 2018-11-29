@@ -1,12 +1,14 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { computed } from '@ember-decorators/object';
 
-export default Ember.Service.extend({
+
+export default class extends Service {
 
   /**
    * Members
    */
 
-  colors: {
+  colors = {
     lightPurple: '#9176e3',
     poiple: '#51498c',
     lightBlue: '#11cfff',
@@ -15,17 +17,18 @@ export default Ember.Service.extend({
     blue: '#1D74F2',
     lightGreen: '#13e3bc',
     orellow: '#f4af5a',
-  },
+  };
 
-  colorPool: Ember.computed('colors', function() {
+  @computed('colors')
+  get colorPool() {
     return Object.values(this.get('colors'));
-  }),
+  }
 
-  assignedColors: {},
+  assignedColors = {};
 
-  cached: {
+  cached = {
     viewed: null,
-  },
+  };
 
 
   /**
@@ -51,7 +54,7 @@ export default Ember.Service.extend({
         delete colors[municipality];
       }
     }
-    
+
     if (!colors[municipality]) {
       const color = colorPool[Math.floor(Math.random() * colorPool.length)];
       colorPool.removeObject(color);
@@ -59,11 +62,11 @@ export default Ember.Service.extend({
     }
 
     return colors[municipality];
-  },
+  }
 
   resetColorFor(municipality) {
     const assignedColors = this.get('assignedColors');
     this.get('colorPool').pushObject(assignedColors[municipality]);
   }
 
-});
+}

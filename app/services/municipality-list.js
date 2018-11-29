@@ -1,30 +1,27 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { service } from '@ember-decorators/service';
 
-export default Ember.Service.extend({
+
+export default class extends Service {
 
   /**
    * Services
    */
 
-  carto: Ember.inject.service(),
+  @service carto
 
 
   /**
    * Members
    */
 
-  cachedLists: {},
+  cachedLists = {}
 
 
   /**
    * Methods
    */
 
-  /**
-   * @param String sector
-   * 
-   * @return AjaxResponseObject
-   */
   listFor(sector = 'commercial') {
     const cachedLists = this.get('cachedLists');
     const carto = this.get('carto');
@@ -40,5 +37,4 @@ export default Ember.Service.extend({
 
     return list;
   }
-
-});
+}

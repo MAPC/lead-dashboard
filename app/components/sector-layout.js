@@ -1,12 +1,12 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember-decorators/object';
 
-const { computed } = Ember;
 
+export default class extends Component {
 
-export default Ember.Component.extend({
-
-  noSectorData: computed('muniSectorData', function() {
+  @computed('muniSectorData')
+  get noSectorData() {
     return !(this.get('muniSectorData').length);
-  }),
+  }
 
-});
+}

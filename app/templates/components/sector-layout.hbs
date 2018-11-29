@@ -1,45 +1,49 @@
-<section class="component sector-layout {{if noSectorData 'no-data'}}">
+<section class="component sector-layout {{if noSectorData "no-data"}}">
 
   <div class="city-information">
     <div class="content-wrapper">
       <div class="content-copy">
         <h1>{{municipality}}: {{capitalize sector}}</h1>
 
-        {{#unless noSectorData}}
-          {{sector-analysis 
+        {{#if noSectorData}}
+          {{no-data-message sector=sector municipality=municipality}}
+        {{else}}
+          {{sector-analysis
             sector=sector
-            data=muniSectorData 
+            data=muniSectorData
             valueMap=valueMap
             criteriaName=criteriaName
             criteriaColumn=criteriaColumn
           }}
-        {{else}}
-          {{no-data-message sector=sector municipality=municipality}}
-        {{/unless}}
+        {{/if}}
       </div>
       <div class="sector-graphic-wrapper">
         {{#unless noSectorData}}
-          <img class="sector-graphic" src="/assets/images/{{sector}}.svg">
+          <img
+            class="sector-graphic"
+            src="/assets/images/{{sector}}.svg"
+            alt={{capitalize sector}}
+          >
         {{/unless}}
       </div>
     </div>
   </div>
 
   {{#unless noSectorData}}
-    {{pie-chart-layout 
-      municipality=municipality 
-      data=sectorData
+    {{pie-chart-layout
+      municipality=municipality
+      data=(mut sectorData)
       valueMap=valueMap
-      criteria=criteria 
+      criteria=criteria
       criteriaName=criteriaName
       criteriaColumn=criteriaColumn
     }}
 
-    {{spider-chart-layout 
+    {{spider-chart-layout
       sector=sector
-      municipality=municipality 
+      municipality=municipality
       municipalities=municipalities
-      data=sectorData 
+      data=sectorData
       valueMap=valueMap
       criteria=criteriaColumn
       action=action

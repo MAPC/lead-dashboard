@@ -5,7 +5,7 @@ const abbreviatable = ['north', 'south', 'east', 'west', 'central'];
 
 
 export default function acronyze(phrase) {
-  const words = phrase.split(' ');
+  const words = (phrase || '').split(' ');
 
   if (words.length == 2 && phrase.length >= 15) {
     return words.map(word => (abbreviatable.indexOf(word.toLowerCase()) !== -1) ? `${word.charAt(0).toUpperCase()}. ` : word).join('');
@@ -14,7 +14,7 @@ export default function acronyze(phrase) {
     const letters = words.map(word => {
       if (omittable.indexOf(word.toLowerCase()) === -1) {
         return word.charAt(0).toUpperCase();
-      } 
+      }
     });
 
     const acronym = letters.join('');

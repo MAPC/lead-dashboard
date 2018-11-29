@@ -1,95 +1,103 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { action, computed } from '@ember-decorators/object';
+
 import fuelTypes from '../utils/fuel-types';
 
-export default Ember.Component.extend({
+
+export default class extends Component {
 
   /**
    * Members
    */
 
-  chartData: [],
+  /*
+  chartData = [];
 
-  criteria: [],
-  criteriaColumn: null,
+  criteria = [];
+  criteriaColumn = null;
 
-  valueMap: null,
+  valueMap = null;
+  */
 
-  metricMap: {
+  metricMap = {
     'Consumption': 'con_mmbtu',
     'Emissions': 'emissions_co2',
     'Cost': 'exp_dollar',
-  },
+  };
 
-  metrics: Ember.computed('metricMap', function() {
+
+  @computed('metricMap')
+  get metrics() {
     return Object.keys(this.get('metricMap'));
-  }),
+  }
 
-  selectedMetric: Ember.computed('metrics', function() {
+
+  @computed('metrics')
+  get selectedMetric() {
     return this.get('metrics')[0];
-  }),
+  }
 
-  metric: Ember.computed('selectedMetric', 'metricMap', function() {
+
+  @computed('selectedMetric', 'metricMap')
+  get metric() {
     return this.get('metricMap')[this.get('selectedMetric')];
-  }),
+  }
 
-  
+
+  @computed('metric', 'data.rows.[]')
+  get chartData() {
+    const metric = this.get('metric');
+    const data = this.get('data.rows');
+
+    return data.filter(row => {
+      return !fuelTypes.every(type => row[`${type}_${metric}`] === 0 || row[`${type}_${metric}`] === null);
+    });
+  }
+
+
+  @computed('criteria', 'criteriaColumn', 'chartData')
+  get chartCriteria() {
+    const criteria = this.get('criteria');
+
+    if (criteria.length === 0) {
+      const chartData = this.get('chartData');
+      const criteriaColumn = this.get('criteriaColumn');
+
+      return chartData.map(row => row[criteriaColumn]);
+    }
+    else {
+      return criteria;
+    }
+  }
+
+
   /**
    * Methods
    */
 
-  init() {
-    this._super(...arguments);
-
-    const metric = this.get('metric');
-    const criteriaColumn = this.get('criteriaColumn');
-    const criteria = this.get('criteria');
-
-    const data = this.get('data');
-
-    const chartData = data.rows.filter(row => {
-      return !fuelTypes.every(type => row[`${type}_${metric}`] === 0 || row[`${type}_${metric}`] === null);
-    });
-
-    this.set('chartData', chartData);
-
-    if (criteria.length === 0) {
-      const criteria = chartData.map(row => row[criteriaColumn]);
-      this.set('criteria', criteria);
-    }
-  },
-
-
-  actions: {
-
-    /**
-     * @param String metric
-     */
-    changeChartMetric(metric) {
-      this.set('selectedMetric', metric);
-      this.set('metric', this.get('metricMap')[metric])
-    },
-
-
-    /**
-     * @param String criterion
-     */
-    changeChartCriteria(criterion) {
-      const criteriaColumn = this.get('criteriaColumn');
-      const valueMap = this.get('valueMap');
-      let chartData = this.get('data').rows;
-
-      if (criterion !== 'all') {
-        if (valueMap) {
-          chartData = chartData.filter(row => valueMap[row[criteriaColumn]] === criterion);
-        }
-        else {
-          chartData = chartData.filter(row => row[criteriaColumn] === criterion);
-        }
-      }
-
-      this.set('chartData', chartData);
-    }
-     
+  @action
+  changeChartMetric(metric) {
+    this.set('selectedMetric', metric);
+    this.set('metric', this.get('metricMap')[metric])
   }
 
-});
+
+  @action
+  changeChartCriteria(criterion) {
+    const criteriaColumn = this.get('criteriaColumn');
+    const valueMap = this.get('valueMap');
+    let chartData = this.get('data').rows;
+
+    if (criterion !== 'all') {
+      if (valueMap) {
+        chartData = chartData.filter(row => valueMap[row[criteriaColumn]] === criterion);
+      }
+      else {
+        chartData = chartData.filter(row => row[criteriaColumn] === criterion);
+      }
+    }
+
+    this.set('chartData', chartData);
+  }
+
+}

@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
-export default Ember.Route.extend({
+
+export default class extends Route {
 
   model() {
     const cityModel = this.modelFor('city');
@@ -14,8 +16,8 @@ export default Ember.Route.extend({
       toPromise[sector] = cityModel.sectorData[sector];
     });
 
-    return Ember.RSVP.hash(toPromise);
-  },
+    return hash(toPromise);
+  }
 
   activate() {
     const cityIndexController = this.controllerFor('city.index');
@@ -23,4 +25,4 @@ export default Ember.Route.extend({
     cityIndexController.send('compareTo', cityIndexController.randomMunicipality(false));
   }
 
-});
+}

@@ -1,49 +1,52 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { service } from '@ember-decorators/service';
+import { action } from '@ember-decorators/object';
+
 import slug from '../utils/slug';
 
-export default Ember.Controller.extend({
+
+export default class extends Controller {
 
   /**
    * Services
    */
 
-  municipalityList: Ember.inject.service(),
+  @service municipalityList;
+  @service router;
 
 
   /**
    * Members
    */
 
-  municipalities: [],
-  placeholder: 'How much energy does your community consume?',
+  municipalities = [];
+  placeholder = 'How much energy does your community consume?';
 
-  year: (new Date()).getFullYear(),
+  year = (new Date()).getFullYear();
 
 
   /**
    * Methods
    */
 
-  init() {
-    this._super();
+  constructor() {
+    super();
 
     this.get('municipalityList').listFor().then(response => {
-      const municipalities = response.rows.map(row => row.municipal)
-                                          .sort();
+      const municipalities = response.rows.map(row => row.municipal).sort();
 
       municipalities.unshift(this.get('placeholder'));
 
       this.set('municipalities', municipalities);
       this.set('placeholder', municipalities[0]);
     });
-  },
-
-  actions: {
-
-    toMunicipality(municipality) {
-      this.transitionToRoute('city.index', slug(municipality).normalize());
-    },
-  
   }
 
-});
+
+  @action
+  toMunicipality(municipality) {
+    this.get('router').transitionTo('city.index', slug(municipality).normalize());
+  }
+
+
+}

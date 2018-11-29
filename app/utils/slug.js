@@ -4,11 +4,11 @@ export default function slug(value) {
 
   return {
     normalize() {
-      return value.toLowerCase().split(' ').join('-');
+      return (value || '').toLowerCase().split(' ').join('-');
     },
 
     denormalize() {
-      return value.split('-').map(capitalize).join(' ');
+      return (value || '').split('-').map(capitalize).join(' ');
     }
   };
 

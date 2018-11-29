@@ -6,7 +6,7 @@
 
       <span class='power-select'>
         {{#power-select
-          options=metrics 
+          options=metrics
           selected=selectedMetric
           onchange=(action 'changeChartMetric')
           as |metric|
@@ -22,7 +22,7 @@
       <div class="select-wrapper">
         <select onchange={{action 'changeChartCriteria' value='target.value'}}>
           <option value='all' selected>All</option>
-          {{#each criteria as |criterion|}}
+          {{#each chartCriteria as |criterion|}}
             <option value={{criterion}}>{{capitalize criterion}}</option>
           {{/each}}
         </select>

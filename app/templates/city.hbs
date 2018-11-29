@@ -3,21 +3,21 @@
   <div class="city-nav">
 
     <div class="home-button-wrapper">
-      {{#link-to 'index' class="home-button"}}
-        <img src="/assets/images/house.svg">  
+      {{#link-to "index" class="home-button"}}
+        <img src="/assets/images/house.svg" alt="To Home page">
       {{/link-to}}
     </div>
 
     <ul>
-      <li>{{#link-to 'city.index'}}{{acronyze model.municipality}}{{/link-to}}</li>
+      <li>{{#link-to "city.index" model.municipality}}{{acronyze model.municipality}}{{/link-to}}</li>
       {{#each sectors as |sector|}}
         <li>
-          {{#link-to sector.route}}{{sector.name}}{{/link-to}}
+          {{#link-to sector.route model.municipality}}{{sector.name}}{{/link-to}}
         </li>
       {{/each}}
     </ul>
 
-  </div><!--/ .menu -->
+  </div>
 
   <div class="content-window">
     {{outlet}}

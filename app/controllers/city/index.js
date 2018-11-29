@@ -1,27 +1,33 @@
-import Ember from 'ember';
 import DS from 'ember-data';
+import Controller from '@ember/controller';
+import { hash } from 'rsvp';
+import { copy } from '@ember/object/internals';
+import { service } from '@ember-decorators/service';
+import { controller } from '@ember-decorators/controller';
+import { computed, action } from '@ember-decorators/object';
+import { reads } from '@ember-decorators/object/computed';
+
 import slug from '../../utils/slug';
 import sectors from '../../utils/sectors';
 import { fuelTypes, fuelTypesMap } from '../../utils/fuel-types';
 
-const { computed } = Ember;
 
-
-export default Ember.Controller.extend({
+export default class extends Controller {
 
   /**
    * Controllers
    */
 
-  city: Ember.inject.controller(),
-  
+  @controller city;
+
 
   /**
    * Services
    */
 
-  carto: Ember.inject.service(),
-  municipalityList: Ember.inject.service(),
+  @service carto;
+  @service router;
+  @service municipalityList;
 
 
   /**
@@ -29,45 +35,49 @@ export default Ember.Controller.extend({
    */
 
 
-  comparingTo: null,
-  municipalities: [],
+  comparingTo = null;
+  municipalities = [];
+  fuelNames = Object.values(fuelTypesMap);
 
-  sectors: computed(function() {
+  @reads('model.municipality') municipality;
+
+  @computed
+  get sectors() {
     const _sectors = sectors;
     _sectors.unshift('total');
 
     return _sectors;
-  }),
+  }
 
-
-  municipality: computed.readOnly('model.municipality'),
-
-  fuelTypeData: computed('model', function() {
+  @computed('model')
+  get fuelTypeData() {
     const munged = this.munger(this.get('model'));
 
     const fuelTypeData = munged.map(fuelType => {
       if (fuelType.type.toLowerCase() === 'electricity') {
-        fuelType.footnote = true; 
+        fuelType.footnote = true;
       }
 
-      return fuelType; 
+      return fuelType;
     });
 
     return fuelTypeData;
-  }),
+  }
 
 
-  fuelPercentages: computed('fuelTypeData', function() {
+  @computed('fuelTypeData')
+  get fuelPercentages() {
     const fuelTypeData = this.get('fuelTypeData');
 
     return {
       emissions: fuelTypeData.map(type => type.sectors[0].emissionsPercentage),
       consumption: fuelTypeData.map(type => type.sectors[0].consumptionPercentage),
     };
-  }),
+  }
 
 
-  totalEmissions: computed('model', 'sectors', 'fuelTypeData', function() {
+  @computed('model', 'setors', 'fuelTypeData')
+  get totalEmissions() {
     const fuelTypeData = this.get('fuelTypeData');
 
     const totals = fuelTypeData.map(type => type.sectors)
@@ -77,10 +87,11 @@ export default Ember.Controller.extend({
     const totalEmissions = totals.reduce((x, total) => x + total.emissions, 0);
 
     return totalEmissions;
-  }),
+  }
 
 
-  largestEmitter: computed('fuelTypeData', function() {
+  @computed('fuelTypeData')
+  get largestEmitter() {
     const fuelTypeData = this.get('fuelTypeData');
     const sectorTotals = {};
 
@@ -106,10 +117,11 @@ export default Ember.Controller.extend({
     this.set('largestEmitterPerc', max);
 
     return largestEmitter;
-  }),
+  }
 
 
-  populationCensus: computed('carto', 'municipality',function() {
+  @computed('carto', 'municipality')
+  get populationCensus() {
     const carto = this.get('carto');
     const municipality = this.get('municipality');
 
@@ -121,17 +133,16 @@ export default Ember.Controller.extend({
         };
       }),
     });
-  }),
+  }
 
-  fuelNames: Object.values(fuelTypesMap),
 
 
   /**
    * Methods
    */
 
-  init() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
 
     this.get('municipalityList').listFor().then(response => {
       const municipalities = response.rows.map(row => row.municipal).sort();
@@ -139,7 +150,7 @@ export default Ember.Controller.extend({
       this.set('municipalities', municipalities);
       this.send('compareTo', this.randomMunicipality());
     });
-  },
+  }
 
   randomMunicipality(replace = true) {
     const _randomMunicipality = this.get('_randomMunicipality');
@@ -154,12 +165,12 @@ export default Ember.Controller.extend({
     }
 
     return _randomMunicipality;
-  },
+  }
 
   munger(_model) {
     if (!this.get('sectors')) return;
 
-    const model = Ember.copy(_model, true);
+    const model = copy(_model, true);
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
 
     const munged = {};
@@ -212,7 +223,7 @@ export default Ember.Controller.extend({
                 aggregate[key] += current[key];
               });
 
-        return aggregate;         
+        return aggregate;
       }));
 
       // Restore column back to its original state
@@ -237,7 +248,7 @@ export default Ember.Controller.extend({
     // Normalize the data
     data.forEach(datum => {
       datum.sectors.forEach(sector => {
-        sector.consumption /= (totalConsumption / 100); 
+        sector.consumption /= (totalConsumption / 100);
         sector.emissions /= (totalEmissions / 100);
 
         Object.keys(sector).filter(key => key !== 'sector').forEach(key => {
@@ -256,81 +267,79 @@ export default Ember.Controller.extend({
 
 
     return data;
-  },
-
-
-  actions: {
-
-    compareTo(_comparingTo) {
-      const sectorPromises = this.get('carto').allSectorDataFor(_comparingTo);
-
-      Ember.RSVP.hash(sectorPromises.sectorData).then(response => {
-        const munged = this.munger(response);
-
-        if (munged) {
-          const comparingTo = {
-            municipality: _comparingTo,
-            emissions: munged.map(row => row.sectors[0].emissionsPercentage),
-            consumption: munged.map(row => row.sectors[0].consumptionPercentage),
-          };
-
-          this.set('comparingTo', comparingTo);
-        }
-      });
-    },
-
-
-    changeMunicipality(municipality) {
-      this.transitionToRoute('city.index', slug(municipality).normalize());
-      this.send('compareTo', this.randomMunicipality());
-    },
-
-
-    downloadTableData() {
-      const fuelTypeData = this.get('fuelTypeData');
-      const municipality = this.get('municipality');
-
-      const flattened = fuelTypeData.map(typeSet => {
-        return typeSet.sectors.map(sector => {
-          sector.fuel_type = typeSet.type.toLowerCase();
-          return sector;
-        });
-      });
-
-      const reduced = flattened.reduce((a,b) => a.concat(b));
-
-      const renamed = reduced.map(row => {
-        return {
-          fuel_type_index: row.fuel_type,
-          sector_index: row.sector,
-          consumption_total_mmbtu: row.consumption,
-          consumption_percentage: row.consumptionPercentage / 100,
-          emissions_total_lbs_CO2e: row.emissions,
-          emissions_percentage: row.emissionsPercentage / 100,
-          cost_dollars: row.cost,
-        };
-      });
-
-      const csvHeader = "data:text/csv;charset=utf-8,";
-
-      const documentHeader = Object.keys(renamed[0]);
-      const documentRows = renamed.map(row => Object.keys(row).map(key => row[key]));
-
-      const documentStructure = [[documentHeader], documentRows].reduce((a,b) => a.concat(b));
-      const documentBody = documentStructure.reduce((a,b) => `${a}\n${b}`)
-
-      const csvFile = csvHeader + documentBody;
-      const encoded = encodeURI(csvFile);
-
-      const link = document.createElement('a');
-      link.setAttribute('href', encoded);
-      link.setAttribute('download', `${municipality.toLowerCase()}_at-a-glance_data.csv`);
-
-      document.body.appendChild(link);
-      link.click();
-    },
-    
-  
   }
 
-});
+
+  @action
+  compareTo(_comparingTo) {
+    const sectorPromises = this.get('carto').allSectorDataFor(_comparingTo);
+
+    hash(sectorPromises.sectorData).then(response => {
+      const munged = this.munger(response);
+
+      if (munged) {
+        const comparingTo = {
+          municipality: _comparingTo,
+          emissions: munged.map(row => row.sectors[0].emissionsPercentage),
+          consumption: munged.map(row => row.sectors[0].consumptionPercentage),
+        };
+
+        this.set('comparingTo', comparingTo);
+      }
+    });
+  }
+
+
+  @action
+  changeMunicipality(municipality) {
+    this.get('router').transitionTo('city.index', slug(municipality).normalize());
+    this.send('compareTo', this.randomMunicipality());
+  }
+
+
+  @action
+  downloadTableData() {
+    const fuelTypeData = this.get('fuelTypeData');
+    const municipality = this.get('municipality');
+
+    const flattened = fuelTypeData.map(typeSet => {
+      return typeSet.sectors.map(sector => {
+        sector.fuel_type = typeSet.type.toLowerCase();
+        return sector;
+      });
+    });
+
+    const reduced = flattened.reduce((a,b) => a.concat(b));
+
+    const renamed = reduced.map(row => {
+      return {
+        fuel_type_index: row.fuel_type,
+        sector_index: row.sector,
+        consumption_total_mmbtu: row.consumption,
+        consumption_percentage: row.consumptionPercentage / 100,
+        emissions_total_lbs_CO2e: row.emissions,
+        emissions_percentage: row.emissionsPercentage / 100,
+        cost_dollars: row.cost,
+      };
+    });
+
+    const csvHeader = "data:text/csv;charset=utf-8,";
+
+    const documentHeader = Object.keys(renamed[0]);
+    const documentRows = renamed.map(row => Object.keys(row).map(key => row[key]));
+
+    const documentStructure = [[documentHeader], documentRows].reduce((a,b) => a.concat(b));
+    const documentBody = documentStructure.reduce((a,b) => `${a}\n${b}`)
+
+    const csvFile = csvHeader + documentBody;
+    const encoded = encodeURI(csvFile);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', encoded);
+    link.setAttribute('download', `${municipality.toLowerCase()}_at-a-glance_data.csv`);
+
+    document.body.appendChild(link);
+    link.click();
+  }
+
+}

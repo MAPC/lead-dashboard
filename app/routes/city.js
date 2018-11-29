@@ -1,43 +1,21 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+import { service} from '@ember-decorators/service';
 
-export default Ember.Route.extend({
+
+export default class extends Route {
 
   /**
    * Services
    */
 
-  carto: Ember.inject.service(),
-
-
-  /**
-   * Members
-   */
-
-  municipality: null,
-
+  @service carto;
 
   /**
    * Methods
    */
 
-  /**
-   * @param Object<Mixed> params
-   *
-   * @return Object<AjaxResponseObjects>
-   */
   model(params) {
     return this.get('carto').allSectorDataFor(params.municipality);
-  },
+  }
 
-
-  /**
-   * @param EmberController controller
-   * @param EmberModel model
-   */
-  setupController(controller, model) {
-    this._super(controller, model);
-    controller.set('municipality', this.get('municipality'));
-  },
-
-
-});
+}

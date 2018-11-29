@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 export function lowercase(params) {
   return params[0].toLowerCase();
 }
 
-export default Ember.Helper.helper(lowercase);
+export default helper(lowercase);

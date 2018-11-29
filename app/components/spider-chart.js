@@ -1,37 +1,42 @@
-import Ember from 'ember';
+import $ from 'jquery';
 import d3 from 'npm:d3';
+import Component from '@ember/component';
+import { run } from '@ember/runloop';
+import { copy } from '@ember/object/internals';
+
 import slug from '../utils/slug';
 
-export default Ember.Component.extend({
+
+export default class extends Component {
 
   /**
    * Members
    */
 
-  tagName: '',
-  sector: null,
-  valueMap: null,
-  municipality: null,
-  mungedNested: [],
+  /*
+  sector = null;
+  valueMap = null;
+  mungedNested = [];
+  */
 
-  chartPaddingPercentage: .1,
+  chartPaddingPercentage = .1;
 
-  chartOptions: {
+  chartOptions = {
     w: 500,
     h: 500,
     levels: 2,
     roundStrokes: true,
-  },
+  };
 
-  init() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
 
     this.calculateChartDimensions();
 
-    Ember.$(window).resize(() => {
-      this.calculateChartDimensions(true);
+    $(window).resize(() => {
+      run(() => this.calculateChartDimensions(true));
     });
-  },
+  }
 
   calculateChartDimensions(render = false) {
     const chartOptions = this.get('chartOptions');
@@ -47,7 +52,7 @@ export default Ember.Component.extend({
 
       this.radarChart(`#${chartTitle}`, chartOptions);
     }
-  },
+  }
 
 
   /**
@@ -56,7 +61,7 @@ export default Ember.Component.extend({
 
   didRender() {
     const chartOptions = this.get('chartOptions');
-    const data = Ember.copy(this.get('data'), true);
+    const data = copy(this.get('data'), true);
 
     const allAxis = Array.from(new Set(data.map(d => d.criterion)));
 
@@ -86,7 +91,7 @@ export default Ember.Component.extend({
     let mungedNested = nestedData.map(obj => {
       return obj.values.map(obj => {
         return {
-          axis: obj.criterion, 
+          axis: obj.criterion,
           value: Math.round(obj.totalConsumption),
           color: obj.color,
         };
@@ -107,7 +112,7 @@ export default Ember.Component.extend({
 
     this.set('mungedNested', mungedNested);
     this.radarChart(`#${chartTitle}`, chartOptions);
-  },
+  }
 
 
   radarChart(id, options) {
@@ -119,7 +124,7 @@ export default Ember.Component.extend({
     /////////////////////////////////////////////////////////
 
     const data = this.get('mungedNested');
-      
+
     var cfg = {
       w: 600,                //Width of the circle
       h: 600,                //Height of the circle
@@ -136,53 +141,53 @@ export default Ember.Component.extend({
     };
 
     const valueMap = this.get('valueMap');
-      
+
       //Put all of the options into a variable called cfg
       if('undefined' !== typeof options){
         for(var i in options){
           if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
         }//for i
       }//if
-      
+
       //If the supplied maxValue is smaller than the actual one, replace by the max in the data
       var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 
       const allAxis = data.map(d => d.map(i => i.axis))
                           .reduce((a, b) => a.concat(b));
-          
+
       var uniqueAxis = Array.from((new Set(allAxis))),    //Names of each axis
           total = uniqueAxis.length,                    //The number of different axes
           radius = Math.min(cfg.w/3.1, cfg.h/3.1),     //Radius of the outermost circle
           Format = d3.format(','),                 //Percentage formatting
           angleSlice = Math.PI * 2 / total;        //The width in radians of each "slice"
-      
+
 
       //Scale for the radius
       var rScale = d3.scaleLinear()
           .range([0, radius])
           .domain([0, maxValue]);
-          
+
       /////////////////////////////////////////////////////////
       //////////// Create the container SVG and g /////////////
       /////////////////////////////////////////////////////////
 
       //Remove whatever chart with the same id/class was present before
       d3.select(id).select("svg").remove();
-      
+
       //Initiate the radar chart SVG
       var svg = d3.select(id).append("svg")
               .attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
               .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
               .attr("class", "radar"+id);
 
-      //Append a g element        
+      //Append a g element
       var g = svg.append("g")
               .attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
-      
+
       /////////////////////////////////////////////////////////
       ////////// Glow filter for some extra pizzazz ///////////
       /////////////////////////////////////////////////////////
-      
+
       //Filter for the outside glow
       var filter = g.append('defs').append('filter').attr('id','glow');
           filter.append('feGaussianBlur').attr('stdDeviation','.1').attr('result','coloredBlur');
@@ -193,14 +198,14 @@ export default Ember.Component.extend({
       /////////////////////////////////////////////////////////
       /////////////// Draw the Circular grid //////////////////
       /////////////////////////////////////////////////////////
-      
+
       //Wrapper for the grid & axes
       var axisGrid = g.append("g").attr("class", "axisWrapper");
 
       /////////////////////////////////////////////////////////
       //////////////////// Draw the axes //////////////////////
       /////////////////////////////////////////////////////////
-      
+
       //Create the straight lines radiating outward from the center
       var axis = axisGrid.selectAll(".axis")
           .data(uniqueAxis)
@@ -238,23 +243,23 @@ export default Ember.Component.extend({
       /////////////////////////////////////////////////////////
       ///////////// Draw the radar chart blobs ////////////////
       /////////////////////////////////////////////////////////
-      
+
       //The radial line function
       var radarLine = d3.lineRadial()
           .radius(function(d) { return rScale(d.value); })
           .angle(function(d,i) {    return i*angleSlice; });
-          
+
       if(cfg.roundStrokes) {
           radarLine.curve(d3.curveLinear);
       }
-                  
-      //Create a wrapper for the blobs    
+
+      //Create a wrapper for the blobs
       var blobWrapper = g.selectAll(".radarWrapper")
           .data(data)
           .enter().append("g")
           .attr("class", "radarWrapper");
-              
-      //Append the backgrounds    
+
+      //Append the backgrounds
       blobWrapper
           .append("path")
           .attr("class", "radarArea")
@@ -265,11 +270,11 @@ export default Ember.Component.extend({
               //Dim all blobs
               d3.selectAll(".radarArea")
                   .transition().duration(200)
-                  .style("fill-opacity", 0.1); 
+                  .style("fill-opacity", 0.1);
               //Bring back the hovered over blob
               d3.select(this)
                   .transition().duration(200)
-                  .style("fill-opacity", 0.7);    
+                  .style("fill-opacity", 0.7);
           })
           .on('mouseout', function(){
               //Bring back all blobs
@@ -277,16 +282,16 @@ export default Ember.Component.extend({
                   .transition().duration(200)
                   .style("fill-opacity", cfg.opacityArea);
           });
-          
-      //Create the outlines    
+
+      //Create the outlines
       blobWrapper.append("path")
           .attr("class", "radarStroke")
           .attr("d", function(d) { return radarLine(d); })
           .style("stroke-width", cfg.strokeWidth + "px")
           .style("stroke", function(d) { return d[0].color; })
           .style("fill", "none")
-          .style("filter" , "url(#glow)");        
-      
+          .style("filter" , "url(#glow)");
+
       //Append the circles
       blobWrapper.selectAll(".radarCircle")
           .data(function(d) { return d; })
@@ -301,13 +306,13 @@ export default Ember.Component.extend({
       /////////////////////////////////////////////////////////
       //////// Append invisible circles for tooltip ///////////
       /////////////////////////////////////////////////////////
-      
+
       //Wrapper for the invisible circles on top
       var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
           .data(data)
           .enter().append("g")
           .attr("class", "radarCircleWrapper");
-          
+
       //Append a set of invisible circles on top for the mouseover pop-up
       blobCircleWrapper.selectAll(".radarInvisibleCircle")
           .data(function(d) { return d; })
@@ -321,7 +326,7 @@ export default Ember.Component.extend({
           .on("mouseover", function(d) {
               let newX =  parseFloat(d3.select(this).attr('cx')) - 10;
               let newY =  parseFloat(d3.select(this).attr('cy')) - 10;
-                      
+
               tooltip
                   .attr('x', newX)
                   .attr('y', newY)
@@ -333,18 +338,18 @@ export default Ember.Component.extend({
               tooltip.transition().duration(200)
                   .style("opacity", 0);
           });
-          
+
       //Set up the small tooltip for when you hover over a circle
       var tooltip = g.append("text")
           .attr("class", "tooltip")
           .style("opacity", 0);
-      
+
       /////////////////////////////////////////////////////////
       /////////////////// Helper Function /////////////////////
       /////////////////////////////////////////////////////////
 
       //Taken from http://bl.ocks.org/mbostock/7555321
-      //Wraps SVG text    
+      //Wraps SVG text
       function wrap(text, width) {
         text.each(function() {
           var text = d3.select(this),
@@ -357,7 +362,7 @@ export default Ember.Component.extend({
               x = text.attr("x"),
               dy = parseFloat(text.attr("dy")),
               tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-              
+
           while ((word = words.pop())) {
             line.push(word);
             tspan.text(line.join(" "));
@@ -369,8 +374,7 @@ export default Ember.Component.extend({
             }
           }
         });
-      }//wrap    
+      }//wrap
   }
 
-});
-
+}
