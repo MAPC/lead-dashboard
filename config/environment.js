@@ -6,6 +6,7 @@ module.exports = function(environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    prqlToken: '16a2637ee33572e46f5609a578b035dc',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

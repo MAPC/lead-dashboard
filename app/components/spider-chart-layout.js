@@ -189,7 +189,7 @@ export default class extends Component {
 
       // Fetch the data for the selected municipality then add
       this.get('carto')
-          .query(`SELECT * FROM lead_${sector} WHERE municipal = '${municipality}'`)
+          .query(`SELECT * FROM tabular.mapc_lead_${sector} WHERE municipal = '${municipality}'`)
           .then(response => {
 
             // In order to have Ember components rerender properly, we must

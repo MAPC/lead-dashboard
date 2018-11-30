@@ -1,5 +1,6 @@
 import Service from '@ember/service';
 import { service } from '@ember-decorators/service';
+import config from 'lead-dashboard/config/environment';
 
 import slug from '../utils/slug';
 
@@ -26,7 +27,7 @@ export default class extends Service {
 
   query(queryString) {
     const cache = this.get('cache');
-    const cartoURL = 'https://mapc-admin.carto.com/api/v2/sql?format=json&q=';
+    const cartoURL = `https://prql.mapc.org?token=${config.prqlToken}&query=`;
 
     if (Object.keys(cache).indexOf(queryString) !== -1) {
       return cache[queryString];
@@ -49,7 +50,7 @@ export default class extends Service {
     const municipality = slug(_municipality).denormalize();
 
     sectors.forEach(sector => {
-      data[sector] = this.query(`SELECT * FROM lead_${sector} WHERE municipal ILIKE '${municipality}'`);
+      data[sector] = this.query(`SELECT * FROM tabular.mapc_lead_${sector} WHERE municipal ILIKE '${municipality}'`);
     });
 
     return {sectorData: data, municipality: municipality};

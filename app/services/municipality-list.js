@@ -31,7 +31,7 @@ export default class extends Service {
       list = cachedLists[sector];
     }
     else {
-      list = carto.query(`SELECT DISTINCT municipal FROM lead_${sector}`);
+      list = carto.query(`SELECT DISTINCT municipal FROM tabular.mapc_lead_${sector}`);
       cachedLists[sector] = list;
     }
 
