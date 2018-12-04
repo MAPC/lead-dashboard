@@ -76,7 +76,7 @@ export default class extends Controller {
   }
 
 
-  @computed('model', 'setors', 'fuelTypeData')
+  @computed('model', 'sectors', 'fuelTypeData')
   get totalEmissions() {
     const fuelTypeData = this.get('fuelTypeData');
 
@@ -135,6 +135,10 @@ export default class extends Controller {
     });
   }
 
+  @computed('model.commercial.rows.[]')
+  get latestYear() {
+    return Math.max(...(this.get('model.commercial.rows') || []).map(row => row.year));
+  }
 
 
   /**
@@ -167,15 +171,17 @@ export default class extends Controller {
     return _randomMunicipality;
   }
 
+
   munger(_model) {
     if (!this.get('sectors')) return;
 
     const model = copy(_model, true);
     const sectors = this.get('sectors').filter(sector => sector !== 'total');
+    const latestYear = this.get('latestYear');
 
     const munged = {};
     sectors.forEach(sector => {
-      let subModel = model[sector].rows;
+      let subModel = (model[sector].rows || []).filter(row => row.year === latestYear);
       let aggregatedData = {};
 
       if (subModel.length === 0) {

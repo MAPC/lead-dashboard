@@ -8,9 +8,16 @@ export default class extends Route {
     const cityModel = this.modelFor('city');
 
     return hash({
-      sectorData: cityModel.sectorData['industrial'],
+      data: cityModel.sectorData['industrial'],
       municipality: cityModel.municipality,
     });
+  }
+
+
+  afterModel(model) {
+    const latestYear = Math.max(...model.data.rows.map(row => row.year));
+    model['sectorData'] = {};
+    model['sectorData']['rows'] = model.data.rows.filter(row => row.year === latestYear);
   }
 
 }

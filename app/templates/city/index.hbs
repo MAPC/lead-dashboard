@@ -5,15 +5,19 @@
       <div class="content-copy">
         <h1>{{municipality}}: At a Glance</h1>
         <p>
-          {{acronyze municipality}} is a municipality with a population of {{commas populationCensus.estimate}} as 
-          of the {{populationCensus.year}} Census. {{acronyze municipality}} is responsible for emitting {{commas totalEmissions}} 
-          lbs. CO<small>2</small>e greenhouse gas emissions each year. In {{acronyze municipality}}, the {{capitalize largestEmitter}} sector 
-          produces {{largestEmitterPerc}} percent of the total emissions resulting from the local built environment – making it 
-          {{acronyze municipality}}’s largest greenhouse gas emitter. 
+          {{acronyze municipality}} is a municipality with a population of {{commas populationCensus.estimate}} as
+          of the {{populationCensus.year}} Census. {{acronyze municipality}} is responsible for emitting {{commas totalEmissions}}
+          lbs. CO<small>2</small>e greenhouse gas emissions each year. In {{acronyze municipality}}, the {{capitalize largestEmitter}} sector
+          produces {{largestEmitterPerc}} percent of the total emissions resulting from the local built environment – making it
+          {{acronyze municipality}}’s largest greenhouse gas emitter.
         </p>
       </div>
       <div class="sector-graphic-wrapper">
-        <img class="sector-graphic" src="/assets/images/total.svg">
+        <img
+          class="sector-graphic"
+          src="/assets/images/total.svg"
+          alt="Total: All Sectors"
+        >
       </div>
     </div>
   </div>
@@ -21,21 +25,26 @@
   <div class="city-overview-flipper content-wrapper">
     <div class="city-overview-flipper-content">
       Rotate device to view "Sector Overview" table
-      <img src="/assets/images/flip.svg">
+      <img src="/assets/images/flip.svg" alt="Rotate Screen">
     </div>
   </div>
 
-  <div class="city-overview-table content-wrapper"> 
+  <div class="city-overview-table content-wrapper">
 
     <article class="table-header">
       <div class="row-index">
         <h2>How do {{acronyze municipality}}'s homes &amp; businesses consume energy?</h2>
       </div>
+
       <div class="row-values">
         {{#each sectors as |sector|}}
           <div class="row-value">
             <h5>{{uppercase sector}}</h5>
-            <img src="/assets/images/{{sector}}.svg" class="sector-icon">
+            <img
+              src="/assets/images/{{sector}}.svg"
+              class="sector-icon"
+              alt={{capitalize sector}}
+            >
           </div>
         {{/each}}
       </div>
@@ -56,18 +65,17 @@
             <h5 class="emissions">EMISSIONS</h5>
             <h5 class="cost">COST</h5>
           </div>
-        </div><!--/ .row-index -->
+        </div>
 
         <div class="row-values">
-          {{#each typeData.sectors as |sector|}} 
+          {{#each typeData.sectors as |sector|}}
             <div class="row-value">
               <h5 class="consumption">{{sector.consumptionPercentage}}%</h5>
               <h5 class="emissions">{{sector.emissionsPercentage}}%</h5>
               <h5 class="cost">${{commas sector.costPercentage}}</h5>
             </div>
           {{/each}}
-        </div><!--/ .row-values -->
-
+        </div>
       </article>
     {{/each}}
 
@@ -77,25 +85,23 @@
         actual electricity emissions may be significantly lower than this estimate.
       </div>
 
-      <button {{action 'downloadTableData'}}>
-        Download Summary Data <img src="/assets/images/download.svg">
+      <button {{action "downloadTableData"}}>
+        Download Summary Data <img src="/assets/images/download.svg" alt="Download">
       </button>
     </div>
-
-  </div><!--/ .city-overview-table -->
+  </div>
 
   <div class="overview-compare content-wrapper">
-
     <h2>
-      How does this compare to 
+      How does this compare to
 
       <div class="power-select">
         {{#power-select
-          options=municipalities   
+          options=municipalities
           selected=comparingTo.municipality
           destination="power-select-destination"
-          onchange=(action 'compareTo')
-          as |municipality|
+          onchange=(action "compareTo")
+        as |municipality|
         }}
           {{municipality}}
         {{/power-select}}
@@ -105,7 +111,6 @@
     </h2>
 
     <div class="comparison-tables">
-    
       <div class="comparison-table-wrapper">
         <h4>Percent of Total Energy <span>Consumption</span></h4>
 
@@ -113,23 +118,30 @@
           <div class="comparison-column">
             <h5></h5>
             {{#each fuelNames as |name|}}
-              <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
+              <div>
+                <img
+                  src="/assets/images/{{normalize-slug name}}.svg"
+                  alt="Fuel: {{capitalize name}}"
+                >
+              </div>
             {{/each}}
           </div>
+
           <div class="comparison-column current-muni">
             <h5>{{uppercase (acronyze municipality)}}</h5>
             {{#each fuelPercentages.consumption as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
           </div>
+
           <div class="comparison-column">
-            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
+            <h5 {{action "changeMunicipality" comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
             {{#each comparingTo.consumption as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
           </div>
         </div>
-      </div><!--/ .comparison-table-wrapper -->
+      </div>
 
       <div class="comparison-table-wrapper">
         <h4>Percent of Total Energy <span>Emissions</span></h4>
@@ -138,26 +150,31 @@
           <div class="comparison-column">
             <h5></h5>
             {{#each fuelNames as |name|}}
-              <div><img src="/assets/images/{{normalize-slug name}}.svg"></div>
+              <div>
+                <img
+                  src="/assets/images/{{normalize-slug name}}.svg"
+                  alt="Fuel: {{capitalize name}}"
+                >
+              </div>
             {{/each}}
           </div>
+
           <div class="comparison-column current-muni">
             <h5>{{uppercase (acronyze municipality)}}</h5>
             {{#each fuelPercentages.emissions as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
           </div>
+
           <div class="comparison-column">
-            <h5 {{action 'changeMunicipality' comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
+            <h5 {{action "changeMunicipality" comparingTo.municipality}}>{{uppercase (acronyze comparingTo.municipality)}}</h5>
             {{#each comparingTo.emissions as |value|}}
               <div><span>{{value}}%</span></div>
             {{/each}}
           </div>
         </div>
-      </div><!--/ .comparison-table-wrapper -->
-
-    </div><!--/ .comparison-tables -->
-
-  </div><!--/ .overview-compare -->
+      </div>
+    </div>
+  </div>
 
 </section>

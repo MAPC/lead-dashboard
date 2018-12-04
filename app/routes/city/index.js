@@ -19,6 +19,7 @@ export default class extends Route {
     return hash(toPromise);
   }
 
+
   activate() {
     const cityIndexController = this.controllerFor('city.index');
 

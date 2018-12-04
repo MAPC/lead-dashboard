@@ -57,10 +57,10 @@ export default class extends Service {
   }
 
 
-  populationFor(_municipality) {
+  populationFor(_municipality, year = 2015) {
     const municipality = slug(_municipality).denormalize();
 
-    return this.query(`SELECT pop_est, years FROM demo_pop_estimates_m WHERE municipal ILIKE '${municipality}' AND years = '2015'`);
+    return this.query(`SELECT pop_est, years FROM tabular.demo_pop_estimates_m WHERE municipal ILIKE '${municipality}' AND years = '${year}'`);
   }
 
 }
