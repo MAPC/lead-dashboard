@@ -40,7 +40,7 @@ export default class extends Controller {
   @computed('sectorData', 'municipality')
   get muniSectorData() {
     const municipality = this.get('municipality');
-    return this.get('sectorData').rows.filter(row => row.municipal === municipality);
+    return (this.get('sectorData').rows || []).filter(row => row.municipal === municipality);
   }
 
 

@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { copy } from '@ember/object/internals';
 import { action, computed } from '@ember-decorators/object';
 
 import fuelTypes from '../utils/fuel-types';
@@ -9,15 +10,6 @@ export default class extends Component {
   /**
    * Members
    */
-
-  /*
-  chartData = [];
-
-  criteria = [];
-  criteriaColumn = null;
-
-  valueMap = null;
-  */
 
   metricMap = {
     'Consumption': 'con_mmbtu',
@@ -45,7 +37,7 @@ export default class extends Component {
 
 
   @computed('metric', 'data.rows.[]')
-  get chartData() {
+  get metricData() {
     const metric = this.get('metric');
     const data = this.get('data.rows');
 
@@ -55,12 +47,18 @@ export default class extends Component {
   }
 
 
-  @computed('criteria', 'criteriaColumn', 'chartData')
+  @computed('metricData.[]', 'criteriaData.[]')
+  get chartData() {
+    return this.get('criteriaData') || this.get('metricData');
+  }
+
+
+  @computed('criteria', 'criteriaColumn', 'metricData.[]')
   get chartCriteria() {
     const criteria = this.get('criteria');
 
     if (criteria.length === 0) {
-      const chartData = this.get('chartData');
+      const chartData = this.get('metricData');
       const criteriaColumn = this.get('criteriaColumn');
 
       return chartData.map(row => row[criteriaColumn]);
@@ -84,11 +82,13 @@ export default class extends Component {
 
   @action
   changeChartCriteria(criterion) {
-    const criteriaColumn = this.get('criteriaColumn');
-    const valueMap = this.get('valueMap');
-    let chartData = this.get('data').rows;
+    let chartData = null;
 
     if (criterion !== 'all') {
+      const criteriaColumn = this.get('criteriaColumn');
+      const valueMap = this.get('valueMap');
+      chartData = copy(this.get('data').rows, true);
+
       if (valueMap) {
         chartData = chartData.filter(row => valueMap[row[criteriaColumn]] === criterion);
       }
@@ -97,7 +97,7 @@ export default class extends Component {
       }
     }
 
-    this.set('chartData', chartData);
+    this.set('criteriaData', chartData);
   }
 
 }

@@ -15,9 +15,15 @@ export default class extends Route {
 
 
   afterModel(model) {
-    const latestYear = Math.max(...model.data.rows.map(row => row.year));
     model['sectorData'] = {};
-    model['sectorData']['rows'] = model.data.rows.filter(row => row.year === latestYear);
+
+    if (model.data.rows) {
+      const latestYear = Math.max(...model.data.rows.map(row => row.year));
+      model['sectorData']['rows'] = model.data.rows.filter(row => row.year === latestYear);
+    }
+    else {
+      model['sectorData']['rows'] = [];
+    }
   }
 
 }

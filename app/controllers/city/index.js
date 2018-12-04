@@ -51,7 +51,7 @@ export default class extends Controller {
 
   @computed('model')
   get fuelTypeData() {
-    const munged = this.munger(this.get('model'));
+    const munged = this.munger(this.get('model'), true);
 
     const fuelTypeData = munged.map(fuelType => {
       if (fuelType.type.toLowerCase() === 'electricity') {
@@ -172,7 +172,7 @@ export default class extends Controller {
   }
 
 
-  munger(_model) {
+  munger(_model, log = false) {
     if (!this.get('sectors')) return;
 
     const model = copy(_model, true);
@@ -181,7 +181,7 @@ export default class extends Controller {
 
     const munged = {};
     sectors.forEach(sector => {
-      let subModel = (model[sector].rows || []).filter(row => row.year === latestYear);
+      let subModel = (model[sector].rows || []).filter(row => !row.year || row.year === latestYear);
       let aggregatedData = {};
 
       if (subModel.length === 0) {
