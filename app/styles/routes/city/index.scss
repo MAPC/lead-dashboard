@@ -1,5 +1,9 @@
 .route.city-index {
 
+  & > .content-wrapper + .content-wrapper {
+    border-top: 3px solid $color_bg-medium;
+  }
+
   .city-overview-flipper {
     display: none;
 
@@ -12,15 +16,15 @@
       @extend ._vertical-center;
       color: $color_font-medium;
 
-      img { 
-        display: block; 
+      img {
+        display: block;
         margin: 30px auto 0;
         width: 45px;
       }
     }
 
     @media (max-width: 480px) and (min-height: 475px) {
-      display: block; 
+      display: block;
     }
   }
 
@@ -46,14 +50,14 @@
     .row-values {
       display: flex;
 
-      width: 60%; 
+      width: 60%;
 
       @include media('medium-small') { width: 80%; }
       @include media('small') { width: 75%; }
     }
-    
+
     .row-value {
-      width: 25%; 
+      width: 25%;
       padding: 0 10px;
 
       &:first-of-type { border-right: 1px solid darken($color_bg-medium, 15); }
@@ -66,7 +70,7 @@
       margin-bottom: 35px;
 
       @include media('medium-small') {
-        display: block; 
+        display: block;
         margin-bottom: 0px;
       }
 
@@ -74,16 +78,16 @@
         margin: 0;
         padding: 14px 0 20px;
 
-        font-size: 26px; 
-        
+        font-size: 26px;
+
         border-style: solid;
         border-width: 2px 0;
         border-color: $color_bg-medium;
-        
-        @include media('small') { 
+
+        @include media('small') {
           padding: 10px 0 16px;
 
-          font-size: 20px; 
+          font-size: 20px;
         }
       }
 
@@ -91,7 +95,7 @@
         margin: 0;
 
         font-size: 15px;
-        text-align: center; 
+        text-align: center;
 
         @include media('small') { font-size: 13px; }
       }
@@ -119,7 +123,7 @@
           margin-top: 40px;
         }
         @include media('small') {
-          height: 80px; 
+          height: 80px;
           margin-top: 30px;
         }
       }
@@ -132,22 +136,22 @@
 
       @include media('medium-small') { margin: 20px 0; }
 
-      h5 { 
+      h5 {
         font-size: 15px;
-        margin: 3px 0; 
+        margin: 3px 0;
 
         @include media('medium-small') { font-size: 14px; }
         @include media('small') { font-size: 12px; }
-      } 
+      }
 
-      .row-index { 
-        display: flex; 
+      .row-index {
+        display: flex;
 
         @include media('medium-small') { display: block; }
-      } 
+      }
 
       h4 {
-        width: 30%; 
+        width: 30%;
 
         text-align: right;
         font-size: 18px;
@@ -177,12 +181,12 @@
       }
 
       .type-icon-wrapper {
-        width: 40%; 
+        width: 40%;
 
         img {
           @extend ._vertical-center;
 
-          max-height: 80%; 
+          max-height: 80%;
           margin: 0 auto;
         }
 
@@ -190,7 +194,7 @@
       }
 
       .metrics {
-        width: 30%; 
+        width: 30%;
 
         h5 {
           padding-left: 8px;
@@ -216,7 +220,7 @@
           &.consumption { color: $color_brand-secondary; }
 
           &.emissions {
-            color: $color_brand-tertiary; 
+            color: $color_brand-tertiary;
             margin: -6px auto -2px;
           }
 
@@ -225,12 +229,12 @@
 
             @include media('small') { font-size: 20px; }
           }
-        } 
+        }
       }
     }
 
     .table-footer {
-      display: flex;  
+      display: flex;
 
       margin-top: 45px;
 
@@ -244,7 +248,7 @@
         font-size: 14px;
         text-align: left;
 
-        background: none; 
+        background: none;
         border: none;
         opacity: .80;
         outline: none;
@@ -252,7 +256,7 @@
         transition: opacity .15s;
 
         &:hover {
-          opacity: 1; 
+          opacity: 1;
 
           transition: opacity .15s;
         }
@@ -262,7 +266,7 @@
           top: 50%;
           left: initial;
           right: 0;
-          display: inline-block; 
+          display: inline-block;
 
           height: 16px;
           margin-left: 5px;
@@ -282,22 +286,22 @@
       font-size: 12px;
       font-weight: 100;
 
-      span { 
+      span {
         position: absolute;
         left: 8px;
         top: 0;
 
         color: $color_state-warn;
-      } 
+      }
 
-      a { 
+      a {
         color: inherit;
-        text-decoration: underline; 
+        text-decoration: underline;
 
         transition: color .15s;
 
-        &:hover { 
-          color: $color_font-dark; 
+        &:hover {
+          color: $color_font-dark;
 
           transition: color .12s;
         }
@@ -310,8 +314,6 @@
   .overview-compare {
     padding: 10px 0;
 
-    border-top: 3px solid $color_bg-medium;
-
     h2 {
       margin-right: 5%;
 
@@ -319,18 +321,18 @@
 
       .power-select {
         display: inline-block;
-        width: 40%; 
+        width: 40%;
 
         div, input { width: 100%; }
       }
 
       #power-select-destination {
-        .ember-power-select-dropdown { 
-          top: 0 !important; 
+        .ember-power-select-dropdown {
+          top: 0 !important;
 
           font-size: 15px;
           font-weight: 400;
-        } 
+        }
       }
     }
 
@@ -344,14 +346,14 @@
     }
 
     .comparison-table-wrapper {
-      width: 48%; 
+      width: 48%;
 
       margin: 0 1%;
 
-      h4 { 
+      h4 {
         font-size: 18px;
         font-weight: 400;
-        text-align: center; 
+        text-align: center;
 
         span { font-weight: 700; }
 
@@ -359,7 +361,7 @@
       }
 
       @include media('small') {
-        width: 100%; 
+        width: 100%;
         margin: 50px auto;
       }
       @include media('x-small') { margin: 40px auto; }
@@ -374,7 +376,7 @@
     }
 
     .comparison-column {
-      width: 33.33%; 
+      width: 33.33%;
 
       color: $color_brand-primary;
 
@@ -403,10 +405,10 @@
           cursor: pointer;
 
           &:hover {
-            border-bottom-color: $color_font-medium; 
+            border-bottom-color: $color_font-medium;
             transition: border-bottom-color .15s;
           }
-        } 
+        }
       }
 
       & > div {
@@ -415,7 +417,7 @@
         @include media('medium-small') { height: 65px; }
         @include media('x-small') { height: 60px; }
 
-        img { 
+        img {
           @extend ._vertical-center;
 
           max-height: 66%;
@@ -426,7 +428,7 @@
         }
 
         span {
-          @extend ._vertical-center; 
+          @extend ._vertical-center;
           top: 40%;
 
           font-size: 36px;
