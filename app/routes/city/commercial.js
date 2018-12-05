@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { hash  } from 'rsvp';
-import { copy } from '@ember/object/internals';
 
 
 export default class extends Route {
@@ -13,7 +12,6 @@ export default class extends Route {
       municipality: cityModel.municipality,
     });
   }
-
 
   afterModel(model) {
     const latestYear = Math.max(...model.data.rows.map(row => row.year));
