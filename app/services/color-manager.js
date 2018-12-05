@@ -64,9 +64,15 @@ export default class extends Service {
     return colors[municipality];
   }
 
+
   resetColorFor(municipality) {
     const assignedColors = this.get('assignedColors');
     this.get('colorPool').pushObject(assignedColors[municipality]);
+  }
+
+
+  offset(color, offset) {
+    return color;
   }
 
 }

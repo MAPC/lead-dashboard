@@ -16,8 +16,7 @@ export default class StackedAreaChartLayoutComponent extends Component {
         fuelTypes.map(fuel => ({
           x: row['year'],
           y: row[`${fuel}_con_mmbtu`],
-          z: sector,
-          w: fuel,
+          z: `${sector}-${fuel}`,
         })).reduce((a,b) => a.concat(b), [])
       ).reduce((a,b) => a.concat(b), [])
     ).reduce((a,b) => a.concat(b), []);

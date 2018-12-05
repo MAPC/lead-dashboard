@@ -1,22 +1,30 @@
 import d3 from 'npm:d3';
 import uuid from 'npm:uuid';
 import Component from '@ember/component';
+import { service } from '@ember-decorators/service';
 
 import { maxToMargin, drawLegend } from 'lead-dashboard/utils/charts';
 
 
 export default class StackedAreaChartComponent extends Component {
 
+  @service colorManager;
+
 
   /**
    * Members
    */
 
-  stack = d3.stack();
+  container = {
+    height: 450,
+    width: 800,
+  };
 
-  chartOptions = {
-    height: 9,
-    width: 16,
+  defaultMargin = {
+    top: 20,
+    left: 40,
+    right: 20,
+    bottom: 50,
   };
 
 
@@ -28,13 +36,28 @@ export default class StackedAreaChartComponent extends Component {
     super(...arguments);
 
     this.set('__chartID', `sac-${uuid.v4()}`);
+
+    const colorManager = this.get('colorManager');
+    const { colors }  = colorManager;
+
+    this.set('colorMap', {
+      'residential-elec': colors.orellow,
+      'residential-ng': colorManager.offset(colors.orellow, 10),
+      'residential-foil': colorManager.offset(colors.orellow, 20),
+      'commercial-elec': colors.lightGreen,
+      'commercial-ng': colorManager.offset(colors.lightGreen, 10),
+      'commercial-foil': colorManager.offset(colors.lightGreen, 20),
+      'industrial-elec': colors.blue,
+      'industrial-ng': colorManager.offset(colors.blue, 10),
+      'industrial-foil': colorManager.offset(colors.blue, 20),
+    });
   }
 
 
   didInsertElement() {
     super.didInsertElement(...arguments);
 
-    const { width, height } = this.get('chartOptions');
+    const { width, height } = this.get('container');
     const __chartID = this.get('__chartID');
 
     const chart = d3.select(`#${__chartID}`)
@@ -49,17 +72,18 @@ export default class StackedAreaChartComponent extends Component {
 
   renderChart() {
     const chartData = this.get('data');
+    const chart = this.get('chart');
+    const colors = this.get('colorMap');
     console.log(chartData);
 
-    /*
     const bonusLeftMargin = maxToMargin(d3.max(chartData, d => d.y));
-    const margin = Object.assign({}, defaultMargin, {
-      left: defaultMargin.left + bonusLeftMargin,
+    const margin = Object.assign({}, this.defaultMargin, {
+      left: this.defaultMargin.left + bonusLeftMargin,
     });
-    const width = (container.width - margin.left) - margin.right;
-    const height = (container.height - margin.top) - margin.bottom;
+    const width = (this.container.width - margin.left) - margin.right;
+    const height = (this.container.height - margin.top) - margin.bottom;
 
-    const x = d3.scaleLinear().domain(d3.extent(this.props.data, d => d.x)).range([0, width]);
+    const x = d3.scaleLinear().domain(d3.extent(chartData, d => d.x)).range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
     const area = d3.area()
@@ -67,32 +91,30 @@ export default class StackedAreaChartComponent extends Component {
       .y0(d => y(d[0]))
       .y1(d => y(d[1]));
 
-    const keys = [...(new Set(this.props.data.map(d => d.z)))];
+    const keys = [...(new Set(chartData.map(d => d.z)))];
 
-    this.color = d3.scaleOrdinal(
-        this.props.colors
-        || (keys.length > primaryColors.length ? extendedColors : primaryColors)
-      )
-      .domain(Array.from(keys).reverse());
-    this.stack.keys(keys);
+    const stack = d3.stack();
+    stack.keys(keys);
 
-    this.chart.selectAll('*').remove(); // Clear chart before drawing
+    chart.selectAll('*').remove(); // Clear chart before drawing
 
-    this.gChart = this.chart.append('g');
-    this.gChart.attr('transform', `translate(${margin.left},${margin.top})`);
+    const gChart = chart.append('g');
+    gChart.attr('transform', `translate(${margin.left},${margin.top})`);
 
-    let data = this.props.data.reduce((acc, row) => {
+    let data = chartData.reduce((acc, row) => {
         acc[row.x] = { ...(acc[row.x] || {}), ...{[row.z]: row.y} };
         return acc;
       }, {});
     data = Object.keys(data).sort().map(xVal => ({ x: xVal, ...data[xVal] }));
 
-    const stackedData = this.stack(data);
+    console.log(data);
+
+    const stackedData = stack(data);
     y.domain(d3.extent(stackedData.reduce((acc, section) =>
       acc.concat(section.reduce((secAcc, point) =>
         secAcc.concat([point[0], point[1]]), [])), [])));
 
-    const layer = this.gChart
+    const layer = gChart
       .selectAll('.layer')
       .data(stackedData)
       .enter()
@@ -101,9 +123,10 @@ export default class StackedAreaChartComponent extends Component {
 
     layer.append('path')
       .attr('class', 'area')
-      .style('fill', d => this.color(d.key))
+      .style('fill', d => colors[d.key])
       .attr('d', area);
 
+    /*
     const xAxis = d3.axisBottom(x)
       .ticks(this.props.xAxis.ticks)
       .tickSize(0)
