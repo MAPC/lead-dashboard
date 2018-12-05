@@ -22,15 +22,7 @@
     </div>
   </div>
 
-  <div class="city-overview-flipper content-wrapper">
-    <div class="city-overview-flipper-content">
-      Rotate device to view "Sector Overview" table
-      <img src="/assets/images/flip.svg" alt="Rotate Screen">
-    </div>
-  </div>
-
   <div class="city-overview-table content-wrapper">
-
     <article class="table-header">
       <div class="row-index">
         <h2>How do {{acronyze municipality}}'s homes &amp; businesses consume energy?</h2>
@@ -52,7 +44,6 @@
 
     {{#each fuelTypeData as |typeData|}}
       <article class="type-row">
-
         <div class="row-index">
           <h4>{{uppercase typeData.type}} {{#if typeData.footnote}}<span>*</span>{{/if}}</h4>
 
@@ -88,6 +79,13 @@
       <button {{action "downloadTableData"}}>
         Download Summary Data <img src="/assets/images/download.svg" alt="Download">
       </button>
+    </div>
+  </div>
+
+  <div class="city-overview-flipper content-wrapper">
+    <div class="city-overview-flipper-content">
+      Rotate device to view "Sector Overview" table
+      <img src="/assets/images/flip.svg" alt="Rotate Screen">
     </div>
   </div>
 
