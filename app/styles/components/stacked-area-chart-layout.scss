@@ -1,0 +1,21 @@
+.component.stacked-area-chart-layout {
+
+  .metric-selector {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .ember-power-select-trigger {
+      width: 160px;
+
+      font-size: 18px;
+    }
+
+    .ember-power-select-status-icon {
+      right: 4px;
+
+      border-width: 9px 7px 0;
+    }
+  }
+
+}

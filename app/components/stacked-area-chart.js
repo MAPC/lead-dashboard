@@ -2,6 +2,7 @@ import d3 from 'npm:d3';
 import uuid from 'npm:uuid';
 import Component from '@ember/component';
 import { service } from '@ember-decorators/service';
+import { observes } from '@ember-decorators/object';
 
 import { maxToMargin, drawLegend } from 'lead-dashboard/utils/charts';
 
@@ -42,15 +43,19 @@ export default class StackedAreaChartComponent extends Component {
 
     this.set('colorMap', {
       'residential-elec': colors.orellow,
-      'residential-ng': colorManager.offset(colors.orellow, 10),
-      'residential-foil': colorManager.offset(colors.orellow, 20),
+      'residential-ng': colorManager.offset(colors.orellow, .2),
+      'residential-foil': colorManager.offset(colors.orellow, .4),
       'commercial-elec': colors.lightGreen,
-      'commercial-ng': colorManager.offset(colors.lightGreen, 10),
-      'commercial-foil': colorManager.offset(colors.lightGreen, 20),
+      'commercial-ng': colorManager.offset(colors.lightGreen, .2),
+      'commercial-foil': colorManager.offset(colors.lightGreen, .4),
       'industrial-elec': colors.blue,
-      'industrial-ng': colorManager.offset(colors.blue, 10),
-      'industrial-foil': colorManager.offset(colors.blue, 20),
+      'industrial-ng': colorManager.offset(colors.blue, .2),
+      'industrial-foil': colorManager.offset(colors.blue, .4),
     });
+
+    const data = this.get('data');
+
+    this.set('xAxis.ticks', data.uniqBy('x').length - 1);
   }
 
 
@@ -70,11 +75,17 @@ export default class StackedAreaChartComponent extends Component {
   }
 
 
+  @observes('data.[]', 'yAxis', 'xAxis')
   renderChart() {
     const chartData = this.get('data');
     const chart = this.get('chart');
     const colors = this.get('colorMap');
-    console.log(chartData);
+    const xAxisConf = this.get('xAxis');
+    const yAxisConf = this.get('yAxis');
+
+    console.log(xAxisConf);
+    console.log(yAxisConf);
+
 
     const bonusLeftMargin = maxToMargin(d3.max(chartData, d => d.y));
     const margin = Object.assign({}, this.defaultMargin, {
@@ -91,7 +102,21 @@ export default class StackedAreaChartComponent extends Component {
       .y0(d => y(d[0]))
       .y1(d => y(d[1]));
 
-    const keys = [...(new Set(chartData.map(d => d.z)))];
+    const existingKeys = chartData.map(d => d.z);
+
+    const keyOrder = [
+      'commercial-elec',
+      'commercial-ng',
+      'commercial-foil',
+      'industrial-elec',
+      'industrial-ng',
+      'industrial-foil',
+      'residential-elec',
+      'residential-ng',
+      'residential-foil',
+    ];
+
+    const keys = keyOrder.filter(key => existingKeys.includes(key));
 
     const stack = d3.stack();
     stack.keys(keys);
@@ -102,12 +127,10 @@ export default class StackedAreaChartComponent extends Component {
     gChart.attr('transform', `translate(${margin.left},${margin.top})`);
 
     let data = chartData.reduce((acc, row) => {
-        acc[row.x] = { ...(acc[row.x] || {}), ...{[row.z]: row.y} };
-        return acc;
-      }, {});
+      acc[row.x] = { ...(acc[row.x] || {}), ...{[row.z]: row.y + ((acc[row.x] || {})[row.z] || 0)} };
+      return acc;
+    }, {});
     data = Object.keys(data).sort().map(xVal => ({ x: xVal, ...data[xVal] }));
-
-    console.log(data);
 
     const stackedData = stack(data);
     y.domain(d3.extent(stackedData.reduce((acc, section) =>
@@ -126,26 +149,25 @@ export default class StackedAreaChartComponent extends Component {
       .style('fill', d => colors[d.key])
       .attr('d', area);
 
-    /*
     const xAxis = d3.axisBottom(x)
-      .ticks(this.props.xAxis.ticks)
+      .ticks(xAxisConf.ticks)
       .tickSize(0)
       .tickPadding(10)
-      .tickFormat(this.props.xAxis.format);
+      .tickFormat(xAxisConf.format);
     const yAxis = d3.axisLeft(y)
-      .ticks(this.props.yAxis.ticks)
+      .ticks(yAxisConf.ticks)
       .tickSize(0)
       .tickPadding(10)
       .ticks(10)
-      .tickFormat(this.props.yAxis.format);
+      .tickFormat(yAxisConf.format);
 
-    this.gChart
+    gChart
       .append('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
 
-    this.gChart
+    gChart
       .append('g')
       .attr('class', 'axis axis-y')
       .call(yAxis);
@@ -157,7 +179,7 @@ export default class StackedAreaChartComponent extends Component {
       .attr('transform', 'rotate(-90)')
       .attr("dy", "12")
       .style('text-anchor', 'middle')
-      .text(this.props.yAxis.label);
+      .text(yAxisConf.label);
 
     this.chart.append('text')
       .attr('class', 'axis-label')
@@ -165,10 +187,10 @@ export default class StackedAreaChartComponent extends Component {
       .attr('y', height + margin.top + margin.bottom - 22)
       .attr("dy", "12")
       .style('text-anchor', 'middle')
-      .text(this.props.xAxis.label);
+      .text(xAxisConf.label);
 
-    if (!this.props.data.length) {
-      const placeholder = this.gChart.append('g')
+    if (!chartData.length) {
+      const placeholder = gChart.append('g')
       placeholder.append('text')
         .attr('class', 'missing-data')
         .attr('x', width / 2)
@@ -185,6 +207,7 @@ export default class StackedAreaChartComponent extends Component {
         .text('Please try again later.');
     }
 
+    /*
     this.legend.selectAll('*').remove();
     drawLegend(this.legend, this.color, keys);
     */

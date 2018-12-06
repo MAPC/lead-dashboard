@@ -244,6 +244,7 @@ export default class extends Controller {
       };
     });
 
+
     // Sum the consumption values from the 'total' column
     const totalConsumption = data.map(datum => datum.sectors[0].consumption)
                                  .reduce((a, b) => a + b);

@@ -2,10 +2,25 @@
 
   <div class="chart-modifiers">
     <h2>{{acronyze municipality}}'s Yearly Usages</h2>
+
+    <div class='metric-selector'>
+      {{#power-select
+        options=metricOptions
+        selected=metric
+        onchange=(action (mut metric))
+        as |metric|
+      }}
+        {{metric}}
+      {{/power-select}}
+    </div>
   </div>
 
   <div class="chart-wrapper">
-    {{stacked-area-chart data=chartData}}
+    {{stacked-area-chart
+      data=chartData
+      xAxis=xAxis
+      yAxis=yAxis
+    }}
   </div>
 
 </section>
