@@ -28,6 +28,8 @@ export default class StackedAreaChartComponent extends Component {
     bottom: 50,
   };
 
+  transitionDuration = 200;
+
 
   /**
    * Methods
@@ -83,10 +85,6 @@ export default class StackedAreaChartComponent extends Component {
     const xAxisConf = this.get('xAxis');
     const yAxisConf = this.get('yAxis');
 
-    console.log(xAxisConf);
-    console.log(yAxisConf);
-
-
     const bonusLeftMargin = maxToMargin(d3.max(chartData, d => d.y));
     const margin = Object.assign({}, this.defaultMargin, {
       left: this.defaultMargin.left + bonusLeftMargin,
@@ -139,15 +137,24 @@ export default class StackedAreaChartComponent extends Component {
 
     const layer = gChart
       .selectAll('.layer')
-      .data(stackedData)
-      .enter()
-      .append('g')
-      .attr('class', 'layer');
+      .data(stackedData);
 
-    layer.append('path')
+    layer
+      .enter()
+      .append('path')
       .attr('class', 'area')
       .style('fill', d => colors[d.key])
-      .attr('d', area);
+      .attr('d', area)
+      .each(function(d) { this._current = d });
+
+    layer
+      .transition()
+      .duration(this.transitionDuration)
+      .attrTween('d', function(d,i,a) {
+        console.log(d,i,a);
+        const interpolate = d3.interpolateObject(d,a);
+        return t => area(interpolate(t))
+      });
 
     const xAxis = d3.axisBottom(x)
       .ticks(xAxisConf.ticks)

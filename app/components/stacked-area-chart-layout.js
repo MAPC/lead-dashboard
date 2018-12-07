@@ -23,13 +23,15 @@ export default class StackedAreaChartLayoutComponent extends Component {
   labels = {
     'Consumption': 'MMBTU',
     'Emissions': 'Lbs. of CO2e',
-    'Cost': 'Hello',
+    'Cost': 'Cost',
   };
 
   metricOptions = Object.keys(this.metrics);
 
+
   constructor() {
     super(...arguments);
+
     this.set('metric', 'Consumption');
   }
 
