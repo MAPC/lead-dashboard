@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 import Controller from '@ember/controller';
 import { hash } from 'rsvp';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { service } from '@ember-decorators/service';
 import { controller } from '@ember-decorators/controller';
 import { computed, action } from '@ember-decorators/object';

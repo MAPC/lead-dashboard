@@ -1,10 +1,12 @@
-import d3 from 'npm:d3';
-import uuid from 'npm:uuid';
+import d3 from 'd3';
+import Fraction from 'fraction.js';
 import Component from '@ember/component';
 import { service } from '@ember-decorators/service';
 import { observes } from '@ember-decorators/object';
 
+import guid from 'lead-dashboard/utils/guid';
 import { maxToMargin, drawLegend } from 'lead-dashboard/utils/charts';
+import { fuelTypes, fuelTypesMap } from 'lead-dashboard/utils/fuel-types';
 
 
 export default class StackedAreaChartComponent extends Component {
@@ -29,6 +31,7 @@ export default class StackedAreaChartComponent extends Component {
   };
 
   transitionDuration = 200;
+  tooltipDisplacement = 20;
 
 
   /**
@@ -38,7 +41,7 @@ export default class StackedAreaChartComponent extends Component {
   constructor() {
     super(...arguments);
 
-    this.set('__chartID', `sac-${uuid.v4()}`);
+    this.set('__chartID', `sac-${guid()}`);
 
     const colorManager = this.get('colorManager');
     const { colors }  = colorManager;
@@ -71,7 +74,24 @@ export default class StackedAreaChartComponent extends Component {
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('viewBox', `0 0 ${width} ${height}`);
 
+    const tooltip = d3.select(`#${__chartID}-tooltip-holder`)
+                      .append('div')
+                      .attr('class', 'tooltip');
+
+    tooltip.append('div')
+           .attr('class', 'percent');
+
+    const pathInfo = tooltip.append('div')
+                            .attr('class', 'path-info');
+
+    pathInfo.append('div')
+           .attr('class', 'fuel-type');
+
+    pathInfo.append('div')
+           .attr('class', 'value');
+
     this.set('chart', chart);
+    this.set('tooltip', tooltip);
     this.set('legend', d3.select(`#${__chartID}-legend`));
     this.renderChart();
   }
@@ -84,6 +104,7 @@ export default class StackedAreaChartComponent extends Component {
     const colors = this.get('colorMap');
     const xAxisConf = this.get('xAxis');
     const yAxisConf = this.get('yAxis');
+    const tooltip = this.get('tooltip');
 
     const bonusLeftMargin = maxToMargin(d3.max(chartData, d => d.y));
     const margin = Object.assign({}, this.defaultMargin, {
@@ -139,19 +160,61 @@ export default class StackedAreaChartComponent extends Component {
       .selectAll('.layer')
       .data(stackedData);
 
+    const cents = data.reduce((cents, row) => {
+      cents[row.x] = keys.reduce((cent, key) => cent + row[key], 0);
+      return cents;
+    }, {});
+
     layer
       .enter()
       .append('path')
       .attr('class', 'area')
       .style('fill', d => colors[d.key])
       .attr('d', area)
-      .each(function(d) { this._current = d });
+      .each(function(d) { this._current = d })
+      .on('mouseover', (d, i, a) => {
+        const criteria = d.key;
+        const [ sector, fuelType ] = criteria.split('-');
+
+        tooltip.select('.fuel-type')
+               .html(fuelTypesMap[fuelType]);
+
+        tooltip.select('.value')
+               .html();
+
+        tooltip.select('.percent')
+               .html(dt => {
+                  d.filter(row => row.x === d)
+               })
+               .style('color', colors[criteria]);
+
+        tooltip.style('display', 'block');
+        bar.style('display', 'block');
+      })
+      .on('mouseout', () => {
+        tooltip.style('display', 'none');
+        bar.style('display', 'none');
+      })
+      .on('mousemove', function(d) {
+        const [ x, y ] = d3.mouse(this);
+        const scaler = (width + margin.left + margin.right) / width;
+        console.log(scaler);
+
+        const snap = Math.floor((x / width) / (1.0 / d.length));
+        const xPos = (width / (d.length - 1)) * snap;
+        const xVal = d[snap].data.x;
+
+        bar.attr('x1', xPos)
+           .attr('x2', xPos);
+
+        tooltip.style('top', `${y}px`)
+               .style('left', `${(xPos + margin.left + margin.right) * scaler}px`);
+      });
 
     layer
       .transition()
       .duration(this.transitionDuration)
-      .attrTween('d', function(d,i,a) {
-        console.log(d,i,a);
+      .attrTween('d', function(d) {
         const interpolate = d3.interpolateObject(d,a);
         return t => area(interpolate(t))
       });
@@ -213,6 +276,13 @@ export default class StackedAreaChartComponent extends Component {
         .style('text-anchor', 'middle')
         .text('Please try again later.');
     }
+
+    const bar = gChart
+      .append('line')
+      .attr('class', 'tooltip-bar')
+      .attr('y1', '0')
+      .attr('y2', height);
+
 
     /*
     this.legend.selectAll('*').remove();
