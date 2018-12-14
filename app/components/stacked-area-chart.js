@@ -85,6 +85,9 @@ export default class StackedAreaChartComponent extends Component {
     const pathInfo = tooltip.append('div')
                             .attr('class', 'path-info');
 
+    pathInfo.append('small')
+            .attr('class', 'sector');
+
     pathInfo.append('div')
            .attr('class', 'fuel-type');
 
@@ -166,6 +169,9 @@ export default class StackedAreaChartComponent extends Component {
       return cents;
     }, {});
 
+    let hoverYear = data[0].x;
+    let lastHoverYear = hoverYear;
+
     layer
       .enter()
       .append('path')
@@ -173,35 +179,24 @@ export default class StackedAreaChartComponent extends Component {
       .style('fill', d => colors[d.key])
       .attr('d', area)
       .each(function(d) { this._current = d })
-      .on('mouseover', (d, i, a) => {
-        const criteria = d.key;
-        const [ sector, fuelType ] = criteria.split('-');
-
-        tooltip.select('.fuel-type')
-               .html(fuelTypesMap[fuelType]);
-
-        tooltip.select('.value')
-               .html();
-
-        tooltip.select('.percent')
-               .html(dt => {
-                  d.filter(row => row.x === d)
-               })
-               .style('color', colors[criteria]);
-
-        tooltip.style('display', 'block');
-        bar.style('display', 'block');
-      })
+      .on('mouseover', renderToolTip)
       .on('mouseout', () => {
         tooltip.style('display', 'none');
         bar.style('display', 'none');
       })
       .on('mousemove', function(d) {
         const [ x, y ] = d3.mouse(this);
-        const scaler = (width + margin.left + margin.right) / width;
+
+        const scaler = (width + margin.left + margin.right) / (width - margin.right);
         const snap = Math.floor((x / width) / (1.0 / d.length));
+
         const xPos = (width / (d.length - 1)) * snap;
-        const xVal = d[snap].data.x;
+        const xVal = lastHoverYear = d[snap].data.x;
+
+        if (lastHoverYear !== hoverYear) {
+          hoverYear = lastHoverYear;
+          renderToolTip(d);
+        }
 
         bar.attr('x1', xPos)
            .attr('x2', xPos);
@@ -209,6 +204,29 @@ export default class StackedAreaChartComponent extends Component {
         tooltip.style('top', `${y}px`)
                .style('left', `${(xPos + margin.left + margin.right) * scaler}px`);
       });
+
+      function renderToolTip(d) {
+        const criteria = d.key;
+        const [ sector, fuelType ] = criteria.split('-');
+
+        const value = d.filter(yearRow => yearRow.data.x == hoverYear)[0].data[criteria];
+        const percent = Math.round((value / cents[hoverYear]) * 100);
+
+        tooltip.select('.sector')
+               .html(capitalize(sector));
+        tooltip.select('.fuel-type')
+               .html(fuelTypesMap[fuelType]);
+
+        tooltip.select('.value')
+               .html(`${yAxisConf.format(Math.round(value))} ${yAxisConf.label}`);
+
+        tooltip.select('.percent')
+               .html(`${percent}%`)
+               .style('color', colors[criteria]);
+
+        tooltip.style('display', 'block');
+        bar.style('display', 'block');
+      }
 
     layer
       .transition()
