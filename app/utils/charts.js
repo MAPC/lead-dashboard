@@ -59,10 +59,12 @@ const addLegendColumn = (legend, color, keysInColumn, formatter) => {
 };
 
 export function drawLegend(legend, color, keys, formatter) {
+  console.log(keys);
   if (keys.length > 6) {
-    legend.attr('class', 'legend two-column');
-    addLegendColumn(legend, color, keys.slice(0, Math.round(keys.length / 2)), formatter);
-    addLegendColumn(legend, color, keys.slice(Math.round(keys.length / 2)), formatter);
+    legend.attr('class', 'legend three-column');
+    addLegendColumn(legend, color, keys.slice(0, 3), formatter);
+    addLegendColumn(legend, color, keys.slice(3, 6), formatter);
+    addLegendColumn(legend, color, keys.slice(6,9), formatter);
   } else {
     addLegendColumn(legend, color, keys, formatter);
   }

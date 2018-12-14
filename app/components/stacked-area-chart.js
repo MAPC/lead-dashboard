@@ -5,6 +5,7 @@ import { service } from '@ember-decorators/service';
 import { observes } from '@ember-decorators/object';
 
 import guid from 'lead-dashboard/utils/guid';
+import capitalize from 'lead-dashboard/utils/capitalize';
 import { maxToMargin, drawLegend } from 'lead-dashboard/utils/charts';
 import { fuelTypes, fuelTypesMap } from 'lead-dashboard/utils/fuel-types';
 
@@ -198,8 +199,6 @@ export default class StackedAreaChartComponent extends Component {
       .on('mousemove', function(d) {
         const [ x, y ] = d3.mouse(this);
         const scaler = (width + margin.left + margin.right) / width;
-        console.log(scaler);
-
         const snap = Math.floor((x / width) / (1.0 / d.length));
         const xPos = (width / (d.length - 1)) * snap;
         const xVal = d[snap].data.x;
@@ -283,11 +282,13 @@ export default class StackedAreaChartComponent extends Component {
       .attr('y1', '0')
       .attr('y2', height);
 
+    const legendFormat = key => {
+      const [ sector, fuel ] = key.split('-');
+      return `${capitalize(sector)} ${fuelTypesMap[fuel]}`;
+    };
 
-    /*
-    this.legend.selectAll('*').remove();
-    drawLegend(this.legend, this.color, keys);
-    */
+    this.get('legend').selectAll('*').remove();
+    drawLegend(this.get('legend'), key => colors[key], keys, legendFormat);
   }
 
 }
