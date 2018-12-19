@@ -164,6 +164,7 @@ export default class StackedAreaChartComponent extends Component {
     let hoverYear = data[0].x;
     let lastHoverYear = hoverYear;
     const hoverThreshold = 50;
+    const __parentScope = this;
 
     layer
       .enter()
@@ -180,9 +181,7 @@ export default class StackedAreaChartComponent extends Component {
       .on('mousemove', function(d) {
         const [ x, y ] = d3.mouse(this);
 
-        const scaler = (width + margin.left + margin.right) / (width - margin.right);
         const snap = Math.floor((x / width) / (1.0 / d.length));
-
         const xPos = (width / (d.length - 1)) * snap;
 
         if (Math.abs(xPos - x) < hoverThreshold) {
@@ -199,8 +198,8 @@ export default class StackedAreaChartComponent extends Component {
           bar.attr('x1', xPos)
              .attr('x2', xPos);
 
-          tooltip.style('top', `${y}px`)
-                 .style('left', `${(xPos + margin.left + margin.right) * scaler}px`);
+          tooltip.style('top', `${(y * (height / __parentScope.container.height)) - 40}px`)
+                 .style('left', `${xPos + margin.left}px`);
         }
         else {
           tooltip.style('display', 'none');
