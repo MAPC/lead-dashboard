@@ -11,19 +11,16 @@ export default class StackedAreaChartLayoutComponent extends Component {
   metrics = {
     'Consumption': '_con_mmbtu',
     'Emissions': '_emissions_co2',
-    'Cost': '_exp_dollar',
   };
 
   metricFormats = {
     'Consumption': fmt.number.localeString,
     'Emissions': fmt.number.localeString,
-    'Cost': fmt.number.dollar,
   };
 
   labels = {
     'Consumption': 'MMBTU',
     'Emissions': 'Lbs. of CO2e',
-    'Cost': 'Expense',
   };
 
   metricOptions = Object.keys(this.metrics);
@@ -32,7 +29,7 @@ export default class StackedAreaChartLayoutComponent extends Component {
   constructor() {
     super(...arguments);
 
-    this.set('metric', 'Consumption');
+    this.set('metric', this.metricOptions[0]);
   }
 
 
