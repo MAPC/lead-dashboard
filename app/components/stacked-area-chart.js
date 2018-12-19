@@ -285,10 +285,7 @@ export default class StackedAreaChartComponent extends Component {
       .attr('y1', '0')
       .attr('y2', height);
 
-    const legendFormat = key => {
-      const [ sector, fuel ] = key.split('-');
-      return `${capitalize(sector)} ${fuelTypesMap[fuel]}`;
-    };
+    const legendFormat = key => fuelTypesMap[key.split('-')[1]];
 
     this.get('legend').selectAll('*').remove();
     drawLegend(this.get('legend'), key => colors[key], keys, legendFormat);

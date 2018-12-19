@@ -1,3 +1,6 @@
+import capitalize from './capitalize';
+
+
 export function maxToMargin(maxValue) {
   if (!maxValue) { return 0; }
   const zeros = Math.floor(Math.log10(maxValue)) + 1;
@@ -36,11 +39,19 @@ export function splitPhrase(phrase, charPerLine) {
 }
 
 const addLegendColumn = (legend, color, keysInColumn, formatter) => {
-  const li = legend.append('ul')
+  const group = legend.append('div').attr('class', 'legend-column');
+
+  const sector = capitalize((keysInColumn[0] || '').split('-')[0]);
+  group
+    .append('h5')
+    .text(sector)
+
+  const li = group.append('ul')
     .selectAll('li')
     .data(keysInColumn)
     .enter()
     .append('li');
+
   li.append('svg')
     .attr('height', '1em')
     .attr('width', '1em')
@@ -52,18 +63,18 @@ const addLegendColumn = (legend, color, keysInColumn, formatter) => {
     .attr('height', '1em')
     .attr('width', '1em')
     .attr('fill', d => color(d));
-    // .style('background', d => color(d));
+
   li.append('span')
     .attr('class', 'label')
     .text(d => formatter ? formatter(d) : d);
 };
 
 export function drawLegend(legend, color, keys, formatter) {
-  if (keys.length > 6) {
+  if (keys.length >= 6) {
     legend.attr('class', 'legend three-column');
-    addLegendColumn(legend, color, keys.slice(0, 3), formatter);
-    addLegendColumn(legend, color, keys.slice(3, 6), formatter);
-    addLegendColumn(legend, color, keys.slice(6,9), formatter);
+    addLegendColumn(legend, color, keys.slice(0, 2), formatter);
+    addLegendColumn(legend, color, keys.slice(2, 4), formatter);
+    addLegendColumn(legend, color, keys.slice(4,6), formatter);
   } else {
     addLegendColumn(legend, color, keys, formatter);
   }

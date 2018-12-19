@@ -10,12 +10,24 @@
     width: 75%;
     margin: 0 auto;
     background: $color_bg-light;
+
+    h5 {
+      margin: 0 0 .5rem;
+    }
+
     &.three-column {
       display: flex;
-      ul {
+
+      .legend-column {
         width: 33.33%;
+
+        display: flex;
+      }
+
+      ul {
         display: block;
-        margin: 0 auto;
+        margin: 0;
+        margin-left: 1rem;
         li {
           width: calc(100% - 1em);
           margin-right: 1em;
