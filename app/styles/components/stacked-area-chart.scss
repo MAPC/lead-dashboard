@@ -2,8 +2,18 @@
 
   padding: 30px 15px;
 
+  path.area { cursor: crosshair; }
+
   .axis-label {
     font-size: 12px;
+  }
+
+  .axis-x .domain {
+    display: none;
+  }
+
+  .axis-y .domain {
+    stroke: darken($color_bg-medium, 10);
   }
 
   .legend {

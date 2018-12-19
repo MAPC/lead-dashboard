@@ -25,7 +25,7 @@ export default class StackedAreaChartComponent extends Component {
 
   defaultMargin = {
     top: 20,
-    left: 40,
+    left: 60,
     right: 20,
     bottom: 50,
   };
@@ -139,8 +139,7 @@ export default class StackedAreaChartComponent extends Component {
 
     chart.selectAll('*').remove(); // Clear chart before drawing
 
-    const gChart = chart.append('g');
-    gChart.attr('transform', `translate(${margin.left},${margin.top})`);
+    const gChart = chart.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
     let data = chartData.reduce((acc, row) => {
       acc[row.x] = { ...(acc[row.x] || {}), ...{[row.z]: row.y + ((acc[row.x] || {})[row.z] || 0)} };
@@ -164,6 +163,7 @@ export default class StackedAreaChartComponent extends Component {
 
     let hoverYear = data[0].x;
     let lastHoverYear = hoverYear;
+    const hoverThreshold = 50;
 
     layer
       .enter()
@@ -184,18 +184,28 @@ export default class StackedAreaChartComponent extends Component {
         const snap = Math.floor((x / width) / (1.0 / d.length));
 
         const xPos = (width / (d.length - 1)) * snap;
-        lastHoverYear = d[snap].data.x;
 
-        if (lastHoverYear !== hoverYear) {
-          hoverYear = lastHoverYear;
-          renderToolTip(d);
+        if (Math.abs(xPos - x) < hoverThreshold) {
+          lastHoverYear = d[snap].data.x;
+
+          if (lastHoverYear !== hoverYear) {
+            hoverYear = lastHoverYear;
+            renderToolTip(d);
+          }
+
+          tooltip.style('display', 'block');
+          bar.style('display', 'block');
+
+          bar.attr('x1', xPos)
+             .attr('x2', xPos);
+
+          tooltip.style('top', `${y}px`)
+                 .style('left', `${(xPos + margin.left + margin.right) * scaler}px`);
         }
-
-        bar.attr('x1', xPos)
-           .attr('x2', xPos);
-
-        tooltip.style('top', `${y}px`)
-               .style('left', `${(xPos + margin.left + margin.right) * scaler}px`);
+        else {
+          tooltip.style('display', 'none');
+          bar.style('display', 'none');
+        }
       });
 
       function renderToolTip(d) {
@@ -226,6 +236,7 @@ export default class StackedAreaChartComponent extends Component {
       .tickSize(0)
       .tickPadding(10)
       .tickFormat(xAxisConf.format);
+
     const yAxis = d3.axisLeft(y)
       .ticks(yAxisConf.ticks)
       .tickSize(0)
@@ -242,6 +253,7 @@ export default class StackedAreaChartComponent extends Component {
     gChart
       .append('g')
       .attr('class', 'axis axis-y')
+      .attr('transform', `translate(-${margin.left/5},0)`)
       .call(yAxis);
 
     this.chart.append('text')
