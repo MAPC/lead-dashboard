@@ -43,7 +43,7 @@ export default class StackedAreaChartLayoutComponent extends Component {
 
     const mapped = sectors.map(sector =>
       ((data[sector] || {}).rows || []).map(row =>
-        fuelTypes.map(fuel => ({
+        fuelTypes.filter(t => t !== 'foil').map(fuel => ({
           x: row['year'],
           y: row[`${fuel}${this.metrics[metric]}`],
           z: `${sector}-${fuel}`,

@@ -1,5 +1,4 @@
 import d3 from 'd3';
-import Fraction from 'fraction.js';
 import Component from '@ember/component';
 import { service } from '@ember-decorators/service';
 import { observes } from '@ember-decorators/object';
@@ -7,7 +6,7 @@ import { observes } from '@ember-decorators/object';
 import guid from 'lead-dashboard/utils/guid';
 import capitalize from 'lead-dashboard/utils/capitalize';
 import { maxToMargin, drawLegend } from 'lead-dashboard/utils/charts';
-import { fuelTypes, fuelTypesMap } from 'lead-dashboard/utils/fuel-types';
+import { fuelTypesMap } from 'lead-dashboard/utils/fuel-types';
 
 
 export default class StackedAreaChartComponent extends Component {
@@ -49,14 +48,11 @@ export default class StackedAreaChartComponent extends Component {
 
     this.set('colorMap', {
       'residential-elec': colors.orellow,
-      'residential-ng': colorManager.offset(colors.orellow, .2),
-      'residential-foil': colorManager.offset(colors.orellow, .4),
+      'residential-ng': colorManager.offset(colors.orellow, .4),
       'commercial-elec': colors.lightGreen,
-      'commercial-ng': colorManager.offset(colors.lightGreen, .2),
-      'commercial-foil': colorManager.offset(colors.lightGreen, .4),
+      'commercial-ng': colorManager.offset(colors.lightGreen, .4),
       'industrial-elec': colors.blue,
-      'industrial-ng': colorManager.offset(colors.blue, .2),
-      'industrial-foil': colorManager.offset(colors.blue, .4),
+      'industrial-ng': colorManager.offset(colors.blue, .4),
     });
 
     const data = this.get('data');
@@ -130,13 +126,10 @@ export default class StackedAreaChartComponent extends Component {
     const keyOrder = [
       'commercial-elec',
       'commercial-ng',
-      'commercial-foil',
       'industrial-elec',
       'industrial-ng',
-      'industrial-foil',
       'residential-elec',
       'residential-ng',
-      'residential-foil',
     ];
 
     const keys = keyOrder.filter(key => existingKeys.includes(key));
@@ -191,7 +184,7 @@ export default class StackedAreaChartComponent extends Component {
         const snap = Math.floor((x / width) / (1.0 / d.length));
 
         const xPos = (width / (d.length - 1)) * snap;
-        const xVal = lastHoverYear = d[snap].data.x;
+        lastHoverYear = d[snap].data.x;
 
         if (lastHoverYear !== hoverYear) {
           hoverYear = lastHoverYear;
@@ -227,14 +220,6 @@ export default class StackedAreaChartComponent extends Component {
         tooltip.style('display', 'block');
         bar.style('display', 'block');
       }
-
-    layer
-      .transition()
-      .duration(this.transitionDuration)
-      .attrTween('d', function(d) {
-        const interpolate = d3.interpolateObject(d,a);
-        return t => area(interpolate(t))
-      });
 
     const xAxis = d3.axisBottom(x)
       .ticks(xAxisConf.ticks)
