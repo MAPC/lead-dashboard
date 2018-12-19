@@ -1,7 +1,7 @@
-import d3 from "npm:d3";
+import d3 from "d3";
+import { copy } from 'ember-copy';
 import Component from '@ember/component';
 import { htmlSafe } from '@ember/template';
-import { copy } from '@ember/object/internals';
 import { service } from '@ember-decorators/service';
 import { action, computed } from '@ember-decorators/object';
 

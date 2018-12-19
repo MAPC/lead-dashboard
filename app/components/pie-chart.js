@@ -1,8 +1,8 @@
 import $ from 'jquery';
-import d3 from 'npm:d3';
+import d3 from 'd3';
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { service } from '@ember-decorators/service';
 
 

@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { service } from '@ember-decorators/service';
 import { computed } from '@ember-decorators/object';
 

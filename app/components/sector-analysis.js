@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { computed } from '@ember-decorators/object';
 
 import capitalize from '../utils/capitalize';

@@ -1,10 +1,10 @@
+import d3 from 'd3';
 import $ from 'jquery';
-import d3 from 'npm:d3';
 import Component from '@ember/component';
+import { copy } from 'ember-copy';
 import { run } from '@ember/runloop';
-import { copy } from '@ember/object/internals';
 
-import slug from '../utils/slug';
+import slug from 'lead-dashboard/utils/slug';
 
 
 export default class extends Component {

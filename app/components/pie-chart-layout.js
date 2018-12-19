@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { action, computed } from '@ember-decorators/object';
 
 import fuelTypes from '../utils/fuel-types';
