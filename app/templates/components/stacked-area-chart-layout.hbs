@@ -3,24 +3,40 @@
   <div class="chart-modifiers">
     <h2>{{acronyze municipality}}'s Yearly Usages</h2>
 
-    <div class='metric-selector'>
-      {{#power-select
-        options=metricOptions
-        selected=metric
-        onchange=(action (mut metric))
-        as |metric|
-      }}
-        {{metric}}
-      {{/power-select}}
-    </div>
+    {{#if chartData}}
+      <div class='metric-selector'>
+        {{#power-select
+          options=metricOptions
+          selected=metric
+          onchange=(action (mut metric))
+          as |metric|
+        }}
+          {{metric}}
+        {{/power-select}}
+      </div>
+    {{else}}
+      <div class="no-masssave-data">
+        <p>
+          We do not have the utility data necessary to provide annual consumption and
+          emissions over time for {{municipality}}. This either means that this community is
+          served by a municipal electric or gas utility, does not have gas service, or has
+          protected data under the utilities' privacy standards.
+        </p>
+        <p>
+          For more information about how we integrate utility data, please read our {{link-to 'methodology' 'methodology' class="styled"}} page.
+        </p>
+      </div>
+    {{/if}}
   </div>
 
-  <div class="chart-wrapper">
-    {{stacked-area-chart
-      data=chartData
-      xAxis=xAxis
-      yAxis=yAxis
-    }}
-  </div>
+  {{#if chartData}}
+    <div class="chart-wrapper">
+      {{stacked-area-chart
+        data=chartData
+        xAxis=xAxis
+        yAxis=yAxis
+      }}
+    </div>
+  {{/if}}
 
 </section>
