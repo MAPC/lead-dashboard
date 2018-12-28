@@ -70,13 +70,11 @@ const addLegendColumn = (legend, color, keysInColumn, formatter) => {
 };
 
 export function drawLegend(legend, color, keys, formatter) {
-  if (keys.length >= 6) {
-    legend.attr('class', 'legend three-column');
-    addLegendColumn(legend, color, keys.slice(0, 2), formatter);
-    addLegendColumn(legend, color, keys.slice(2, 4), formatter);
-    addLegendColumn(legend, color, keys.slice(4,6), formatter);
-  } else {
-    addLegendColumn(legend, color, keys, formatter);
+  const mod = 2;
+  legend.attr('class', 'legend three-column');
+
+  for (let i = 0; i < keys.length / mod; i++) {
+    addLegendColumn(legend, color, keys.slice(i * mod, (i + 1) * mod), formatter);
   }
 }
 
