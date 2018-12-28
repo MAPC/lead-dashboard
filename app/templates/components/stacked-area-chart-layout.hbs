@@ -1,7 +1,16 @@
 <section class="component stacked-area-chart-layout">
 
   <div class="chart-modifiers">
-    <h2>{{acronyze municipality}}'s Yearly Usages</h2>
+    <div class="row-index">
+      <h2 class="bordered-header">
+        How has electricity and natural gas consumption changed in {{acronyze municipality}}?
+      </h2>
+
+      <p>
+        Explore how consumption of electricity and natural gas in {{municipality}} changes over time,
+        and trends in the resulting greenhouse gas emissions.
+      </p>
+    </div>
 
     {{#if chartData}}
       <div class='metric-selector'>
@@ -38,5 +47,15 @@
       }}
     </div>
   {{/if}}
+
+  <div class="table-footer">
+    <div class="footnote">
+      The breakdown of commercial and industrial sector consumption are calibrated estimates
+      based on aggregated utility data on combined commercial and industrial consumption.
+    </div>
+
+    {{#if hasUncalibrated}}
+    {{/if}}
+  </div>
 
 </section>

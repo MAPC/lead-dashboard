@@ -1,5 +1,9 @@
 .component.stacked-area-chart-layout {
 
+  padding: 26px 0;
+
+  .row-index { width: 62%; }
+
   .metric-selector {
     position: absolute;
     top: 0;
@@ -21,6 +25,8 @@
   .no-masssave-data {
     width: 80%;
     margin: 80px auto;
+
+    color: darken($color_font-medium, 15);
   }
 
 }
