@@ -113,7 +113,7 @@ export default class StackedAreaChartComponent extends Component {
     const width = (this.container.width - margin.left) - margin.right;
     const height = (this.container.height - margin.top) - margin.bottom;
 
-    const x = d3.scaleLinear().domain(d3.extent(chartData, d => d.x)).range([0, width]);
+    const x = d3.scaleLinear().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
     const area = d3.area()
@@ -146,6 +146,21 @@ export default class StackedAreaChartComponent extends Component {
       return acc;
     }, {});
     data = Object.keys(data).sort().map(xVal => ({ x: xVal, ...data[xVal] }));
+
+    let keyMax = 0;
+    const mostKeys = data.reduce((mostKeys, row) => {
+      const keys = Object.keys(row).filter(key => key !== 'x');
+
+      if (keys.length > keyMax) {
+        keyMax = keys.length;
+        return keys
+      }
+
+      return mostKeys;
+    }, []);
+
+    data = data.filter(row => mostKeys.every(key => Object.keys(row).indexOf(key) !== -1));
+    x.domain(d3.extent(data, d => d.x))
 
     const stackedData = stack(data);
     y.domain(d3.extent(stackedData.reduce((acc, section) =>
@@ -231,7 +246,7 @@ export default class StackedAreaChartComponent extends Component {
       }
 
     const xAxis = d3.axisBottom(x)
-      .ticks(xAxisConf.ticks)
+      .ticks(data.length - 1)
       .tickSize(0)
       .tickPadding(10)
       .tickFormat(xAxisConf.format);

@@ -8,6 +8,8 @@ import { fuelTypes } from 'lead-dashboard/utils/fuel-types';
 
 export default class StackedAreaChartLayoutComponent extends Component {
 
+  hasUncalibrated = false;
+
   metrics = {
     'Consumption': '_con_mmbtu',
     'Emissions': '_emissions_co2',
@@ -39,29 +41,30 @@ export default class StackedAreaChartLayoutComponent extends Component {
     const metric = this.get('metric');
 
     const mapped = sectors.map(sector =>
-      ((data[sector] || {}).rows || []).map(row =>
-        fuelTypes.filter(t => t !== 'foil').map(fuel => ({
-          x: row['year'],
-          y: row[`${fuel}${this.metrics[metric]}`],
-          z: `${sector}-${fuel}`,
-        })).reduce((a,b) => a.concat(b), [])
-      ).reduce((a,b) => a.concat(b), [])
+      ((data[sector] || {}).rows || []).map(row => {
+        if (row.calibrated) {
+          return (
+            fuelTypes.filter(t => t !== 'foil').map(fuel => ({
+              x: row['year'],
+              y: row[`${fuel}${this.metrics[metric]}`],
+              z: `${sector}-${fuel}`,
+            })).reduce((a,b) => a.concat(b), [])
+          );
+        }
+        else {
+          this.set('hasUncalibrated', true);
+        }
+      }).filter(x => x).reduce((a,b) => a.concat(b), [])
     ).reduce((a,b) => a.concat(b), []);
 
     return mapped;
   }
 
 
-  @computed('chartData.[]')
-  get xAxis() {
-    const chartData = this.get('chartData');
-
-    return {
-      label: 'Year',
-      ticks: chartData.uniqBy('x').length - 1,
-      format: fmt.number.integer,
-    };
-  }
+  xAxis = {
+    label: 'Year',
+    format: fmt.number.integer,
+  };
 
 
   @computed('metric')
