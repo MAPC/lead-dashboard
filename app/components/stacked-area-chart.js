@@ -214,7 +214,12 @@ export default class StackedAreaChartComponent extends Component {
              .attr('x2', xPos);
 
           tooltip.style('top', `${(y * (height / __parentScope.container.height)) - 40}px`)
-                 .style('left', `${xPos + margin.left}px`);
+          if (xPos > width / 2) {
+            tooltip.style('left', `${xPos - (margin.right * 3)}px`);
+          }
+          else {
+            tooltip.style('left', `${xPos + margin.left}px`);
+          }
         }
         else {
           tooltip.style('display', 'none');

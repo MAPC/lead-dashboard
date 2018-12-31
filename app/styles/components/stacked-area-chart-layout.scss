@@ -1,4 +1,5 @@
 .component.stacked-area-chart-layout {
+  @include media('small') { display: none; }
 
   padding: 26px 0;
 
