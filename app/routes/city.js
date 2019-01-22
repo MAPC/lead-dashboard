@@ -14,6 +14,10 @@ export default class extends Route {
    * Methods
    */
 
+  beforeModel() {
+    this.transitionTo('/');
+  }
+
   model(params) {
     return this.get('carto').allSectorDataFor(params.municipality);
   }
